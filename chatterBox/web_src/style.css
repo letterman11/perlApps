@@ -1,0 +1,331 @@
+* {
+        margin:0; 
+        padding:0;
+}   
+
+body {
+        font-family: verdana, Arial, sans-serif;
+        font-size: 10pt;
+}
+
+#layout {
+	background-color:#c4c4c4;
+
+}
+
+.center_div {
+        position:relative;
+        margin: 0 auto;
+        width:960px;
+        height:550px;
+        display:block;
+        border: none;
+}
+
+#header {
+	background-color:black;
+	width:900px;
+	height:85px;
+	border:outset;
+}
+
+.main {
+	margin-top:20px;
+	background-color:black;
+	width:900px;
+	height:425px;
+	border:outset;
+}
+
+#main_sub_panel {
+	margin: auto;
+	display:none;
+	height:auto;
+	width:800px;
+}
+
+#banner {
+	margin-left:5px;
+	position:relative;
+	top:15px;
+	left:0px;
+	width:500px;
+	float:left;
+}
+
+
+#banner_image {
+	border:0;
+	float:left;
+}
+
+#banner_image2 {
+	border:0;
+	float:right;
+}
+
+#login {
+	float:right;
+}
+
+#login h2 {
+	padding:5px;
+	color:white;
+	float: right;
+}
+
+.form_login { 
+	color:gray;
+	font-size: 8pt; 
+	font-family: arial; 
+}
+
+.form_login a {
+	color:gray;
+	border:solid gray 1px; 
+	text-decoration:none; 
+	margin: 1px;
+	padding: 1px;
+}
+
+.form_login a:hover {
+	color:black;
+	background-color:gray;
+}
+
+.form_login .text_td { 
+	color:gray;
+	margin:0;
+	padding:0;
+}
+
+.text_td {
+	color:gray;
+}
+
+.text_td a {
+	color:gray;
+}
+
+.form_login tr { 
+	margin:0;
+	padding:0;
+}
+
+#err_text {
+	color:gray;
+}
+
+#logged_on {
+	display: block;
+	float: right;
+}
+
+#logged_on .form_login {
+	font-size: 10pt;
+	font-family: arial;
+
+}
+
+.left_panel {
+	padding:10px;
+	width:600px;
+	height:auto;	
+	float:left;
+}
+
+#chat_panel {
+	background-color:#8a9ad2;
+	background-color:#c9c9c9;
+	width:575px;
+	height:300px;	
+	border:inset;
+	overflow:auto;
+}
+
+.chatMsgDiv1 {
+	background-color:#cae1ff;
+	margin:1px 0 1px 0;
+
+}
+
+.chatMsgDiv2 {
+	background-color:#bcd2ee;
+	margin:2px 0 2px 0;
+
+}
+
+#input_panel {
+	margin-top:25px;
+	background-color:black;
+	height:75px;	
+	width:auto;
+}
+
+#input_panel textarea {
+	background-color:#c9c9c9;
+	font-size:10pt;
+}
+
+#input_panel form {
+	float:left;
+}
+
+#input_panel #sub_button {
+	margin-left:10px;
+	padding:5px;
+	color:gray;
+	float:left;
+	border:solid gray 1px;
+}
+
+
+#input_panel #sub_button h1 {
+	padding:5px;
+}
+
+#input_panel #sub_button a {
+	text-decoration:none;
+	color:gray;
+}
+
+.logout_room_box {
+	margin:13px 0 0 0;
+	color:gray;	
+	float:left;
+	border:solid 1pt gray;
+	display:none;
+}
+
+.logout_room_box:hover {
+	color:black;
+	background-color:gray;
+}
+
+.right_panel {
+	padding:10px;
+	float:right;
+	width:auto;
+}
+
+.right_top_panel {
+
+
+}
+
+#top_sel_con {
+	background-color:#8a9ad2;
+	background-color:#c9c9c9;
+	height:100px;
+	width:100px;
+	border:inset;
+	overflow:auto;
+}
+
+.roomDiv1 {
+	background-color:#919191;
+}
+
+.roomDiv1:hover {
+	background-color:#cfcfcf;
+
+}
+
+.roomDiv2 {
+	background-color:#787878;
+
+}
+
+.roomDiv2:hover {
+	background-color:#cfcfcf;
+
+}
+	
+#bot_disp_con {
+	background-color:#8a9ad2;
+	background-color:#c9c9c9;
+	height:195px;
+	width:100px;
+	border:inset;
+}
+
+.right_bot_panel {
+	margin-top:50px;
+	background-color:#8a9ad2;
+	background-color:#c9c9c9;
+	height:50px;
+	width:100px;
+	
+}
+
+/* ---------------------- Register styles ------- */
+.register_panel {
+	background-color:black;
+	display:none;
+/*	z-index:-10; */
+	width:900px;
+	height:425px;
+	border:outset;
+}
+
+.register_panel form {
+	padding-top:20px;
+	padding-left:25px;
+	color:gray;
+
+
+}
+
+.register_panel form h2 {
+	color:gray;
+	font-family:arial;	
+	border:gray 1px solid;
+	padding:2px;
+	margin:0px;
+}
+
+.register_panel form a {
+	text-decoration:none;
+	margin:0px;
+}
+
+.val_error { 
+	margin:0px; 
+	padding:0px; 
+	font-size: 10pt; 
+	font-family: arial; 
+	color: gray; 
+/*	background-color: white;  */
+	visibility: hidden; 
+	border:none 
+}
+
+.form_register {
+	float:left;
+}
+
+.reg_response {
+	float:left;
+	margin-top:15px;
+	color:gray;
+	width:300px;
+	height:200px;
+	background-color:black;
+
+}
+/* ---------------------------------------------- */
+
+
+/* ---------------------- Landing pane style ------- */
+.landing_panel {
+	margin:auto;
+	background-color:#c9c9c9;
+	display:block;
+	width:890px;
+	height:415px;
+	border:inset;
+}
+/* ---------------------------------------------- */
+
+
+

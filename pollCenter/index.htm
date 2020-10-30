@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title> Poll Center </title>
+<link rel="stylesheet" href="/pollCenter/style.css" type="text/css" />
+<!--
+<link rel="stylesheet" type="text/css" href="jquery.jqplot.css" />
+-->
+<link rel="stylesheet" type="text/css" href="/pollCenter/jquery.jqplot.min.css" />
+<link rel="shortcut icon" href="/dcoda.net/gen_rsrc/dc.ico">
+<link rel="icon" href="/dcoda.net/gen_rsrc/dc.ico">
+<!--
+<script language="javascript" type="text/javascript" src="js/jquery-1.4.2.js"> </script>
+-->
+<script language="javascript" type="text/javascript" src="/pollCenter/js/jquery.min.js"> </script>
+<script language="javascript" type="text/javascript" src="/pollCenter/js/excanvas.min.js"></script>
+<script language="javascript" type="text/javascript" src="/pollCenter/js/jquery.jqplot.min.js"></script>
+<script language="javascript" type="text/javascript" src="/pollCenter/js/jqplot.barRenderer.min.js"></script>
+<script language="javascript" type="text/javascript" src="/pollCenter/js/common.js"> </script>
+</head>
+<body onload="init();">
+  <div id="container"> 
+    <div id="header">
+      <a href="#"> <img class="banner_image1" alt="poll center image" src="/pollCenter/gen_rsrc/pollcenter_367x55.png" /> </a>
+      <a href="/dcoda.net"> <img class="banner_image2" alt="dcoda logo" src="/pollCenter/gen_rsrc/DCBANNER_CROP2_219_31_2.jpg" /> </a>
+    </div>
+
+    <div id="menu">
+      <ul id="ul_menu">
+        <li id="home" class="li_menu">
+	   <h3> HOME </h3> 
+     	     <div id="home_sl" class="slide_menu">
+		<div class="sslide_menu">
+       		  <p> Poll Center:  An Ajax/Web 2.0 application that implements a basic polling program 
+			that graphically displays the results of each poll. 
+		  </p> 
+		  <br />
+		</div> 
+      	      </div>  
+        </li>
+        <li id="about" class="li_menu">
+	   <h3> ABOUT </h3>
+     	     <div id="about_sl" class="slide_menu">
+		<div class="sslide_menu">
+       		  <p> The technology platform behind Poll Center is based on HTML/CSS/Javascript and Jquery/JqPlot. 
+			The site is driven on the backend by Perl/Mysql.  Location data is also culled from the submittion by each pollee.
+		  </p>
+		  <br />
+		</div>
+      	      </div>  
+        </li>
+        <li id="solutions" class="li_menu">
+	   <h3> SOLUTIONS </h3>
+     	     <div id="solutions_sl" class="slide_menu">
+		<div class="sslide_menu">
+       		  <p> The principal developer of this site is available for contract or  full-time work,  
+			having over 8 years of experience in a variety of technologies spanning from Javascript to Perl to C++ and Mysql. 
+		 </p>
+		 <br />
+		</div>
+      	      </div>  
+        </li>
+        <li id="contact" class="li_menu">
+	   <h3> CONTACT </h3>
+     	     <div id="contact_sl" class="slide_menu">
+		<div class="sslide_menu">
+       		  <p> 
+		    The principal can be contacted at postmaster@dcoda.net.		
+		 </p>
+		</div>
+      	      </div>  
+        </li>
+      </ul>
+    </div> 
+
+  <div id="poll1" class="poll">
+     <div id="poll1_in" class="poll_in">
+	<form name="poll1form" class="pollform">
+	 <ul id="ul_poll1">
+	 <li> Who should be the next President of the Monravia? </li> 	
+	 <br />
+	 <li> <input type="radio" name="p100" value="1"> John Lay  </li>
+	 <li> <input type="radio" name="p100" value="2"> Bill Fred  </li>
+	 <li> <input type="radio" name="p100" value="3"> Mike Goose  </li>
+	 <li> <input type="radio" name="p100" value="4"> Kay Casper </li>
+	 <li> <input type="radio" name="p100" value="5"> Frank Dan </li>
+	 <input type="hidden" name="poll_id" value="100">
+	 </ul>
+	</form>
+     </div>
+     <div id="poll1graph" class="pollgraph">
+     </div>
+  </div>
+
+  <div id="poll2" class="poll">
+     <div id="poll2_in" class="poll_in">
+	<form name="poll2form" class="pollform">
+	 <ul id="ul_poll2">
+	 <li> How many years will it take to build the Monravia damn? </li> 	
+	 <br />
+	 <li> <input type="radio" name="p101" value="1"> 1 year  </li>
+	 <li> <input type="radio" name="p101" value="2"> 3 years  </li>
+	 <li> <input type="radio" name="p101" value="3"> 5 years  </li>
+	 <li> <input type="radio" name="p101" value="4"> 7 years </li>
+	 <input type="hidden" name="poll_id" value="101">
+	 </ul>
+	</form>
+     </div>
+     <div id="poll2graph" class="pollgraph">
+     </div>
+  </div>
+
+  <div id="poll3" class="poll">
+     <div id="poll3_in" class="poll_in">
+	<form name="poll3form" class="pollform">
+	 <ul id="ul_poll3">
+	 <li> Should Monravia institute a value added tax? </li> 	
+	 <br />
+	 <li> <input type="radio" name="p102" value="1"> Yes </li>
+	 <li> <input type="radio" name="p102" value="2"> No  </li>
+	 <input type="hidden" name="poll_id" value="102">
+	 </ul>
+	</form>
+     </div>
+     <div id="poll3graph" class="pollgraph">
+     </div>
+  </div>
+
+  <div id="poll4" class="poll">
+     <div id="poll4_in" class="poll_in">
+	<form name="poll4form" class="pollform">
+	 <ul id="ul_poll4">
+	 <li>What is the most important issue for the average citizen of Monravia? </li> 	
+	 <br />
+	 <li> <input type="radio" name="p103" value="1"> Crime </li>
+	 <li> <input type="radio" name="p103" value="2"> Jobs  </li>
+	 <li> <input type="radio" name="p103" value="3"> Education  </li>
+	 <li> <input type="radio" name="p103" value="4"> Taxes  </li>
+	 <input type="hidden" name="poll_id" value="103">
+	 </ul>
+	</form>
+     </div>
+     <div id="poll4graph" class="pollgraph">
+     </div>
+  </div>
+
+  <div id="submission">
+   <ul>
+    <li>
+    <div id="captcha">
+<!--	<h2> CAPTCHA </h2>
+	<img id="captch_image">
+-->
+    </div>
+    </li>
+    <li>
+      <span class="error"> One or more poll questions not answered </span> 
+    </li>
+   </ul>
+     <div id="sub_box">
+       <ul>
+         <li>
+    	    <div id="sub_button">
+  	      <h2> SUBMIT </h2>
+    	    </div>
+         </li>
+	 <br />
+         <li>
+<!--
+           <form name="captcha_submit" id="#captcha_submit">
+            <input type="text" name="captcha_submit">
+            <br />
+            <p> Enter text from the CAPTCHA </p>
+	    <p class="error"> Incorrect CAPTCHA Entry </p>
+           </form>
+-->
+         </li>
+      </ul> 
+     </div>
+    <div id="reset_button">
+	<h2> RESET </h2>
+    </div> 
+  </div>
+
+ <div id="footer">
+  <hr style="height:3px; background-color:black">
+   <p class="foot"> Copyright Digital Coda LLC 2010 &nbsp;| &nbsp;All Rights Reserved </p>
+ </div>
+
+</div>
+</body>
+</html>

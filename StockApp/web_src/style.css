@@ -1,0 +1,171 @@
+.results {font-size: 10pt; font-family: arial; border: none; }
+table.results2  {font-size: 10pt; font-family: arial; border: none;}
+.form_login { font-size: 10pt; font-family: arial; background-color: #E3E3E3 }
+.form_register { margin: 0px; padding: 0px; font-size: 10pt; font-family: arial; background-color: #E3E3E3 } 
+.form_register_required { margin: 0px; padding: 0px; font-size: 10pt; font-family: arial; font-weight: bold; background-color: #E3E3E3 } 
+.form_profile1 { margin: 0px; padding: 0px; font-size: 10pt; font-family: arial; background-color: #E3E3E3 } 
+.form_profile2 { margin: 0px; padding: 0px; font-size: 10pt; font-family: arial; background-color: #E3E3E3 } 
+.form_query { font-size: 10pt; font-family: arial; background-color: #E3E3E3 }
+.list { color: black; font-size: 14pt; font-family: Arial;   }
+.errtext { color: red; font-size: 10pt }
+.errtext_large { color: red; font-size: 16pt }
+.text_large { font-size: 16pt }
+.validation_register { color: red }
+.val_error { margin:0px; padding:0px; font-size: 10pt; font-family: arial; color: red; background-color: white; visibility: hidden; border:none } 
+.tbl_hd { background-color: #E0E0E0; text-align: center }
+.tbl_num1 { background-color: #D0D0D0; text-align: right }
+.tbl_num2 { background-color: #E8E8E8; text-align: right }
+.tbl_txt { text-align: left }
+.tbl_hd_stock_sym { background-color: #A0A0A0; text-align: center }
+.tbl_stock_sym { background-color: #D0D0D0; text-align: center }
+a:visited { color: blue; }
+
+
+img {
+	display:inline;
+
+}
+
+#p_big_stock { 
+  font-family: arial; 
+  font-size: 24pt; 
+  font-weight: bold;
+}
+
+td {
+  min-height: 20px;
+}
+
+#banner_image {
+  border:0;
+  float:left;
+}
+
+#banner_image2 {
+  border:0; 
+  padding-top:1px;
+  float:right;
+}
+
+#main {
+  position:relative;
+  width:100%;
+  height:75px;
+}
+
+#header {
+  width:100%;
+  height:auto;
+}
+
+#banner  {
+  margin: 0px;
+  padding: 0px;
+  float: left;
+  width:500px;
+  top:0;
+  left:0;
+/*  border:solid black; */
+}
+
+#stocklist_container {
+  float:left
+
+}
+
+#login {
+  float: right;
+  z-index: 100; 
+}
+
+#query {
+ float: left;
+}
+
+#queryForm {
+}
+
+#sub_left_panel {
+  float:left;
+}
+
+#logged_on {
+  float: right;
+}
+
+#big_stock {
+clear: left;
+
+}
+
+#help_launch {
+	color:blue;
+	margin:0 0 0 25px;
+}
+
+#stockApp_description {
+	margin-top:20px;
+	font-family: arial, courier;
+}
+
+.help_description_container {
+	float:left; 
+	margin-right:15px;
+	width:300px;
+}
+
+.help_description {
+	width:100%;
+	padding-right:3px;
+}
+
+.help_description h4 {
+	margin:0px;
+	padding:1px;
+	background-color:#D0D0D0;
+}
+
+h4#description_header {
+	font-size:0.9em;
+	display:inline-block;
+	background-color:#E8E8E8;
+}
+
+.help_description p {
+	font-size: 10pt;
+
+}
+
+#small_help_pane {
+	float:left;  
+	height:260px;
+	width:612px;
+	background: url(/stockApp/gen_rsrc/DCQUERY_SNAP1_COMMENT_612_260.gif) no-repeat; 
+}
+
+#large_help_pane { 
+	float:left;  
+	height:349px;
+	width:845px;
+	background: url(/stockApp/gen_rsrc/DCQUERY_SNAP1_COMMENT_845_349.gif) no-repeat; 
+}
+
+div#footer {
+        position:absolute;
+        bottom:0px;
+        left:0px;
+        width:100%;
+}
+p.foot {
+        text-align:center;
+}       
+
+#curr_page {
+	background-color:#6666FF;
+	color:white;
+}
+
+#app_error {
+	border: solid #0066cc 5px;
+
+}

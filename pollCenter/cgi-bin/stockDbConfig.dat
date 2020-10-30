@@ -1,0 +1,22 @@
+#---------------------------------------------------
+# Configuration parameters for accessing database 
+#
+#
+#---------------------------------------------------
+
+
+hostname=localhost
+user=abrooks
+password=abrooks
+database=Widgets
+
+#hostname=192.168.0.194
+#user=abrooks
+#password=abrooks
+#database=Widgets
+
+#hostname=sqlc40c.carrierzone.com
+#user=octagonyellow
+#password=Corliss8
+#database=octagonyellow
+

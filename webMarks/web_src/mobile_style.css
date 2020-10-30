@@ -1,0 +1,355 @@
+* {
+	margin:0px;
+	padding:0px;	
+
+}
+
+body {
+	font-family: verdana, Arial, sans-serif;
+	font-size:10pt;
+	width:auto; 
+	height:350px; 
+}
+
+a {
+	text-decoration:none;
+}
+
+/**** key lengths *****/
+#main {
+	margin:0 auto;
+	/*width:360px;*/
+	width:auto;
+}
+
+ul {
+	margin:3px 0 0 0;
+	list-style:none;
+	border:solid 2px #aaaaaa;
+	width:25em;
+	height:2em;
+}
+
+#header {
+	height:50px;
+}
+
+h1.left {
+	float:left;
+	font-size:27pt;
+
+}
+
+h1 a {
+	color:gray;
+}
+
+.banner_image {
+	float:right;
+	border:none;
+}
+
+.tab_spans_big {
+	display:inline-block;
+    width:32%;
+    height:50px;
+	text-align:center;
+	border:solid 1px #aaaaaa;
+	background-color:#cceeee;
+    margin:0px;
+    padding:0px;
+	font-size:16pt;
+}
+
+
+.tab_spans_search {
+	display:inline-block;
+    width:100%; 
+    height:50px;
+	text-align:center;
+	/* border:solid 1px blue; */
+	border:solid 1px #aaaaaa;
+	background-color:#cceeee;
+   margin:0px;
+   padding:0px;
+   font-size:16pt;
+}
+
+/*
+
+.tab_spans {
+	width:100%;
+	border:solid 1px #aaaaaa;
+	background-color:#cceeee;
+	font-size:12pt;
+	align:center;
+	padding:1px 50px 1px 50px;
+}
+
+*/
+
+/***** key lengths *****/
+.tab_divs {
+	width:100%; 
+	height:450px;
+	/* border:solid #003399 2px;  */
+	border:solid #aaaaaa 2px;  
+	padding:1px 0px 0px 0px;;
+	overflow:scroll; 
+
+}
+
+.tab_top_big  {
+	width:100%;
+/*	height:100px; */
+}
+
+.tab_bottom_big  {
+	width:100%;
+/*	height:100px; */
+}
+
+.tab_bottom_search_big {
+	width:100%;
+	height:50px; 
+	font-size:16pt;
+}
+
+
+.tab_header {
+	margin:0px;
+	padding:0px;
+	width:100%;
+	overflow:hidden; 
+}
+
+#tab_AE #sp_AE {
+	background-color:green;
+}
+
+#tab_FJ #sp_FJ {
+	background-color:green;
+}
+
+#tab_KP #sp_KP {
+	background-color:green;
+}
+
+#tab_QU #sp_QU {
+	background-color:green;
+}
+
+#tab_VZ #sp_VZ {
+	background-color:green;
+}
+
+#tab_DATE #sp_DATE {
+	background-color:green;
+}
+
+#tab_SRCH_TITLE #sp_SRCH {
+	background-color:green;
+}
+
+.tab_divs #sp_SRCH {
+	padding:1px 25px 1px 25px;
+}
+
+
+.row_color1 {
+	background-color:#D0D0D0;
+}
+
+.row_color2 {
+	background-color:#E8E8E8;
+}
+
+/**** key lengths ****/
+.tab_table {
+	width:100%; 
+	/*border:solid #003399 1px;*/
+	border:none;
+	table-layout:fixed;
+	padding:0px 0px 0px 0px;
+	margin:2px 0px 0px 0px;
+}
+
+.tab_table td {
+/*	 height:2em; */
+	height:150px;
+/*	font-size:15pt; */
+}
+
+.header_row {
+	/*background-color:#0099CC*/;
+	background-color:#00AA55;
+	font-size:13pt;
+}
+
+.title_cell {
+	overflow:hidden;
+	font-size:15pt;
+}
+
+.url_cell {
+	overflow:hidden;
+	font-size:15pt;
+}
+
+.date_cell td {
+	overflow:hidden;
+	font-size:8pt;
+}
+
+.landing {
+	margin: 0 auto;
+	width:400px;
+	height:200px;
+	background-color:grey;
+	border:solid 2px black;
+}
+
+.landing ul {
+	width:95%;
+	border:none;
+	position:relative;
+
+}
+
+.landing ul input {
+	float:right;
+	font-size:18px;
+}
+
+.landing form {
+	height:3em;
+}
+
+div#optionDiv select {
+	height:50px; 
+	margin-top:12px;
+	margin-bottom:10px;
+
+}
+
+.search_div {
+	position:relative;
+	width:100%;
+	height:175px;
+}
+
+.search_div ul {
+	width:100%;
+	font-size:18px;
+	border:none;
+}
+
+.search_div form {
+	height:175px;
+	width:100%;
+}
+
+
+.search_div form  input[type=submit]{
+	height:55px;
+	width:60px;
+}
+
+.search_div form  input[type=radio]{
+	height:35px;
+	width:35px;
+}
+
+.search_div form  input[type=text]{
+        height:40px;
+	font-size:13px;
+        background-color:lightblue;
+}
+
+form.newMark {
+	width:100%;
+	height:300px;
+}
+
+.new_mark  {
+	margin-top:5px;
+	width:100%;
+	height:300px;
+}
+
+.new_mark form  input[type=text]{
+        height:40px;
+	font-size:13px;
+        background-color:lightblue;
+}
+.new_mark ul {
+	width:100%;
+	margin-top:5px;
+	border:none;
+	height:75px;
+	font-size:18px;
+}
+
+.new_mark form input[type=submit] {
+	height:60px;
+	width:60px;
+}
+
+
+.new_mark form input[type=text] {
+	height:40px;
+	font-size:16pt;
+}
+
+.delta_pass {
+	margin:0 auto;
+	padding:0 0 0 10px;
+	width:225px;
+	height:155px;
+	background-color:grey;
+	border:solid 2px black;
+}
+
+.delta_pass ul {
+	border:none;
+}
+
+.registration {
+	margin: 0 auto;
+	width:425px;
+	height:215px;
+	background-color:grey;
+	border:solid 2px black;
+}
+
+.registration ul {
+	width:95%;
+	border:none;
+	position:relative;
+}
+
+.registration li {
+	font-size:18px; 
+	padding-top:2px;	
+	padding-left:5px;
+}
+
+.registration li input {
+	float:right;	
+}
+
+#sort_span {
+	/*color:#006699;*/
+	color:#FF9900;
+	font-size:35px;
+	margin:0px;
+	padding:0px;
+}
+
+#sort_span_date {
+	/*color:#006699;*/
+	color:#FF9900;
+	font-size:25px;
+	margin:0px;
+	padding:0px;
+}

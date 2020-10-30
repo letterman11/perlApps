@@ -1,0 +1,24 @@
+<html>
+<head>
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+<title> redirect page </title>
+<script type="text/javascript" language="javascript">
+function redirect()
+{
+
+ if(window.screen.width <= 640) 
+ {
+  	top.location = "/cgi-bin/webMarks/cgi-bin/wm_app_mb.cgi";
+  }
+  else 
+  {
+  	top.location = "/cgi-bin/webMarks/cgi-bin/wm_app.cgi";
+  }
+
+}
+</script>
+</head>
+<body onLoad="redirect()">
+</body>
+</html>
+

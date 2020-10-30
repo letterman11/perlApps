@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title> ChatterBox application </title>
+<link rel="stylesheet" href="/chatterBox/web_src/style.css" type="text/css" />
+<link rel="shortcut icon" href="/dcoda.net/gen_rsrc/dc.ico">
+<link rel="icon" href="/dcoda.net/gen_rsrc/dc.ico">
+
+<!-- **************************				  -->
+<!-- Take out json js and incorporate into another module -->
+<!-- ************************** 			  -->
+<script type="text/javascript" src="/chatterBox/web_src/json.js"> </script> 
+<script type="text/javascript" src="/chatterBox/web_src/common.js"> </script> 
+<script type="text/javascript" src="/chatterBox/web_src/ajax_lib.js"> </script> 
+<script type="text/javascript" src="/chatterBox/web_src/Pane.js"> </script> 
+</head>
+<body id="layout" onload="App.initialize()" onunload="App.suspend()">
+  <div class="center_div">
+     <div id="header">
+	<div id="banner">
+	  <a href="/chatterBox"> <img id="banner_image" src="/chatterBox/gen_rsrc/CHAT_BOX_199_26.jpg">  </a> 
+	  <a href="/dcoda.net"> <img id="banner_image2" src="/chatterBox/gen_rsrc/INVERT_DCBANNER_CROP2_219_31_2.jpg">  </a> 
+	</div>
+        <div id="login" style="display:block">
+          <form name="frmLogin">
+             <table>
+              <tr class="form_login">
+                  <td class="text_td"> user name: </td> <td> <input name="userName" type="text"> </td>
+              </tr>
+              <tr class="form_login">
+                  <td class="text_td"> password:  </td> <td> <input name="userPass" type="password"> </td>
+              </tr>
+              <tr class="form_login text_td">
+                <!--  <td colspan="2"> <input type="submit" value="Submit"> <input type="reset">  -->
+                 <td colspan="2" style="margin:2px; padding:2px;"> 
+			<a href="javascript:Utility.processSignInForm(document.frmLogin)">  SUBMIT  </a>
+			<a href="javascript:Utility.clearSignInForm(document.frmLogin)"> RESET   </a> 
+		Not Registered?   Register <a href="#" onclick="App.changePane(document,App.PANE.REGISTRATION)"> here </a> 
+	         </td>
+              </tr>
+              </table>
+          </form>
+	  <span id="err_text"> </span>
+        </div>
+	<div id="logged_on">
+         <span class="form_login" id="form_login">
+           <script language="Javascript" type="text/javascript">
+            chatUserID = getCookie('chatUserID');
+             if(chatUserID != null && chatUserID.length > 0) {
+                document.write(chatUserID + " LOGGED IN | " +
+                " <a href=\"javascript:App.changePane(document,App.PANE.LOGIN)\" style=\"margin-top:10px;\" onclick=\"App.logOut('chatUserID','chatSessionID','Instance')\" target=\"_top\" > LOG OUT </a> ");
+             }
+          </script>
+         </span>
+	</div>
+     </div>
+
+     <div class="main">
+
+<!-- Main panel for actual chat application -->
+      <div class="main_sub_panel" id="main_sub_panel">
+        <div class="left_panel">
+           <div id="chat_panel">
+	   </div>
+           <div id="input_panel"> 
+	    <div id="form_input">
+	     <form name="chatInput" id="chat_input">
+		<textarea rows="3" cols="50" name="msgText">
+		</textarea>
+	     </form>
+	    </div>
+	     <div id="sub_button">
+	       <a href="javascript:Utility.processSend(document.chatInput);"> <h1> SEND </h1> </a>
+	     </div>
+	   </div>
+       </div>
+       <div class="logout_room_box" id="logout_room_box">
+	<h6><a onclick="App.logOutRoomReload()"> LOGOUT </a></h6>
+       </div>
+       <div class="right_panel">
+	  <div class="right_top_panel">
+             <div id="top_sel_con">
+	     </div>
+	     <div id="bot_disp_con">
+	     </div>
+          </div> 
+      </div>
+    </div>
+<!-- end panel -->
+
+<!-- Registration panel for ChatBox application  -->
+  <div class="register_panel" id="register_panel">
+   <div class="form_register" id="form_register">
+   <form name="frmRegister">
+     <table>
+        <tr>
+           <td class="form_register"> Email Address: </td> <td> <input name="email" type="text"> </td> <td class="val_error" id="val_email"> Invalid email address: use form joe@doe.com </td>
+        </tr>
+        <tr>
+           <td class="form_register"> User Name </td> <td> <input name="userName" type="text"> </td> <td class="val_error" id="val_username">Invalid user name: minimum length 6 characters  </td>
+        </tr>
+        <tr>
+           <td class="form_register"> Password: </td> <td> <input name="password" type="password"> </td> <td class="val_error" id="val_password">Invalid password: minimum length 6 characters </td>
+        </tr>
+        <tr> <td> &nbsp; </td> <td> </td> </tr>
+	<tr> <td> <a href="javascript:Utility.processRegForm(document.frmRegister)" onclick="Utility.but_on2(this);"> <h2 id="sub1"> SUBMIT </h2> </a> </td> <td class="val_error"> </td> </tr> 
+      </table>
+    </form>
+    </div>
+    <div class="reg_response" id="reg_response">
+    </div>
+   </div> 
+<!-- end panel -->
+
+<!--     Initial window for ChatBox application   -->
+   <div class="landing_panel" id="landing_panel">
+    <div class="inner_panel">
+	<h2> ChatBox is a demo Web 2.0 chat application that allows multiple parties to converse in the same chat room. 
+	</h2>
+    </div>
+   </div>
+   <div style="clear:both" </div>
+       <div id="footer">
+	 <hr style="height:5px; background-color:black">
+        <p class="foot"> Copyright Digital Coda LLC 2010 | All Rights Reserved | angusbrooks@gmail.com </p> 
+       </div>
+<!-- end panel -->
+
+ </div>
+</body>
+</html>

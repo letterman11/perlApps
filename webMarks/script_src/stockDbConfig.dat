@@ -1,0 +1,17 @@
+#---------------------------------------------------
+# Configuration parameters for accessing database 
+#
+#
+#---------------------------------------------------
+
+
+hostname=localhost
+user=dcoda.net
+password=dcoda.net
+database=Widgets
+
+#hostname=sql5c40a.carrierzone.com
+#user=octagonyel937919
+#password=glyph912
+#database=Acme_octagonyel937919
+
