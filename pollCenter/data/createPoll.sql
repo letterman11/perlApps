@@ -1,3 +1,5 @@
+use dcoda_acme;
+
 CREATE TABLE poll (
 POLL_ID                 INTEGER NOT NULL PRIMARY KEY,
 POLL_DESC               VARCHAR(500),

@@ -1,3 +1,4 @@
+use dcoda_acme;
 
 CREATE TABLE category (
 CATEGORY_ID             SMALLINT UNSIGNED NOT NULL PRIMARY KEY,

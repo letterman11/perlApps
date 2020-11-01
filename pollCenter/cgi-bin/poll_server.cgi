@@ -2,26 +2,32 @@
 
 use strict;
 use DBI;
-use lib '/home/abrooks/www/pollCenter/script_src';
-use DbConfig;
+#use lib "/home/angus/tools/perl5/site_perl";
+use lib "/home/angus/dcoda_net/private/pollCenter/script_src";
+require '/home/angus/dcoda_net/cgi-bin/pollCenter/cgi-bin/config.pl';
+#use lib "/services/webpages/d/c/dcoda.net/private/pollCenter/script_src";
+#use DbConfig;
+use DbGlob;
 use CGI qw /:standard/;
 use CGI::Carp;
+use CGI::Carp qw(fatalsToBrowser);
 use CGI::Cookie;
 use Util;
-use Captcha;
+#use Captcha;
+
 use Data::Dumper;
-require '/home/abrooks/www/pollCenter/cgi-bin/config.pl';
+#require '/services/webpages/d/c/dcoda.net/cgi-bin/pollCenter/cgi-bin/config.pl';
 
 my $pollCenterID;
 my ($c1,$c2,$c3) = ();
 my $sqlStr;
 my $flagNewSession;
-my $captcha_text;
+my $captcha_text = "none";
 my $captcha_parm;
 my $q = new CGI;
 my @parms = $q->param;
-my $fh_client = $::PATHS->{CAPTCHA_DIR};
-my $fh_serv = $::PATHS->{CAPTCHA_DIR_SERV};
+#my $fh_client = $::PATHS->{CAPTCHA_DIR};
+#my $fh_serv = $::PATHS->{CAPTCHA_DIR_SERV};
 
 my $initSessionObject = Util::validateSession('pollCenterID','qID');
 
@@ -42,13 +48,6 @@ if (ref $initSessionObject ne 'SessionObject')
         -expires=>undef,
         -domain=>undef,
          -path=>'/');
-
-   $fh_client .= "/$pollCenterID";
-   $fh_serv .= "/$pollCenterID";
-
-   mkdir ($fh_serv) or die "Cannot make dir: $fh_serv $!\n";
-
-   $captcha_text = Captcha::genCaptcha($pollCenterID,$qID);    
  
    Util::storeSession($pollCenterID,
 			$qID,
@@ -60,62 +59,32 @@ if (ref $initSessionObject ne 'SessionObject')
 	        -Content_Type=>'text/html'	
 		);
 
-   carp(Dumper($c1));
-   carp(Dumper($c2));
+   #carp(Dumper($c1));
+   #carp(Dumper($c2));
 
-   print STDOUT "$fh_client/$qID.png";
    
-   carp("########## New Session  ############");
+   #carp("########## New Session  ############");
    carp(Dumper($q));   
-   carp("####################################");
+  # carp("####################################");
    
 }
 else
 {
    $pollCenterID =  $initSessionObject->{POLLCENTERID};
    $captcha_text =  $initSessionObject->{CAPTCHA};
-   $captcha_parm = $q->param('captcha_text');
 
-   carp("from client: $captcha_parm / on server: $captcha_text");
-
-   $fh_client .= "/$pollCenterID";
-
-   if( defined $q->param('refresh')) 
-   {
+#   if( defined $q->param('refresh')) 
+#   {
      
-       carp("########### REFRESH ###########");
-       $captcha_text = Captcha::genCaptcha($pollCenterID,$qID);    
-
-       print $q->header( -status=> '200 OK',
-                -cookie=>[$c2],
-                -Content_Type=>'text/html'
-                );
-
-       print STDOUT "$fh_client/$qID.png";
-         
-   }
-   elsif($captcha_parm eq $captcha_text)
-   {
        exec_sql();
-       $captcha_text = Captcha::genCaptcha($pollCenterID,$qID);    
 
        print $q->header( -status=> '200 OK',
                 -cookie=>[$c2],
                 -Content_Type=>'text/html'
                 );
 
-       print STDOUT "$fh_client/$qID.png";
          
-   }
-   else
-   {
-       print $q->header( -status=> '451 Captcha submission incorrect',
-                -cookie=>[$c2],
-                -Content_Type=>'text/html'
-                );
-
-       print STDOUT "Fouled up CAPTCHA submission";
-   }
+#   }
 
    Util::storeSession($pollCenterID,
 			$qID,
@@ -135,15 +104,12 @@ carp(Dumper($initSessionObject));
 sub exec_sql
 {
  
-   my $dbconf = DbConfig->new();
+	my $dbg = DbGlob->new("stockDbConfig.dat");
+	#my $dbconf = DbConfig->new();
     
-   my $dbh = DBI->connect( "dbi:mysql:"
-                    . $dbconf->dbName() . ":"
-                    . $dbconf->dbHost(),
-                    $dbconf->dbUser(),
-                    $dbconf->dbPass(), $::attr )
-                    or die "Cannot Connect to Database $DBI::errstr\n";
-    
+	my $dbh = $dbg->connect()
+	       or die "Cannot Connect to Database $DBI::errstr\n";
+
    $sqlStr = 'update poll set ';
     
    for my $parm (@parms)
