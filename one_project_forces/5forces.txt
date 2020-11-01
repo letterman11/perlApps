@@ -1,0 +1,20 @@
+    
+       ____
+       |   |
+       | 7 |
+       |___|
+_____   ___    ____ 
+|   |  |   |  |   |
+| 6 |  | 5 |  | 4 |
+|___|  |___|  |___|
+       ____   
+       |   |
+       | 2 |
+       |___|
+
+7 Barriers to Entry
+6 Power of Suppliers
+5 Competition Among Rivals
+4 Power of Buyers
+2 Threat of Substitutes
+

@@ -1,0 +1,27 @@
+01 Agriculture Production-Crops 1 48 Communications 7
+10 Metal Mining 1 49 Electric, Gas, Sanitary Serv. 7
+13 Oil and Gas Extraction 18 50 Durable Goods-Wholesale 7
+15 Operative Builders (Bldg. Const.) 2 51 Nondurable Goods-Wholesale 7
+16 Heavy Construction-Not Bldg. Const. 2 52 Bldg. Matl., Hardwr., Garden-Retl. 6
+20 Food and Kindred Products 5 53 General Merchandise Stores 9
+21 Tobacco Products 1 54 Food Stores 4
+22 Textile Mill Products 2 56 Apparel and Accessory Stores 1
+23 Apparel & Other Finished Pds., 2 57 Cmp. and Cmp. Software Stores 1
+24 Lumber and Wood Pds. - Ex. Furn. 2 58 Eating Places 4
+25 Wood-Hshld. Furniture 1 59 Miscellaneous Retail 3
+26 Paper and Allied Products 5 60 Depository Institutions 9
+27 Printing, Publishing & Allied Products 2 61 Nondepository Credit Instn. 4
+28 Chemicals & Allied Products 12 62 Security Brokers and Dealers 6
+29 Petroleum Refining 10 63 Insurance Carriers 3
+30 Rubber & Misc. Plastics Products 2 65 Real Estate 5
+32 Abrasives, Asbestos, Misc. Minrls. 1 67 Real Estate Investment Trust 5
+33 Primary Metal Industries 6 70 Hotels, Other Lodging Places 1
+34 Fabr. Metal 9 73 Business Services 12
+35 Indl., Comml. Machy., Computer Eq. 21 75 Auto Rent and Lease 3
+36 Electr., Oth. Elec. Eq., Ex. Cmp. 12 78 Motion Pic., Videotape Prodtn. 2
+37 Transportation Equipment 16 79 Misc. Amusement & Rec. Services 3
+38 Meas. Instr.; Photo. Gds.; Watches 16 80 Hospitals 5
+39 Misc. Manufacturing Industries 3 82 Educational Services 1
+40 Railroad Transportation 2 83 Social Services 1
+44 Water Transportation 1 87 Engineering Services 1
+45 Transportation by Air 17 

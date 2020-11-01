@@ -1,0 +1,53 @@
+---------------------------
+| THE POWER OF SUPPLIERS. 
+---------------------------
+
+Powerful suppliers capture more of the value for themselves by charging higher prices,
+limiting quality or services, or shifting costs to industry participants. Powerful suppliers, including suppliers of labor,
+can squeeze profi tability out of an industry that is unable
+to pass on cost increases in its own prices. Microsoft, for instance, has contributed to the erosion of profi tability among
+personal computer makers by raising prices on operating
+systems. PC makers, competing fi ercely for customers who
+can easily switch among them, have limited freedom to raise
+their prices accordingly.
+Companies depend on a wide range of different supplier
+groups for inputs. 
+
+A supplier group is powerful if:
+
+1. It is more concentrated than the industry it sells to.
+-----------------------------------------------------------
+Microsoft’s near monopoly in operating systems, coupled
+with the fragmentation of PC assemblers, exemplifi es this
+situation.
+
+2. The supplier group does not depend heavily on the industry for its revenues. Suppliers serving many industries
+-----------------------------------------------------------
+will not hesitate to extract maximum profi ts from each one.
+If a particular industry accounts for a large portion of a supplier group’s volume or profi t, however, suppliers will want
+to protect the industry through reasonable pricing and assist in activities such as R&D and lobbying.
+
+3. Industry participants face switching costs in changing
+-----------------------------------------------------------
+suppliers. For example, shifting suppliers is diffi cult if companies have invested heavily in specialized ancillary equip-
+ment or in learning how to operate a supplier’s equipment
+(as with Bloomberg terminals used by fi nancial professionals). Or fi rms may have located their production lines adjacent to a supplier’s manufacturing facilities (as in the case
+of some beverage companies and container manufacturers).
+When switching costs are high, industry participants fi nd it
+hard to play suppliers off against one another. (Note that
+suppliers may have switching costs as well. This limits their
+power.)
+
+4. Suppliers offer products that are differentiated. Pharmaceutical companies that offer patented drugs with distinctive medical benefi ts have more power over hospitals,
+-----------------------------------------------------------
+health maintenance organizations, and other drug buyers,
+for example, than drug companies offering me-too or generic products.
+
+5. There is no substitute for what the supplier group provides. Pilots’ unions, for example, exercise considerable supplier power over airlines partly because there is no good
+-----------------------------------------------------------
+alternative to a well-trained pilot in the cockpit.
+
+6. The supplier group can credibly threaten to integrate forward into the industry. In that case, if industry participants
+-----------------------------------------------------------
+make too much money relative to suppliers, they will induce
+suppliers to enter the market.

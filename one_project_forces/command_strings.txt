@@ -1,0 +1,4 @@
+perl split_file.pl  convert_calls.txt | awk ' FS="|" { print $3 $2 $1 } ' |sort -r --numeric
+perl split_file.pl  convert_calls.txt | awk ' FS="|" { printf("%s|%s|%s\n",$3,$2,$1) } ' |sort -r --numeric | awk ' FS="|" { print $3 $2 $ 1 } '
+perl convertAnalytics.pl convert_calls.txt | awk ' FS="|" { printf("%s|%s|%s|%s\n",$3,$2,$1,$4) } ' |sort -r --numeric
+sort -t '|' -k 3  -n -r  nice_layout_conv.txt

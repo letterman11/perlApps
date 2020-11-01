@@ -1,0 +1,110 @@
+
+------------------------------
+| Barriers to entry.
+------------------------------
+Entry barriers are advantages that incumbents have relative to new entrants. 
+There are seven major  sources:
+
+1. Supply-side economies of scale. 
+----------------------------------
+These economies arise
+when firms that produce at larger volumes enjoy lower costs
+per unit because they can spread fixed costs over more units,
+employ more efficient technology, or command better terms
+from suppliers. Supply-side scale economies deter entry by
+forcing the aspiring entrant either to come into the industry
+on a large scale, which requires dislodging entrenched competitors, or to accept a cost disadvantage.
+Scale economies can be found in virtually every activity
+in the value chain; which ones are most important varies
+by industry.1
+ In microprocessors, incumbents such as Intel
+are protected by scale economies in research, chip fabrication, and consumer marketing. For lawn care companies like
+Scotts Miracle-Gro, the most important scale economies are
+found in the supply chain and media advertising. In smallpackage delivery, economies of scale arise in national logistical systems and information technology.
+
+2. Demand-side benefits of scale.  
+----------------------------------
+These benefits, also known
+as **network effects**, arise in industries where a buyer’s willingness to pay for a company’s product increases with the number of other buyers who also patronize the company. Buyers
+may trust larger companies more for a crucial product: Recall the old adage that no one ever got fired for buying from
+IBM (when it was the dominant computer maker). Buyers
+may also value being in a “network” with a larger number of
+fellow customers. For instance, online auction participants
+are attracted to eBay because it offers the most potential
+trading partners. Demand-side benefits of scale discourage
+entry by limiting the willingness of customers to buy from a
+newcomer and by reducing the price the newcomer can command until it builds up a large base of customers.
+
+3. Customer switching costs. 
+---------------------------------
+Switching costs are fixed costs
+that buyers face when they change suppliers. Such costs may
+arise because a buyer who switches vendors must, for example, alter product specifications, retrain employees to use
+a new product, or modify processes or information systems.
+The larger the switching costs, the harder it will be for an entrant to gain customers. Enterprise resource planning (ERP)
+software is an example of a product with very high switching
+costs. Once a company has installed SAP’s ERP system, for example, the costs of moving to a new vendor are astronomical
+because of embedded data, the fact that internal processes
+have been adapted to SAP, major retraining needs, and the
+mission-critical nature of the applications.
+
+4. Capital requirements.  
+----------------------------------
+The need to invest large financial resources in order to compete can deter new entrants.
+Capital may be necessary not only for fixed facilities but also
+to extend customer credit, build inventories, and fund startup losses. The barrier is particularly great if the capital is
+required for unrecoverable and therefore harder-to-finance
+expenditures, such as up-front advertising or research and
+development. While major corporations have the financial
+resources to invade almost any industry, the huge capital
+requirements in certain fields limit the pool of likely entrants. Conversely, in such fields as tax preparation services
+or short-haul trucking, capital requirements are minimal
+and potential entrants plentiful.
+It is important not to overstate the degree to which capital
+requirements alone deter entry. If industry returns are attractive and are expected to remain so, and if capital markets
+are efficient, investors will provide entrants with the funds
+they need. For aspiring air carriers, for instance, financing
+is available to purchase expensive aircraft because of their
+high resale value, one reason why there have been numerous new airlines in almost every region.
+
+5. Incumbency advantages independent of size. 
+----------------------------------------------
+No matter what their size, incumbents may have cost or quality advantages not available to potential rivals. These advantages can
+stem from such sources as:
+
+* proprietary technology, 
+* preferential access to the best raw material sources, 
+* preemption of the most favorable geographic locations, 
+* established brand identities, or 
+* cumulative experience 
+
+that has allowed incumbents to learn how to produce more efficiently. Entrants try
+to bypass such advantages. Upstart discounters such as Target and Wal-Mart, for example, have located stores in freestanding sites rather than regional shopping centers where
+established department stores were well entrenched.
+
+6. Unequal access to distribution channels. 
+---------------------------------------------
+The new entrant must, of course, secure distribution of its product or
+service. A new food item, for example, must displace others
+from the supermarket shelf via price breaks, promotions,
+intense selling efforts, or some other means. The more limited the wholesale or retail channels are and the more that
+existing competitors have tied them up, the tougher entry
+into an industry will be. Sometimes access to distribution
+is so high a barrier that new entrants must bypass distribution channels altogether or create their own. Thus, upstart
+low-cost airlines have avoided distribution through travel
+agents (who tend to favor established higher-fare carriers)
+and have encouraged passengers to book their own fl ights
+on the internet.
+
+7. Restrictive government policy. 
+----------------------------------------------
+Government policy can
+hinder or aid new entry directly, as well as amplify (or nullify) the other entry barriers. Government directly limits or
+even forecloses entry into industries through, for instance,
+licensing requirements and restrictions on foreign investment. Regulated industries like liquor retailing, taxi services,
+and airlines are visible examples. Government policy can
+heighten other entry barriers through such means as expansive patenting rules that protect proprietary technology from imitation or environmental or safety regulations
+that raise scale economies facing newcomers. Of course,
+government policies may also make entry easier – directly
+through subsidies, for instance, or indirectly by funding basic research and making it available to all firms, new and old,
+reducing scale economies.

@@ -1,0 +1,22 @@
+1) define the problem
+2) draw sketch
+3) write primary equation
+4) write secondary equation and rewrite primary in terms of first variable via the second equation
+5) get first derivative and then critical points
+6) get second derivative and find min/max
+    positive -> concave down minimum
+    negative -> concave up maximum 
+    check for real world solution in original equation.
+
+
+minimize rectangular open box => square base (x^2), rectangular sides (4xy)
+---------------------------------------------------------------
+
+S = x^2 + 4xy => Surface Area minimize
+V = yx^2 = 4000cm3
+y = 4000/x^2
+    
+x=10 y=20
+
+
+
