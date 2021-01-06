@@ -3,7 +3,6 @@
 use strict;
 use lib "/home/angus/dcoda_net/private/webMarks/script_src";
 require '/home/angus/dcoda_net/cgi-bin/webMarks/cgi-bin/gen_histo_gram_multi.pl';
-#require '/home/angus/perlProjects/MojoWebMarks/ExecPageSQL.pl';
 require '/home/angus/dcoda_net/cgi-bin/webMarks/cgi-bin/ExecPageSQL.pl';
 use globals;
 use DbConfig; #improved inherited DbConfig -> subclass of DBI
@@ -11,7 +10,7 @@ use CGI qw (:standard);
 use Util;
 use Error;
 use GenMarks;
-
+use POSIX 'strftime';
 
 our $query = new CGI;
 our $exec_sql_str;
@@ -161,7 +160,9 @@ sub insert_mark
 	my $unix_epochs = time;	
 	#use antique mozilla time format (1000 * 1000) unix epoch seconds => microseconds 
 	my $dateAdded = $unix_epochs * (1000 * 1000);
+	my $date_added = strftime "%Y-%m-%d %H:%M:%S", localtime($unix_epochs);
 
+    print STDERR $date_added, "\n";
 	my $dbc = DbConfig->new();
 
 	my $local_dbh = $dbc->connect()
@@ -188,7 +189,9 @@ sub insert_mark
 		return Error->new(150);
 	}
 
-	my $rc2 = $local_dbh->do("insert into WM_BOOKMARK (BOOKMARK_ID, USER_ID, PLACE_ID, TITLE, DATEADDED) values ($tbl1MaxId, '$user_id', $tbl2MaxId," . $local_dbh->quote($title) . ", '$dateAdded' ) " );
+	#my $rc2 = $local_dbh->do("insert into WM_BOOKMARK (BOOKMARK_ID, USER_ID, PLACE_ID, TITLE, DATEADDED) values ($tbl1MaxId, '$user_id', $tbl2MaxId," . $local_dbh->quote($title) . ", '$dateAdded' ) " );
+
+	my $rc2 = $local_dbh->do("insert into WM_BOOKMARK (BOOKMARK_ID, USER_ID, PLACE_ID, TITLE, DATEADDED, DATE_ADDED) values ($tbl1MaxId, '$user_id', $tbl2MaxId," . $local_dbh->quote($title) . ", '$dateAdded', '$date_added' ) " );
 
 	print STDERR "RCODE2 => $rc2\n" if($DEBUG);
 
