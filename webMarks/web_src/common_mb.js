@@ -39,67 +39,47 @@ function cgi_out(tab_parm)
 	var sort_desc = 1;
 	var sort_date_asc = 2;
 	var sort_date_desc = 3;
-//	var sort_search_desc = 4;
-//	var sort_search_asc = 5;
 	var sort_date_indicator = 11;	
-	var sort_crit; 
-	var dt_cnter;
+	var sortCrit; 
 	var counter;
-	var tab_state;
-	var tab_var; 
+        var prevTab;
+	var date_flag;
+	var currTab;
 
+	prevTab = parseInt(getCookie('tab'));	
 	counter = parseInt(getCookie('Counter'));	
-	dt_cnter = parseInt(getCookie('dt_cnter'));
+	date_flag = parseInt(getCookie('date_flag'));
 
-/******************************************************/
-	tab_state = getCookie('tab_state');
-/******************************************************/
-	tab_var = tab_parm.substr(4,2);
-    
-    if(search_submission == getCookie("search_submission"))
-    {
-		tab_parm = "tab=" +  search_submission;
-		setCookie('tab_state',search_submission);	
-        eraseCookie("search_submission");
-    }
-    else if(tab_var == getCookie('tab_state'))
-	{
-		counter++;
-		sort_crit = (counter % 2) ? sort_desc : sort_asc; 
-		setCookie('Counter',counter);
-	}
-	else if(tab_var == sort_date_indicator)
-	{
-		tab_parm = "tab=" + tab_state; 
-		if(dt_cnter == 0)
-		{
-			sort_crit = sort_date_desc;	
-		}
-		else
-		{
-			sort_crit = (dt_cnter % 2) ? sort_date_asc : sort_date_desc;
-		}
+	currTab = tab_parm.substr(4,2);
 
-		dt_cnter++;
-		setCookie('tab_state',tab_state);	
-		setCookie('dt_cnter',dt_cnter);
+	if(currTab == sort_date_indicator && date_flag == 1) {
+	//	alert("A")
+		sortCrit = sort_date_desc
+		eraseCookie("date_flag")
+		tab_parm = "tab=" + prevTab
+		
 	} 
-    else if(tab_var == getCookie('tab_state'))
-	{
-		counter++;
-		sort_crit = (counter % 2) ? sort_desc : sort_asc; 
-		setCookie('Counter',counter);
-	} 
-	else
-	{
-		setCookie('tab_state',tab_var);	
-		setCookie('Counter',0);
-		setCookie('dt_cnter',0);
-		sort_crit = sort_asc;	
+	else if(currTab == sort_date_indicator) {
+	//	alert("B")
+		sortCrit = sort_date_asc	
+		setCookie('date_flag',1)
+		tab_parm = "tab=" + prevTab
+	} else 
+   	
+	if(currTab != prevTab) {
+	//	alert("C")
+		sortCrit = sort_asc;
+		setCookie('tab', currTab);
+   		setCookie('Counter',1); 
 	}
+	else if (currTab == prevTab) {
+	//	alert("D")
+		sortCrit = (counter++ % 2) ? sort_desc : sort_asc;
+		setCookie('Counter',counter)
+	}
+
 
 	top.location = "/cgi-bin/webMarks/cgi-bin/wm_app_mb.cgi?" + tab_parm + "&sortCrit=" + sort_crit;
-
 }
 
 function setSearchTerms()
