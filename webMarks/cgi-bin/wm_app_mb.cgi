@@ -2,11 +2,11 @@
 
 use strict;
 #use lib "/home/ubuntu/tools/perl5/site_perl";
-use lib "/home/angus/dcoda_net/private/webMarks/script_src";
-require '/home/angus/dcoda_net/cgi-bin/webMarks/cgi-bin/gen_histo_gram.pl';
+use lib "/home/ubuntu/dcoda_net/private/webMarks/script_src";
+#require '/home/ubuntu/dcoda_net/cgi-bin/webMarks/cgi-bin/gen_histo_gram.pl';
+require '/home/ubuntu/dcoda_net/cgi-bin/webMarks/cgi-bin/gen_histo_gram_multi.pl';
 use globals;
 use DbConfig;
-use DBD::SQLite;
 use CGI qw (:standard);
 use Util;
 use Error;
@@ -40,16 +40,8 @@ my $ORDER_BY_DATE =  " ) order by a.dateAdded ";
 ########################  SQL STRINGS ####################################
 
 
-my $dbconf = DbConfig->new();
-#my $dbh = DBI->connect( "dbi:mysql:"
-#my $dbh = DBI->connect( "dbi:SQLite:dbname="
-#our $dbh = DBI->connect( "dbi:SQLite:dbname="
-our $dbh = DBI->connect( "dbi:SQLite:dbname="
-                . $dbconf->dbName() . ""
-#                . $dbconf->dbName() . ":"
-                . $dbconf->dbHost(),
-                $dbconf->dbUser(),
-                $dbconf->dbPass(), $::attr )
+our $dbconf = DbConfig->new();
+our $dbh = $dbconf->connect()
                 or die "Cannot Connect to Database $DBI::errstr\n";
 
 
@@ -326,7 +318,8 @@ sub exec_page
 	   $row_count = $sth->rows;
 	
 	   $genMarks = GenMarks_mb->new($tabMap{$tabtype},$data_refs,$row_count,$errObj);
-	   $genMarks->genPage($user_name,$sort_crit,\%tabMap);
+	   #$genMarks->genPage($user_name,$sort_crit,\%tabMap);
+	   $genMarks->genPage($user_id,$sort_crit,\%tabMap);
     }
 }
 
@@ -344,13 +337,7 @@ sub insert_mark
 	my $dateAdded = $unix_epochs * (1000 * 1000);
 
 	my $dbconf = DbConfig->new();
-	#my $local_dbh = DBI->connect( "dbi:mysql:"
-	my $local_dbh = DBI->connect( "dbi:SQLite:dbname="
-                #. $dbconf->dbName() . ":"
-                . $dbconf->dbName() . ""
-                . $dbconf->dbHost(),
-                $dbconf->dbUser(),
-                $dbconf->dbPass(), $::attr2 )
+	my $local_dbh = $dbconf->connect()
                 or die "Cannot Connect to Database $DBI::errstr\n";
 
 	my ($tbl1MaxId) = $dbh->selectrow_array("select max(BOOKMARK_ID) from WM_BOOKMARK");

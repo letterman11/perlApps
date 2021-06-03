@@ -22,7 +22,9 @@ sub new
 sub genPage
 {
    my $self = shift;
-   my $user_name = shift;
+   #my $user_name = shift;
+   my $user_id = shift;
+   my $user_name= $user_id;
    my $sort_crit = shift;
    my %tabMap =  %{shift()};
    my $tab = $self->{TAB};
@@ -34,7 +36,9 @@ sub genPage
 
    #reverse hash again ?? why perl internals ??
    %tabMap = reverse %tabMap;    
-   my $optionTops = &::gen_optionListDiv(); 
+   #my $optionTops = &::gen_optionListDiv(); 
+   my $optionTops = &::gen_optionListDiv($user_id); 
+
 
    if($sort_crit == 0)
    {
@@ -82,7 +86,7 @@ sub genPage
  <div id="header">
   <h1 class="left"> <a href="/webMarks_mb"> WEBMARKS </a></h1>
   <!-- <h3>angus</h3> -->
-  <a href="/dcoda.net"> <img class="banner_image" alt="dcoda logo" src="/dcoda.net/gen_rsrc/DCBANNER_CROP2_219_31_2.jpg" /> </a>
+  <a href="/"> <img class="banner_image" alt="dcoda logo" src="/dcoda.net/gen_rsrc/DCBANNER_CROP2_219_31_2.jpg" /> </a>
  </div>
 <div class="tab_divs" id="$tab">
   <div class="tab_header">
@@ -142,7 +146,8 @@ OUT_HTML
   <div class="delta_pass">
    <form name="deltaPass" id="delta_pass" method="POST" action="/cgi-bin/webMarks/cgi-bin/wm_app_mb.cgi?req=deltaPass">
     <ul>
-    <li onclick="logOut();"> LOGOUT $user_name </li>
+    <!-- <li onclick="logOut();"> LOGOUT $user_name </li> -->
+    <li onclick="logOut();"> LOGOUT $user_id </li>
     <li> Change Pass Word ? </li>
     <li> Enter User Name </li>
     <li> <input name="user_name" type="text" size="25"> </li>
@@ -206,7 +211,7 @@ sub genPage2
 <div id="main">
  <div id="header">
   <h1 class="left"> <a href="/webMarks"> WEBMARKS </a></h1>
-  <a href="/dcoda.net"> <img class="banner_image" alt="dcoda logo" src="/dcoda.net/gen_rsrc/DCBANNER_CROP2_219_31_2.jpg" /> </a>
+  <a href="/"> <img class="banner_image" alt="dcoda logo" src="/dcoda.net/gen_rsrc/DCBANNER_CROP2_219_31_2.jpg" /> </a>
  </div>
 OUT_HTML
 
@@ -331,6 +336,7 @@ sub genDefaultPage
 
 <title> WebMarks Application </title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=.65">
 <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
 <link rel="shortcut icon" href="/dcoda.net/gen_rsrc/dc.ico">
 <link rel="icon" href="/dcoda.net/gen_rsrc/dc.ico">
@@ -341,7 +347,7 @@ sub genDefaultPage
 <div id="main">
  <div id="header">
   <h1 class="left"> <a href="/webMarks_mb"> WEBMARKS </a></h1>
-  <a href="/dcoda.net"> <img class="banner_image" alt="dcoda logo" src="/dcoda.net/gen_rsrc/DCBANNER_CROP2_219_31_2.jpg" /> </a>
+  <a href="/"> <img class="banner_image" alt="dcoda logo" src="/dcoda.net/gen_rsrc/DCBANNER_CROP2_219_31_2.jpg" /> </a>
  </div>
  <div class="landing">
      <form name="credentials" class="credentials" method="POST" action="/cgi-bin/webMarks/cgi-bin/wm_app_mb.cgi?req=auth">
@@ -351,6 +357,9 @@ sub genDefaultPage
 	<li style="font-size:24px;"> PASSWORD: <input name="user_pass" type="password"> </li>
 	<li style="padding:10px 0px 0px 5px;font-size:12px;"> Not Registered ? 
 		<a style="text-decoration:underline" onclick="document.location = '/cgi-bin/webMarks/cgi-bin/wm_app_mb.cgi?req=reg' "> Register </a> </li>
+	        <li style="padding-left: 15px; font-size:14px;"> sample login </li>
+       		 <li style="padding-left: 15px; font-size:14px;"> boxtop / boxtop  </li>
+
 	<li style="float:right; font-size:18px; color:$colorStyle;"> $displayText </li>
 	<li style="position:absolute; top:140px; right:5px; padding-top:30px; padding-left:10px;"> <input name="submit" type="submit" value="Submit" style="font-size:10pt;"> </li>
        </ul>
@@ -399,7 +408,7 @@ sub genRegistration
 <div id="main">
  <div id="header">
   <h1 class="left"> <a href="/dcoda.net/webMarks_mb"> WEBMARKS </a></h1>
-  <a href="/dcoda.net"> <img class="banner_image" alt="dcoda logo" src="/dcoda.net/gen_rsrc/DCBANNER_CROP2_219_31_2.jpg" /> </a>
+  <a href="/"> <img class="banner_image" alt="dcoda logo" src="/dcoda.net/gen_rsrc/DCBANNER_CROP2_219_31_2.jpg" /> </a>
  </div>
  <div class="registration">
      <form name="registration"  method="POST" action="/cgi-bin/webMarks/cgi-bin/wm_app_mb.cgi?req=regAuth">
