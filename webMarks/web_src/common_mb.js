@@ -79,7 +79,7 @@ function cgi_out(tab_parm)
 	}
 
 
-	top.location = "/cgi-bin/webMarks/cgi-bin/wm_app_mb.cgi?" + tab_parm + "&sortCrit=" + sort_crit;
+	top.location = "/cgi-bin/webMarks/cgi-bin/wm_app_mb.cgi?" + tab_parm + "&sortCrit=" + sortCrit;
 }
 
 function setSearchTerms()
