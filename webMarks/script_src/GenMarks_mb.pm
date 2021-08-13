@@ -147,7 +147,7 @@ OUT_HTML
    <form name="deltaPass" id="delta_pass" method="POST" action="/cgi-bin/webMarks/cgi-bin/wm_app_mb.cgi?req=deltaPass">
     <ul>
     <!-- <li onclick="logOut();"> LOGOUT $user_name </li> -->
-    <li onclick="logOut();"> LOGOUT $user_id </li>
+    <li id="logout" onclick="logOut();"> <p> LOGOUT $user_id </p> </li>
     <li> Change Pass Word ? </li>
     <li> Enter User Name </li>
     <li> <input name="user_name" type="text" size="25"> </li>

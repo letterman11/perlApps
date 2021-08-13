@@ -353,3 +353,12 @@ form.newMark {
 	margin:0px;
 	padding:0px;
 }
+
+
+#logout {
+        font-size:18px;
+        font-weight:bold;
+        color:white;
+	width:8em;
+        background-color:black;
+}
