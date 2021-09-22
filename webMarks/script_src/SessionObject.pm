@@ -9,9 +9,9 @@ sub new
 	my $self = {};
 
 	$self->{INSTANCE} = shift;
-	$self->{SESSIONID} = shift;
-	$self->{USERID} = shift;
-	$self->{USERNAME} = shift;
+	$self->{wmSESSIONID} = shift;
+	$self->{wmUSERID} = shift;
+	$self->{wmUSERNAME} = shift;
 	$self->{DATA} = shift if @_;
 	$self->{ROWCOUNT} = shift if @_;
 	$self->{SORT} = shift if @_;
