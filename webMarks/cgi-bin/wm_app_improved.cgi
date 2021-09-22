@@ -128,7 +128,8 @@ sub main_func
 		{
 			if(not mod_passwd())
 			{
-				GenMarks->new()->genDefaultPage();
+				exec_page($wm_user_id,$wm_user_name,Error->new(112));
+				#GenMarks->new()->genDefaultPage();
 			}
 			else
 			{
