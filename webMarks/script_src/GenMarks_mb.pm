@@ -84,7 +84,7 @@ sub genPage
 <body onLoad="getSearchTerms()">
 <div id="main">
  <div id="header">
-  <h1 class="left"> <a href="/webMarks_mb"> WEBMARKS </a></h1>
+  <h1 class="left"> <a href="/webMarks"> WEBMARKS </a></h1>
   <!-- <h3>angus</h3> -->
   <a href="/"> <img class="banner_image" alt="dcoda logo" src="/dcoda.net/gen_rsrc/DCBANNER_CROP2_219_31_2.jpg" /> </a>
  </div>
@@ -346,7 +346,7 @@ sub genDefaultPage
 <body>
 <div id="main">
  <div id="header">
-  <h1 class="left"> <a href="/webMarks_mb"> WEBMARKS </a></h1>
+  <h1 class="left"> <a href="/webMarks"> WEBMARKS </a></h1>
   <a href="/"> <img class="banner_image" alt="dcoda logo" src="/dcoda.net/gen_rsrc/DCBANNER_CROP2_219_31_2.jpg" /> </a>
  </div>
  <div class="landing">
@@ -407,7 +407,7 @@ sub genRegistration
 <body>
 <div id="main">
  <div id="header">
-  <h1 class="left"> <a href="/dcoda.net/webMarks_mb"> WEBMARKS </a></h1>
+  <h1 class="left"> <a href="/webMarks"> WEBMARKS </a></h1>
   <a href="/"> <img class="banner_image" alt="dcoda logo" src="/dcoda.net/gen_rsrc/DCBANNER_CROP2_219_31_2.jpg" /> </a>
  </div>
  <div class="registration">
