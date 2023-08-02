@@ -1,9 +1,9 @@
 #!/usr/bin/perl -wT
 
 use strict;
-use lib "/home/angus/dcoda_net/private/webMarks/script_src";
-require '/home/angus/dcoda_net/cgi-bin/webMarks/cgi-bin/gen_histo_gram_multi.pl';
-require '/home/angus/dcoda_net/cgi-bin/webMarks/cgi-bin/ExecPageSQL.pl';
+use lib "/home/ubuntu/dcoda_net/private/webMarks/script_src";
+require '/home/ubuntu/dcoda_net/cgi-bin/webMarks/cgi-bin/gen_histo_gram_multi.pl';
+require '/home/ubuntu/dcoda_net/cgi-bin/webMarks/cgi-bin/ExecPageSQL.pl';
 use globals;
 use DbConfig; #improved inherited DbConfig -> subclass of DBI
 use CGI qw (:standard);

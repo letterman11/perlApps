@@ -1,8 +1,8 @@
 #!/usr/bin/perl -wT
 
 use strict;
-use lib "/home/angus/dcoda_net/private/webMarks/script_src";
-require '/home/angus/dcoda_net/cgi-bin/webMarks/cgi-bin/gen_histo_gram_multi.pl';
+use lib "/home/ubuntu/dcoda_net/private/webMarks/script_src";
+require '/home/ubuntu/dcoda_net/cgi-bin/webMarks/cgi-bin/gen_histo_gram_multi.pl';
 use globals;
 use DbConfig;
 use DBD::SQLite;

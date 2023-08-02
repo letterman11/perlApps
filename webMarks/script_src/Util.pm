@@ -11,7 +11,7 @@ use POSIX qw(strftime);
 
 #my $tmp_dir = "/services/webpages/d/c/dcoda.net/tmp";
 my $tmp_dir = "/tmp";
-our $sessionDbConf = "/home/angus/dcoda_net/lib/sessionFile.dat"; 
+our $sessionDbConf = "/home/ubuntu/dcoda_net/lib/sessionFile.dat"; 
 
 BEGIN
 {
