@@ -1,9 +1,9 @@
 #!/usr/bin/perl -wT
 
 use strict;
-#use lib "/home/angus/dcoda_net/lib";
-use lib "/home/angus/dcoda_net/private/stockApp/script_src";
-require '/home/angus/dcoda_net/cgi-bin/stockApp/cgi-bin/config.pl';
+#use lib "/home/ubuntu/dcoda_net/lib";
+use lib "/home/ubuntu/dcoda_net/private/stockApp/script_src";
+require '/home/ubuntu/dcoda_net/cgi-bin/stockApp/cgi-bin/config.pl';
 use GenError;
 use Error;
 use GenStockList;

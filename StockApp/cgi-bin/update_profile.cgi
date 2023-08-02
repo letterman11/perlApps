@@ -1,7 +1,7 @@
 #!/usr/bin/perl -wT
 
 use strict;
-use lib "/home/abrooks/www/stockApp/script_src";
+use lib "/home/ubuntu/dcoda_net/stockApp/script_src";
 use GenView;
 use GenStatus;
 use Error;
@@ -12,7 +12,7 @@ use CGI qw /:standard/;
 #use CGI::Carp qw(fatalsToBrowser);
 use CGI::Carp;
 use DBI;
-require '/home/abrooks/www/stockApp/cgi-bin/config.pl';
+require '/home/ubuntu/dcoda_net/stockApp/cgi-bin/config.pl';
 
 
 my $query = new CGI;
