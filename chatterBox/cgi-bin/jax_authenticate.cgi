@@ -2,9 +2,9 @@
 
 use strict;
 #use lib "/services/webpages/d/c/dcoda.net/private/chatterBox/script_src";
-#use lib "/home/angus/dcoda_net/lib";
-use lib "/home/angus/dcoda_net/private/chatterBox/script_src";
-require "/home/angus/dcoda_net/cgi-bin/chatterBox/cgi-bin/config.pl";
+#use lib "/home/ubuntu/dcoda_net/lib";
+use lib "/home/ubuntu/dcoda_net/private/chatterBox/script_src";
+require "/home/ubuntu/dcoda_net/cgi-bin/chatterBox/cgi-bin/config.pl";
 use Util;
 use DbConfig;
 use CGI qw /:standard/;

@@ -1,7 +1,7 @@
 #!/usr/bin/perl -wT
 
 use strict;
-use lib "/home/angus/dcoda_net/private/chatterBox/script_src";
+use lib "/home/ubuntu/dcoda_net/private/chatterBox/script_src";
 #use DbConfig;
 use DbGlob;
 use Util;
