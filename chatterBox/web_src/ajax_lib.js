@@ -36,7 +36,7 @@ HTTP.newRequest = function() {
 
 var Jax = {
 
-    pingIntervalTime: 5000,
+    pingIntervalTime: 3000,
     pingCancelID: null,
     pingURL: "/chatterBox/cgi-bin/jax_ping_msg_server.cgi",
     serverURL: "/chatterBox/cgi-bin/jax_server.cgi",

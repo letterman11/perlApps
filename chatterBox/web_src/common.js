@@ -1,7 +1,11 @@
 
 var App = {
 
-    host: "",
+//    host: "http://pyperl-bluelimit.c9users.io",
+//    host: "https://pyperl-bluelimit.c9users.io",
+//    host: "pyperl-bluelimit.c9users.io",
+	host: "",
+
 
     PANE: { 
              REGISTRATION: 0,
@@ -17,7 +21,7 @@ var App = {
         chatPane.init(); 
 
 	var roomSelected = getCookie('roomSelected');
-	var sessionID = getCookie('SessionID');
+	var sessionID = getCookie('chatSessionID');
 
         if(sessionID != null && sessionID != 'null')
         {   
@@ -31,7 +35,7 @@ var App = {
 
     suspend: function() {
 
-	var sessionID = getCookie('SessionID');
+	var sessionID = getCookie('chatSessionID');
 
         if(sessionID == null || sessionID == 'null' || sessionID == undefined || sessionID == 'undefined')
                return; 
@@ -85,7 +89,7 @@ var App = {
                 doc.getElementById('logged_on').style.display = 'block';
                 App.displayLoggedOn();
                 roomPane.loadRooms();
-		userPane.userID = getCookie('UserID');
+		userPane.userID = getCookie('chatUserID');
        }
 
 
@@ -93,11 +97,11 @@ var App = {
 
     displayLoggedOn: function() {
 
-        var userID = getCookie('UserID');
+        var userID = getCookie('chatUserID');
         var spanLoggedOn = document.getElementById('form_login');
         spanLoggedOn.innerHTML = userID + " LOGGED IN | " +
         " <a href=\"javascript:App.changePane(document,App.PANE.LOGIN)\" style=\"margin-top:10px;\" " +
-	"  onclick=\"App.logOut('UserID','SessionID','Instance','roomSelected')\" target=\"_top\" > LOG OUT </a> ";
+	"  onclick=\"App.logOut('chatUserID','chatSessionID','Instance','roomSelected')\" target=\"_top\" > LOG OUT </a> ";
     }
 
 };
@@ -209,10 +213,12 @@ var Utility = {
         var postString = "";
         var url = App.host + Jax.serverURL;
         var frmElements = sendMsg.elements;
-        var UserID = getCookie('UserID');
+        var UserID = getCookie('chatUserID');
         var roomSelected = getCookie('roomSelected');
 
         frmElements[0].value = frmElements[0].value.replace(/\n/g," ")
+//        frmElements[0].value = frmElements[0].value.replace(/\n/g," ")
+        frmElements[0].value = frmElements[0].value.replace(/"/g,"")
 
         postString  = "req=sendMsg&";
         postString += encodeURIComponent(frmElements[0].name) + "=" + encodeURIComponent(frmElements[0].value) + "&";
@@ -299,7 +305,9 @@ function createCookie(name,value,days)
                 var expires = "; expires="+date.toGMTString();
         }
         else var expires = "";
-        document.cookie = name+"="+value+expires+"; path=/";
+//	        document.cookie = name+"="+value+expires+"; path=/";
+        document.cookie = name+"="+value+expires+"; path=/chatterBox";
+//        document.cookie = name+"="+value+expires+"; path=/cgi-bin";
 }
 
 function eraseCookie(name)

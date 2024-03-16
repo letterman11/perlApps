@@ -1,9 +1,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<!-- <meta http-equiv="cache-control" content="no-cache"/> -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title> ChatterBox application </title>
-<link rel="stylesheet" href="/chatterBox/web_src/style.css" type="text/css" />
+
+<!-- <link rel="stylesheet" href="/chatterBox/web_src/style.css" type="text/css" /> -->
+<link rel="stylesheet" media="screen and (min-device-width:800px)" href="/chatterBox/web_src/style.css" type="text/css" />
+<link rel="stylesheet" media="screen and (max-device-width:600px)" href="/chatterBox/web_src/mobile.css" type="text/css" />
 <link rel="shortcut icon" href="/dcoda.net/gen_rsrc/dc.ico">
 <link rel="icon" href="/dcoda.net/gen_rsrc/dc.ico">
 
@@ -20,7 +28,8 @@
      <div id="header">
 	<div id="banner">
 	  <a href="/chatterBox"> <img id="banner_image" src="/chatterBox/gen_rsrc/CHAT_BOX_199_26.jpg">  </a> 
-	  <a href="/dcoda.net"> <img id="banner_image2" src="/chatterBox/gen_rsrc/INVERT_DCBANNER_CROP2_219_31_2.jpg">  </a> 
+	  	  <a href="/"> <img id="banner_image2" src="/chatterBox/gen_rsrc/INVERT_DCBANNER_CROP2_219_31_2.jpg">  </a> 
+	  <!--	  <a href="http://54.81.70.240:3000"> <img id="banner_image2" src="/chatterBox/gen_rsrc/INVERT_DCBANNER_CROP2_219_31_2.jpg">  </a>  -->
 	</div>
         <div id="login" style="display:block">
           <form name="frmLogin">
@@ -115,15 +124,23 @@
 
 <!--     Initial window for ChatBox application   -->
    <div class="landing_panel" id="landing_panel">
-    <div class="inner_panel">
+    <div class="inner_panel"  style="position:relative">
 	<h2> ChatBox is a demo Web 2.0 chat application that allows multiple parties to converse in the same chat room. 
 	</h2>
+	      <br>
+	       <div style="font-weight:bold; position:absolute; left:50%">
+		 <p>  Sample logins </p>
+		 <p>--------------------</p>
+		   <p> username| password </p> 
+		   <p> jackred | jackred  </p> 
+		 <p> jacktop | jacktop </p> 
+	       </div>
     </div>
    </div>
    <div style="clear:both" </div>
        <div id="footer">
 	 <hr style="height:5px; background-color:black">
-        <p class="foot"> Copyright Digital Coda LLC 2010 | All Rights Reserved | angusbrooks@gmail.com </p> 
+        <p class="foot"> Copyright Digital Coda LLC 2010-2020 | angusbrooks@gmail.com </p> 
        </div>
 <!-- end panel -->
 

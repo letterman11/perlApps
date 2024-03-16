@@ -325,6 +325,15 @@ body {
 	height:415px;
 	border:inset;
 }
+div#footer {
+	position:relative;
+	bottom:-15px;
+	left:0px;
+	width:auto;
+}
+p.foot {
+	text-align:center; 
+}
 /* ---------------------------------------------- */
 
 
