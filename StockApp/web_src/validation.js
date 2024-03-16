@@ -21,7 +21,7 @@ function goSubmit()
    if (validateFields() == true)
    {
  
-      var url = "../cgi-bin/stockReport.cgi?";
+      var url = "/cgi-bin/stockApp/cgi-bin/stockReport.cgi?";
         url += "stkName=" +escape(handle.frmStockApp.stkName.value) + "&minPrice=" +handle.frmStockApp.minPrice.value + "&maxPrice=" +handle.frmStockApp.maxPrice.value
 	  + "&minQty=" +handle.frmStockApp.minQty.value + "&maxQty=" +handle.frmStockApp.maxQty.value + "&rowsPerPage=" +handle.frmStockApp.rowsPerPage.value;
 
@@ -64,7 +64,7 @@ function help_page()
    document.getElementById('query').style.display='none';
    document.getElementById('logged_on').style.visibility='visible';
    document.getElementById('stockList_container').style.display='none';
-   document.getElementById('stockListResult').src = "/cgi-bin/populate_stocklist.cgi";
+   document.getElementById('stockListResult').src = "/cgi-bin/stockApp/cgi-bin/populate_stocklist.cgi";
    parent.top.document.frmStockApp.rowsPerPage.value = 20;
 
 
@@ -73,7 +73,7 @@ function help_page()
 function init()
 {
 
-   stock_SessionID = getCookie('stock_SessionID');
+   stock_SessionID = getCookie('stockSessionID');
 
   if ((stock_SessionID != null && stock_SessionID != 'null')) {
       document.getElementById('login').style.display='none';
@@ -82,7 +82,7 @@ function init()
       document.getElementById('query').style.display='block';
       document.getElementById('logged_on').style.visibility='visible';
       document.getElementById('stockList_container').style.display='block';
-      document.getElementById('stockListResult').src = "/cgi-bin/populate_stocklist.cgi";
+      document.getElementById('stockListResult').src = "/cgi-bin/stockApp/cgi-bin/populate_stocklist.cgi";
       parent.top.document.frmStockApp.rowsPerPage.value = 20;
 
    }  

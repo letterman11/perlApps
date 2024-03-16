@@ -21,7 +21,7 @@ function init()
       document.getElementById('query').style.display='block';
       document.getElementById('logged_on').style.visibility='visible';
       document.getElementById('stockList_container').style.display='block';
-      document.getElementById('stockListResult').src = "/stockApp/cgi-bin/populate_stocklist.cgi";
+      document.getElementById('stockListResult').src = "/cgi-bin/stockApp/cgi-bin/populate_stocklist.cgi";
       parent.top.document.frmStockApp.rowsPerPage.value = 20;
 
    }
@@ -97,7 +97,7 @@ function tblSort(sortField)
 	top.document.frmStockApp.sortCriteria.value = SORT_CRITERION;
 	
 
-	var sortUrl = "/stockApp/cgi-bin/stockReport.cgi?";	
+	var sortUrl = "/cgi-bin/stockApp/cgi-bin/stockReport.cgi?";	
         sortUrl += "stkName=" +escape(handle.frmStockApp.stkName.value) + "&minPrice=" +handle.frmStockApp.minPrice.value + "&maxPrice=" +handle.frmStockApp.maxPrice.value
        	        + "&minQty=" +handle.frmStockApp.minQty.value + "&maxQty=" +handle.frmStockApp.maxQty.value + "&rowsPerPage=" +handle.frmStockApp.rowsPerPage.value
 		+ "&sort=" +handle.frmStockApp.sortCriteria.value;
@@ -111,7 +111,7 @@ function goSubmit()
    if (validateFields() == true)
    {
 
-      var url = "/stockApp/cgi-bin/stockReport.cgi?";
+      var url = "/cgi-bin/stockApp/cgi-bin/stockReport.cgi?";
         url += "stkName=" +escape(handle.frmStockApp.stkName.value) + "&minPrice=" +handle.frmStockApp.minPrice.value + "&maxPrice=" +handle.frmStockApp.maxPrice.value
           + "&minQty=" +handle.frmStockApp.minQty.value + "&maxQty=" +handle.frmStockApp.maxQty.value + "&rowsPerPage=" +handle.frmStockApp.rowsPerPage.value;
 
@@ -127,27 +127,10 @@ function help_page()
    document.getElementById('query').style.display='none';
    document.getElementById('logged_on').style.visibility='visible';
    document.getElementById('stockList_container').style.display='none';
-   document.getElementById('stockListResult').src = "/stockApp/cgi-bin/populate_stocklist.cgi";
+   document.getElementById('stockListResult').src = "/cgi-bin/stockApp/cgi-bin/populate_stocklist.cgi";
    parent.top.document.frmStockApp.rowsPerPage.value = 20;
 
 
-}
-
-function init()
-{
-
-   stockSessionID = getCookie('stockSessionID');
-
-  if ((stockSessionID != null && stockSessionID != 'null')) {
-      document.getElementById('stockApp_description').style.display='none';
-      document.getElementById('sub_left_panel').style.display='block';
-      document.getElementById('query').style.display='block';
-      document.getElementById('logged_on').style.visibility='visible';
-      document.getElementById('stockList_container').style.display='block';
-      document.getElementById('stockListResult').src = "/stockApp/cgi-bin/populate_stocklist.cgi";
-      parent.top.document.frmStockApp.rowsPerPage.value = 20;
-
-   }
 }
 
 function logOut()
