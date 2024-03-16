@@ -82,19 +82,19 @@ if (not defined ($user_row[1])) {
 			-value=>$SessionID,
 			-expires=>undef, 
 			-domain=>$host,
-			-path=>'/');
+			-path=>'/chatterBox');
 
 	my $c2 = new CGI::Cookie(-name=>'chatUserID',
 			-value=>$user_name,
 			-expires=>undef, 
 			-domain=>$host,
-			-path=>'/');
+			-path=>'/chatterBox');
 
 	my $c3 = new CGI::Cookie(-name=>'Instance',
 			-value=>$sessionInstance,
 			-expires=>undef, 
 			-domain=>$host,
-			-path=>'/');
+			-path=>'/chatterBox');
 
 
 	Util::storeSession($sessionInstance,
