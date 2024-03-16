@@ -34,12 +34,12 @@ if (ref $initSessionObj ne 'SessionObject')
    my $c1 = new CGI::Cookie(-name=>'stockUserID',
                 -value=>'stockUser',
                 -expires=>undef,
-		-path=>'/stockApp');
+		-path=>'/');
     
    my $c2 = new CGI::Cookie(-name=>'stockSessionID',
     		-value=>$stockSessionID,
     		-expires=>undef,
-		-path=>'/stockApp');
+		-path=>'/');
     
    StockUtil::storeSession($sessionInstance,
     			$stockSessionID, 
