@@ -10,15 +10,4 @@ foreach $var (sort(keys(%ENV))) {
     $val =~ s|"|\\"|g;
     print "${var}=\"${val}\"\n";
 }
-print "=" x 100;
 
-foreach my $var (sort(keys(%INC))) {
-    $val = $INC{$var};
-    $val =~ s|\n|\\n|g;
-    $val =~ s|"|\\"|g;
-    print "${var}=\"${val}\"\n";
-}
-
-print "=" x 100;
-
-print join "<>", @INC;

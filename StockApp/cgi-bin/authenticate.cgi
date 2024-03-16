@@ -1,11 +1,15 @@
 #!/usr/bin/perl -wT
 
 use strict;
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 use lib "/home/ubuntu/dcoda_net/stockApp/script_src";
 =======
 use lib "/home/ubuntu/dcoda_net/private/stockApp/script_src";
 >>>>>>> 159a4bd (modified stockApp cgi files)
+=======
+use lib "/home/abrooks/www/stockApp/script_src";
+>>>>>>> Stashed changes
 use GenView;
 use GenHome;
 use GenLogin;
@@ -15,11 +19,15 @@ use CGI qw /:standard/;
 use CGI::Cookie;
 use CGI::Carp qw(fatalsToBrowser);
 use DBI;
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 require '/home/ubuntu/dcoda_net/stockApp/cgi-bin/config.pl';
 =======
 require '/home/ubuntu/dcoda_net/cgi-bin/stockApp/cgi-bin/config.pl';
 >>>>>>> 159a4bd (modified stockApp cgi files)
+=======
+require '/home/abrooks/www/stockApp/cgi-bin/config.pl';
+>>>>>>> Stashed changes
 
 
 

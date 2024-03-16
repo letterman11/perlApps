@@ -1,7 +1,6 @@
 #!/usr/bin/perl -wT
 
 use strict;
-use lib "/home/ubuntu/dcoda_net/private/stockApp/script_src";
 #use lib "/home/ubuntu/tools/perl5/site_perl";
 #use lib "/home/ubuntu/tools/perl5/site_perl";
 use lib "/home/ubuntu/dcoda_net/lib";
@@ -9,9 +8,9 @@ use lib "/home/ubuntu/dcoda_net/lib";
 use lib "/home/ubuntu/dcoda_net/private/stockApp/script_src";
 require '/home/ubuntu/dcoda_net/cgi-bin/stockApp/cgi-bin/config.pl';
 
+use lib "/home/abrooks/www/stockApp/script_src";
 use GenView;
 use GenHome;
-use GenError;
 use StockUtil;
 use CGI qw /:standard/;
 use CGI::Cookie;
@@ -24,8 +23,6 @@ use DbConfig;
 my $host=undef;
 
 my $initSessionObj = StockUtil::validateSession();
-my ($c1,$c2) = ();
-
 
 if (ref $initSessionObj ne 'SessionObject')
 {
@@ -34,17 +31,15 @@ if (ref $initSessionObj ne 'SessionObject')
     
    my $sessionInstance = "ses1";
 
-   $c1 = new CGI::Cookie(-name=>'stockUserID',
+   my $c1 = new CGI::Cookie(-name=>'stockUserID',
                 -value=>'stockUser',
-    		-domain=>$host,
                 -expires=>undef,
-		-path=>'/');
+		-path=>'/stockApp');
     
-   $c2 = new CGI::Cookie(-name=>'stockSessionID',
+   my $c2 = new CGI::Cookie(-name=>'stockSessionID',
     		-value=>$stockSessionID,
-    		-domain=>$host,
     		-expires=>undef,
-		-path=>'/');
+		-path=>'/stockApp');
     
    StockUtil::storeSession($sessionInstance,
     			$stockSessionID, 
@@ -54,6 +49,6 @@ if (ref $initSessionObj ne 'SessionObject')
    
 } 
 else
-{   
-   GenHome->new([$c1,$c2])->display();
+{  
+   GenHome->new()->display();
 } 

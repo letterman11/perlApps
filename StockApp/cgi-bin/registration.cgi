@@ -1,8 +1,12 @@
 #!/usr/bin/perl -wT
 
 use strict;
+<<<<<<< Updated upstream
 use lib "/home/ubuntu/dcoda_net/private/stockApp/script_src";
 #use lib "/home/abrooks/www/stockApp/script_src";
+=======
+use lib "/home/abrooks/www/stockApp/script_src";
+>>>>>>> Stashed changes
 use GenView;
 use GenStatus;
 use Error;
@@ -13,7 +17,11 @@ use CGI qw /:standard/;
 #use CGI::Carp qw(fatalsToBrowser);
 use CGI::Carp;
 use DBI;
+<<<<<<< Updated upstream
 require '/home/ubuntu/dcoda_net/cgi-bin/stockApp/cgi-bin/config.pl';
+=======
+require '/home/abrooks/www/stockApp/cgi-bin/config.pl';
+>>>>>>> Stashed changes
 
  
 my $query = new CGI;
