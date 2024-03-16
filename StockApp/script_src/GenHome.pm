@@ -26,6 +26,7 @@ sub display
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML>
   <HEAD>
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=.65">
     <TITLE>Stock Query Application </TITLE>
         <LINK href="$::URL_PATHS->{MAINSTYLE_CSS}" rel="stylesheet" type="text/css">
         <LINK href="$::URL_PATHS->{ICON}" rel="icon">

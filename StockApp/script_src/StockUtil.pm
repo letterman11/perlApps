@@ -5,6 +5,12 @@ use Error;
 use CGI::Cookie;
 use SessionObject;
 use Storable;
+#use DBI;
+use DbConfig;
+use POSIX qw(strftime);
+
+#my $tmp = '/services/webpages/d/c/dcoda.net/tmp';
+my $tmp = '/tmp';
 
 BEGIN
 {
@@ -12,7 +18,7 @@ BEGIN
 
      use vars          qw(@ISA @EXPORT @EXPORT_OK);
      @ISA            = qw(Exporter);
-     @EXPORT         = qw(&headerHttp &headerHtml &footerHtml &validateSession &storeSession &genID);
+     @EXPORT         = qw(&headerHttp &headerHtml &footerHtml &validateSession &validateSessionDB &storeSession &storeSessionDB &genID);
      @EXPORT_OK      = qw();
 }
  
@@ -90,7 +96,8 @@ sub genSessionID
 	my @id_list = qw(A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 0 1 2 3 4 5 6 7 8 9);
 	my $id;
 	for(my $i = 0; $i < 16; $i++) {
-		 $id .= $id_list[int(rand 35)] ;
+		 #$id .= $id_list[int(rand 35)] ;
+		 $id .= $id_list[int rand scalar @id_list ] ;
 	}
 	return $id;
 }
@@ -113,12 +120,17 @@ sub storeSession
 	my $sessionInstance = shift;
 	my $sessionID = shift;
 	my $userID = shift;
+
 	my $sessionObject = SessionObject->new($sessionInstance,
                                          $sessionID,
-                                         (),
+                                         $userID,
                                          ());
 
-	store $sessionObject, "/tmp/$sessionID" || die $!;
+	##################################
+        return storeSessionDB($sessionObject);
+	##################################
+
+	store $sessionObject, "$tmp/$sessionID" || die $!;
 
 }
 
@@ -134,23 +146,30 @@ sub storeSessionObject
 {
         my $sessionObject = shift;
         my $sessionFile = $sessionObject->{SESSIONID};
-	store $sessionObject, "/tmp/$sessionFile" || die $!;
+	##################################
+        return storeSessionObjectDB($sessionObject);
+	##################################
+	store $sessionObject, "$tmp/$sessionFile" || die $!;
 
 }
 
 sub validateSession
 {
+	################################
+        return validateSessionDB();
+        ################################
         my ($sessionID,$userID)  = ();
 
         my %cookies = fetch CGI::Cookie;
-        return Error->new(104) unless (defined $cookies{'stockSessionID'} && defined $cookies{'stockUserID'});
+        #return Error->new(104) unless (defined $cookies{'stockSessionID'}->value && defined $cookies{'stockUserID'}->value);
+        return Error->new(104) unless (exists ($cookies{'stockSessionID'}) && exists ($cookies{'stockUserID'}));
 
         $sessionID = $cookies{'stockSessionID'}->value;
         $userID = $cookies{'stockUserID'}->value;
 
-	return Error->new(104) 	if not -e "/tmp/$sessionID";
+	return Error->new(104) 	if not -e "$tmp/$sessionID";
 
-	my $sessionObject = retrieve("/tmp/$sessionID") || return Error->new(103);
+	my $sessionObject = retrieve("$tmp/$sessionID") || return Error->new(103);
 
         return $sessionObject;
 
@@ -224,6 +243,94 @@ sub profileFormValidation
 
 }
 
+sub storeSessionObjectDB
+{
+       my $sessionObject = shift; 
+       my ($sessInst,$sessionID,$userID,$userName);
+       my ($rowcount,$sort,$sessiondata_ref);
+       my $APPL = <DATA>;
+     
+       $sessiondata_ref =  $sessionObject->{DATA};
+       $sessionID =  $sessionObject->{SESSIONID};
+       $rowcount =  $sessionObject->{ROWCOUNT};
+       $sort =  $sessionObject->{SORT};
+
+        my $dbc = DbConfig->new("sessionFile.dat");
+        my $dbh = $dbc->connect()
+                or die "Cannot Connect to Database $DBI::errstr\n";
+	my $quoted_sessdata = "@{$sessiondata_ref}";
+        chomp($quoted_sessdata);
+        my $rc2 = $dbh->do(qq/ update session set 
+						SESSIONDATA  =   '$quoted_sessdata',
+						ROWCOUNT =    $rowcount,
+ 						SORT =      '$sort'
+					where SESSIONID =  '$sessionID' 
+				 /);
+
+        die "Trace Error alpha1 " . $dbc->dbName() ." $DBI::errstr\n" unless defined ($rc2);
+
+        print STDERR "RCODE2 => $rc2\n";
+
+        if(not defined($rc2)) {
+                print STDERR "Failed DB Operation: $DBI::errstr\n";
+                $dbh->disconnect;
+                return Error->new(150);
+        }
+
+}
+
+sub storeSessionDB 
+{
+       my ($sessInst,$sessionID,$userID,$userName); 
+       my $sessionObject = shift;
+       $sessionID = $sessionObject->{SESSIONID};
+       $userID = $sessionObject->{USERID};
+       my $APPL = <DATA>;
+        my $dbc = DbConfig->new("sessionFile.dat");
+        my $dbh = $dbc->connect()
+                or die "Cannot Connect to Database $DBI::errstr\n";
+
+
+	 my $now_str = strftime "%Y-%m-%d %H:%M:%S", localtime;
+	 #my $rc2 = $dbh->do(" insert into SESSION (APPL, SESSIONID, USERID, USERNAME, DATE_TS) values ('$APPL', '$sessionID', 'stockUser', 'stockUser', datetime('now')) " );
+        my $rc2 = $dbh->do(" insert into session (APPL, SESSIONID, USERID, USERNAME, DATE_TS) values ('$APPL', '$sessionID', 'stockUser', 'stockUser', '$now_str') " );
+        die "Trace Error alpha1 " . $dbc->dbName() ." $DBI::errstr\n" unless defined ($rc2);
+
+        print STDERR "RCODE2 => $rc2\n";
+
+        if(not defined($rc2)) {
+                print STDERR "Failed DB Operation: $DBI::errstr\n";
+                $dbh->disconnect;
+                return Error->new(150);
+        }
+
+}
+
+sub validateSessionDB {
+        my ($sessInst,$sessionID,$userID,$data,$rowcount,$sort)  = ();
+
+        my %cookies = fetch CGI::Cookie;
+        return Error->new(104) unless (defined $cookies{'stockSessionID'} && defined $cookies{'stockUserID'});
+
+        my $cookSessionID = $cookies{'stockSessionID'}->value;
+        my $cookUserID = $cookies{'stockUserID'}->value;
+        my $dbc = DbConfig->new("sessionFile.dat");
+        my $dbh = $dbc->connect()
+                or die "Cannot Connect to Database $DBI::errstr\n";
+
+
+        ($sessionID,$data,$rowcount,$sort) = $dbh->selectrow_array("select SESSIONID, SESSIONDATA,ROWCOUNT,SORT from session where SESSIONID = '$cookSessionID' and USERID = '$cookUserID'");
+        die "$DBI::errstr Error DB \n" unless defined ($sessionID);
+        return Error->new(2000) unless defined $sessionID;
+	chomp($data);
+	my @quote_data = map { sprintf "%-6s", $_ } split /\s+/, $data, -1;
+        chomp(@quote_data); 
+        require Data::Dumper;
+        print STDERR Data::Dumper::Dumper(@quote_data);
+        print STDERR "Here" x 10; 
+        return SessionObject->new($sessInst,$sessionID,[@quote_data],$rowcount,$sort);
+
+}
 
 sub slurp_file
 {
@@ -245,5 +352,8 @@ sub isset
   return ((defined $_[0]) && ($_[0] !~ /^\s*$/));
 }
 
-
 1;
+
+__DATA__
+STOCKAPP
+

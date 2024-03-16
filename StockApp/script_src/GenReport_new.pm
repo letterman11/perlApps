@@ -37,11 +37,12 @@ sub display
 	$buffer_out .= stockHeaderHtml();
 	my  ($i,$alt) = 0;
 
+	# my $lim_pr = sprintf("$%.2f",$limit_price);
 	foreach my $row (@{$self->{DATA}}) {
 		my ($ta_number, $firm_symbol, $limit_price, $order_quantity, $order_datetime) = @$row;
 		$alt =  (++$i % 2 ? 1 : 2);
 		$buffer_out .= "<tr class='tbl_num$alt'><td class='tbl_txt' width='15%'> $ta_number </td> "  
-	 	            .  "<td class='tbl_txt' width='10%'> $firm_symbol</td><td width='15%'> <span style='text-align:left'> \$</span> $limit_price </td><td width='15%'> $order_quantity</td> "
+	 	            .  "<td class='tbl_txt' width='10%'> $firm_symbol</td><td width='15%'> $limit_price </td><td width='15%'> $order_quantity</td> "
 			    .  "<td width='30%'> $order_datetime </td></tr>\n";
 
 	} 

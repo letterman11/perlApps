@@ -1,7 +1,6 @@
 package GenModel;
 
 use strict;
-use DBI;
 use GenError;
 use DbConfig;
 use Data::Dumper;
@@ -158,10 +157,9 @@ sub genSQL
 sub execIndexQuery
 {
 	my $self = shift();
-	my $dbconf = DbConfig->new();
-	my $dbh	= DBI->connect( "dbi:mysql:" . $dbconf->dbName() . ":" 
-			. $dbconf->dbHost(), $dbconf->dbUser(), $dbconf->dbPass(), $::attr )
-				or GenError->new(Error->new(102))->display() and die "Cannot Connect to Database $DBI::errstr\n";
+	my $dbc = DbConfig->new();
+	my $dbh = $dbc->connect()
+				or GenError->new(Error->new(102))->display() and die "Cannot Connect to Database $DbConfig::errstr\n";
 
 	my $sth = $dbh->prepare($self->{SQLSTR}); 
 	carp("$self->{SQLSTR} : EXECINDEXQUERY" );
@@ -180,7 +178,7 @@ sub execIndexQuery
 	$self->{ROWCOUNT} = $sth->rows;
 
 	$dbh->disconnect()
-			or warn "Disconnection failed: $DBI::errstr\n"; 
+			or warn "Disconnection failed: $DbConfig::errstr\n"; 
 
 	my @data = ();
 
@@ -194,10 +192,9 @@ sub execIndexQuery
 sub execQuery
 {
         my $self = shift();
-        my $dbconf = DbConfig->new();
-        my $dbh = DBI->connect( "dbi:mysql:" . $dbconf->dbName() . ":"
-	                . $dbconf->dbHost(), $dbconf->dbUser(), $dbconf->dbPass(), $::attr )
-       			         or  GenError->new(Error->new(102))->display() and die "Cannot Connect to Database $DBI::errstr\n";
+        my $dbc = DbConfig->new();
+        my $dbh =  $dbc->connect()
+       			         or  GenError->new(Error->new(102))->display() and die "Cannot Connect to Database $DbConfig::errstr\n";
 
         my $sth = $dbh->prepare($self->{SQLSTR});
 
@@ -208,7 +205,7 @@ sub execQuery
 	$self->{ROWCOUNT2} = $sth->rows;
 
         $dbh->disconnect()
-                or warn "Disconnection failed: $DBI::errstr\n";
+                or warn "Disconnection failed: $DbConfig::errstr\n";
 
         return $self->{DATAREF};
 }
