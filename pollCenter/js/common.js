@@ -1,7 +1,11 @@
 function init()
 {
    $.ajax({ 
-	url:'http://localhost:8080/pollCenter/cgi-bin/poll_server.cgi', 
+//	url:'https://localhost:8080/pollCenter/cgi-bin/poll_server.cgi', 
+	//url:'https://pyperl-bluelimit.c9users.io/cgi-bin/pollCenter/cgi-bin/poll_server.cgi', 
+	url:'/cgi-bin/pollCenter/cgi-bin/poll_server.cgi', 
+//	url:'pyperl-bluelimit.c9users.io/cgi-bin/pollCenter/cgi-bin/poll_server.cgi', 
+//	url:'https://pyperl-bluelimit.c9users.io:8080/pollCenter/cgi-bin/poll_server.cgi', 
         type:'post',
 	data:"refresh=true",
 	success:init_page
@@ -12,7 +16,10 @@ function init()
 function poll_graph()
 {
    $.ajax({ 
-	url:'http://localhost:8080/pollCenter/cgi-bin/graph_server.cgi', 
+	//url:'https://localhost:8080/pollCenter/cgi-bin/graph_server.cgi', 
+	//url:'https://pyperl-bluelimit.c9users.io/cgi-bin/pollCenter/cgi-bin/graph_server.cgi', 
+	url:'/cgi-bin/pollCenter/cgi-bin/graph_server.cgi', 
+//	url:'pyperl-bluelimit.c9users.io/cgi-bin/pollCenter/cgi-bin/graph_server.cgi', 
         type:'post',
 	dataType:'json',
 	data:"poll_ids=100:101:102:103",
@@ -26,11 +33,38 @@ function pop_graphs(jsonObj, textResp)
 {
    var jObj = jsonObj;
 
+
    jObj[0].options.seriesDefaults.renderer = $.jqplot.BarRenderer;
    jObj[1].options.seriesDefaults.renderer = $.jqplot.BarRenderer;
    jObj[2].options.seriesDefaults.renderer = $.jqplot.BarRenderer;
    jObj[3].options.seriesDefaults.renderer = $.jqplot.BarRenderer;
+   jObj[0].options.seriesDefaults.showLabel = true;
 
+   jObj[0].options.seriesDefaults.rendererOptions.varyBarColor = true;
+   jObj[1].options.seriesDefaults.rendererOptions.varyBarColor = true;
+   jObj[2].options.seriesDefaults.rendererOptions.varyBarColor = true;
+   jObj[3].options.seriesDefaults.rendererOptions.varyBarColor = true;
+
+
+
+
+
+   jObj[0].options.seriesDefaults.rendererOptions.barWidth = 50;
+   jObj[1].options.seriesDefaults.rendererOptions.barWidth = 60;
+//   jObj[2].options.seriesDefaults.rendererOptions.barWidth = 50;
+   jObj[3].options.seriesDefaults.rendererOptions.barWidth = 60;
+
+
+   jObj[0].options.axes.xaxis.renderer = $.jqplot.CategoryAxisRenderer;
+   jObj[1].options.axes.xaxis.renderer = $.jqplot.CategoryAxisRenderer;
+   jObj[2].options.axes.xaxis.renderer = $.jqplot.CategoryAxisRenderer;
+   jObj[3].options.axes.xaxis.renderer = $.jqplot.CategoryAxisRenderer;
+/*
+   jObj[0].options.axes.xaxis.ticks = [ "John Lay", " Bill Fred ", "Mike Goose", " Frank Dan" ];
+   jObj[1].options.axes.xaxis.ticks = [ "1 Years", "3 Years", "5 Years", "7 Years" ];
+   jObj[2].options.axes.xaxis.ticks = [ "Yes", "No"];
+   jObj[3].options.axes.xaxis.ticks = [ "Crime", "Jobs", "Education", "Taxes" ];
+*/ 
    jObj[0].options.axes.yaxis.tickOptions.formatString = "%d"; 
    jObj[1].options.axes.yaxis.tickOptions.formatString = "%d"; 
    jObj[2].options.axes.yaxis.tickOptions.formatString = "%d"; 
@@ -87,16 +121,16 @@ function validate()
        data += "&";
     });
 
-    captcha_text =  $('#submission input:text').val();
+    //captcha_text =  $('#submission input:text').val();
 
     $('#sub_box form p.error').hide()
-    if (captcha_text == "" || captcha_text == undefined)
+/*    if (captcha_text == "" || captcha_text == undefined)
     {
 	$('#sub_box form p:first').hide()
 	$('#sub_box form p.error').show()
 	flagCaptchaError=1
     }
-
+*/
     if(flagFormError) 
   	$('span.error').show();
     else
@@ -105,7 +139,7 @@ function validate()
     if(flagFormError || flagCaptchaError)
 	return 0;
 
-    data += "captcha_text=" +  encodeURIComponent($('#submission input:text').val());
+//    data += "captcha_text=" +  encodeURIComponent($('#submission input:text').val());
     
     send_data(data);
 }
@@ -125,7 +159,7 @@ function reset_button()
 
     $('#sub_box form p:first').show()
     $('.error').hide()
-    document.captcha_submit.reset();
+//    document.captcha_submit.reset();
 
 }
 
@@ -139,7 +173,7 @@ function reset()
 
     $('#sub_box form p:first').show()
     $('.error').hide()
-    document.captcha_submit.reset();
+//    document.captcha_submit.reset();
 
 }
 
@@ -154,8 +188,10 @@ function init_page(var1,var2)
 
    $('#sub_box form p:first').show()
    $('.error').hide()
-   document.captcha_submit.reset();
- 
+//   document.captcha_submit.reset();
+   poll_graph();  // ###################
+		  //## Added  recently may have to modifiy
+		 //#####################
    $('#captcha').css('background-image', url1);
    $('#captcha').css('background-position', 'center center');
 
@@ -164,8 +200,11 @@ function init_page(var1,var2)
 function send_data(sdata)
 {
    $.ajax({ 
-	url:'http://localhost:8080/pollCenter/cgi-bin/poll_server.cgi', 
-	//url:'http://192.168.0.100:8080/pollCenter/cgi-bin/poll_server.cgi', 
+	//url:'https://localhost:8080/pollCenter/cgi-bin/poll_server.cgi', 
+	url:'/cgi-bin/pollCenter/cgi-bin/poll_server.cgi', 
+//	url:'https://pyperl-bluelimit.c9users.io/cgi-bin/pollCenter/cgi-bin/poll_server.cgi', 
+//	url:'pyperl-bluelimit.c9users.io/cgi-bin/pollCenter/cgi-bin/poll_server.cgi', 
+	//url:'https://192.168.0.100:8080/pollCenter/cgi-bin/poll_server.cgi', 
         type:'post',
 	data:sdata,
 	success:done_deal,   
@@ -177,8 +216,8 @@ function send_data(sdata)
 function done_deal(var1,var2)
 {
    var url1 = "url('"+var1+"')";
-   $('#captcha').css('background-image', url1);
-   $('#captcha').css('background-position', 'center center');
+//   $('#captcha').css('background-image', url1);
+//  $('#captcha').css('background-position', 'center center');
    poll_graph();
    reset();
   
