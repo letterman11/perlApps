@@ -1,13 +1,20 @@
 #!/usr/bin/perl -wT
 
 use strict;
-use lib "/home/ubuntu/dcoda_net/stockApp/script_src";
+use lib "/home/ubuntu/dcoda_net/private/stockApp/script_src";
+#use lib "/services/webpages/d/c/dcoda.net/private/stockApp/script_src";
+#use lib "/services/webpages/d/c/dcoda.net/private/stockApp/script_src";
+use lib "/home/ubuntu/dcoda_net/lib";
+use lib "/home/ubuntu/dcoda_net/private/stockApp/script_src";
+require '/home/ubuntu/dcoda_net/cgi-bin/stockApp/cgi-bin/config.pl';
 use StockUtil;
 use GenModel;
 use GenReport;
 use CGI qw (:standard);
 #use CGI::Carp qw(fatalsToBrowser);
-require '/home/ubuntu/dcoda_net/stockApp/cgi-bin/config.pl';
+require '/home/ubuntu/dcoda_net/cgi-bin/stockApp/cgi-bin/config.pl';
+use CGI::Carp qw(fatalsToBrowser);
+#require '/services/webpages/d/c/dcoda.net/cgi-bin/stockApp/cgi-bin/config.pl';
 
 
 my $sessInst = ();
@@ -41,13 +48,10 @@ if (ref $initSessionObject eq 'SessionObject') {
        $model->execQuery();
 
        my $view = GenReport->new($model);
-
        $view->display();
-
 
 } else {
  
 	GenError->new(Error->new(104))->display();
-
 }
 
