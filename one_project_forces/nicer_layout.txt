@@ -1,54 +1,54 @@
-                 Agriculture Production-Crops|#                           1
-                                 Metal Mining|#                           1
-                             Tobacco Products|#                           1
-                 Apparel and Accessory Stores|#                           1
-                Cmp. and Cmp. Software Stores|#                           1
-                        Wood-Hshld. Furniture|#                           1
-           Abrasives, Asbestos, Misc. Minrls.|#                           1
-                 Hotels, Other Lodging Places|#                           1
-                         Educational Services|#                           1
-                              Social Services|#                           1
-                         Water Transportation|#                           1
-                         Engineering Services|#                           1
-            Operative Builders (Bldg. Const.)|##                          2
-          Heavy Construction-Not Bldg. Const.|##                          2
-                        Textile Mill Products|##                          2
-               Apparel & Other Finished Pds.,|##                          2
-             Lumber and Wood Pds. - Ex. Furn.|##                          2
-       Printing, Publishing & Allied Products|##                          2
-             Rubber & Misc. Plastics Products|##                          2
-               Motion Pic., Videotape Prodtn.|##                          2
-                      Railroad Transportation|##                          2
-                         Miscellaneous Retail|###                         3
-                           Insurance Carriers|###                         3
-                          Auto Rent and Lease|###                         3
-              Misc. Amusement & Rec. Services|###                         3
-               Misc. Manufacturing Industries|###                         3
-                                  Food Stores|####                        4
-                                Eating Places|####                        4
-                  Nondepository Credit Instn.|####                        4
-                    Food and Kindred Products|#####                       5
-                    Paper and Allied Products|#####                       5
-                                  Real Estate|#####                       5
-                 Real Estate Investment Trust|#####                       5
-                                    Hospitals|#####                       5
-           Bldg. Matl., Hardwr., Garden-Retl.|######                      6
-                 Security Brokers and Dealers|######                      6
-                     Primary Metal Industries|######                      6
-                               Communications|#######                     7
-                Electric, Gas, Sanitary Serv.|#######                     7
-                      Durable Goods-Wholesale|#######                     7
-                   Nondurable Goods-Wholesale|#######                     7
-                   General Merchandise Stores|#########                   9
-                      Depository Institutions|#########                   9
-                                  Fabr. Metal|#########                   9
-                           Petroleum Refining|##########                 10
-                  Chemicals & Allied Products|############               12
-                            Business Services|############               12
-            Electr., Oth. Elec. Eq., Ex. Cmp.|############               12
-                     Transportation Equipment|################           16
-           Meas. Instr.; Photo. Gds.; Watches|################           16
-                        Transportation by Air|#################          17
-                       Oil and Gas Extraction|##################         18
-           Indl., Comml. Machy., Computer Eq.|#####################      21
+35           Indl., Comml. Machy., Computer Eq.|#####################      21
+13                       Oil and Gas Extraction|##################         18
+45                        Transportation by Air|#################          17
+37                     Transportation Equipment|################           16
+38           Meas. Instr.; Photo. Gds.; Watches|################           16
+28                  Chemicals & Allied Products|############               12
+73                            Business Services|############               12
+36            Electr., Oth. Elec. Eq., Ex. Cmp.|############               12
+29                           Petroleum Refining|##########                 10
+53                   General Merchandise Stores|#########                   9
+60                      Depository Institutions|#########                   9
+34                                  Fabr. Metal|#########                   9
+48                               Communications|#######                     7
+49                Electric, Gas, Sanitary Serv.|#######                     7
+50                      Durable Goods-Wholesale|#######                     7
+51                   Nondurable Goods-Wholesale|#######                     7
+52           Bldg. Matl., Hardwr., Garden-Retl.|######                      6
+62                 Security Brokers and Dealers|######                      6
+33                     Primary Metal Industries|######                      6
+20                    Food and Kindred Products|#####                       5
+26                    Paper and Allied Products|#####                       5
+65                                  Real Estate|#####                       5
+67                 Real Estate Investment Trust|#####                       5
+80                                    Hospitals|#####                       5
+54                                  Food Stores|####                        4
+58                                Eating Places|####                        4
+61                  Nondepository Credit Instn.|####                        4
+59                         Miscellaneous Retail|###                         3
+63                           Insurance Carriers|###                         3
+75                          Auto Rent and Lease|###                         3
+79              Misc. Amusement & Rec. Services|###                         3
+39               Misc. Manufacturing Industries|###                         3
+15            Operative Builders (Bldg. Const.)|##                          2
+16          Heavy Construction-Not Bldg. Const.|##                          2
+22                        Textile Mill Products|##                          2
+23               Apparel & Other Finished Pds.,|##                          2
+24             Lumber and Wood Pds. - Ex. Furn.|##                          2
+27       Printing, Publishing & Allied Products|##                          2
+30             Rubber & Misc. Plastics Products|##                          2
+78               Motion Pic., Videotape Prodtn.|##                          2
+40                      Railroad Transportation|##                          2
+ 1                 Agriculture Production-Crops|#                           1
+10                                 Metal Mining|#                           1
+21                             Tobacco Products|#                           1
+56                 Apparel and Accessory Stores|#                           1
+57                Cmp. and Cmp. Software Stores|#                           1
+25                        Wood-Hshld. Furniture|#                           1
+32           Abrasives, Asbestos, Misc. Minrls.|#                           1
+70                 Hotels, Other Lodging Places|#                           1
+82                         Educational Services|#                           1
+83                              Social Services|#                           1
+44                         Water Transportation|#                           1
+87                         Engineering Services|#                           1
 Totals:  289
