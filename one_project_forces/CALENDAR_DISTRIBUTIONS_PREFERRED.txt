@@ -1,0 +1,16 @@
+[1a]Citigroup (CPRJ)			March 30, June 30, September 30 and December 30	| Large Financial Services	September 2023
+[1b]Citigroup Capital XIII (CPRN)	January 30, April 30, July 30 and October 30 	| Large Financial Services	October 2015
+[2 ]Compass Diversified (CODIPRB)	January 30, April 30, July 30 and October 30	| Middle Market Diversified	April 2028
+[3 ]Nustar Energy (NSPRC)		March 15, June 15, September 15 and December 15	| Energy & Energy Logistics	December 2022
+[4 ]Energy Transfer LP(ETPRE)								| Energy & Energy Logistics
+[5 ]Zions Bancorporation(ZIONO)		March 15, June 15, September 15, and December 15| Financial Services
+[6 ]Seapeak LLC (SEALPRB)		January 15, April 15, July 15 and October 15	| Shipping			October 2027
+[7 ]Teekay LNG Partners L.P.(SEALPRB)	January 15, April 15, July 15 and October 15	| Shipping			October 2027
+------------------------------------------------------------------------------------------------------------------------------------
+
+Nustar Energy (NSS)		January 15, April 15, July 15 and October 15		| Energy & Energy Logistics	January 15, 2018***
+Zions Bancorporation(ZIONL)	March 15, June 15, September 15, and December 15	| Financial Services		September 15, 2023***
+____________________________________________________________________________________________________________________________________
+
+*** floating rate subordinated debt
+
