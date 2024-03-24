@@ -10,8 +10,8 @@
 
 
 $::URL_PATHS =  {
-                       BANNER_IMAGE           => "/stockApp/gen_rsrc/DCQUERY2_180_31.jpg",
-                       BANNER_IMAGE2          => "/stockApp/gen_rsrc/DCBANNER_CROP2_219_31_2.jpg",
+                       BANNER_IMAGE           => "/images/DCQUERY2_180_31.jpg",
+                       BANNER_IMAGE2          => "/images/DCBANNER_CROP2_219_31_2.jpg",
                        STOCKAPP               => "/stockApp",
                        NEWSITE_HTM            => "/",
                        REGISTRATION_HTM       => "/stockApp/web_src/registration.html",
