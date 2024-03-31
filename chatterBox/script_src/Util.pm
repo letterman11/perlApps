@@ -146,10 +146,10 @@ sub validateSession
         my ($sessionID,$userID)  = ();
 
         my %cookies = fetch CGI::Cookie;
-        return Error->new(104) unless (defined $cookies{'SessionID'} && defined $cookies{'UserID'});
+        return Error->new(104) unless (defined $cookies{'chatSessionID'} && defined $cookies{'chatUserID'});
 
-        $sessionID = $cookies{'SessionID'}->value;
-        $userID = $cookies{'UserID'}->value;
+        $sessionID = $cookies{'chatSessionID'}->value;
+        $userID = $cookies{'chatUserID'}->value;
 
 	return Error->new(104) 	if not -e "/tmp/$sessionID";
 

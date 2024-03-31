@@ -119,7 +119,7 @@ sub storeSession
                                          $idVar3,
                                          ());
 
-	store $sessionObject, "tmp/$idVar1" || die $!;
+	store $sessionObject, "/tmp/$idVar1" || die $!;
 
 }
 
@@ -135,7 +135,7 @@ sub storeSessionObject
 {
         my $sessionObject = shift;
         my $sessionFile = $sessionObject->{SESSIONID};
-	store $sessionObject, "tmp/$sessionFile" || die $!;
+	store $sessionObject, "/tmp/$sessionFile" || die $!;
 
 }
 
@@ -150,9 +150,9 @@ sub validateSession
         my $sessionID = $cookies{$cookieID}->value;
         my $userID = $cookies{$cookieID2}->value;
 
-	return Error->new(104) if not -e "tmp/$sessionID";
+	return Error->new(104) if not -e "/tmp/$sessionID";
 
-	my $sessionObject = retrieve("tmp/$sessionID") || return Error->new(103);
+	my $sessionObject = retrieve("/tmp/$sessionID") || return Error->new(103);
 
         return $sessionObject;
 

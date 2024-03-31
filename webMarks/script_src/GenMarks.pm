@@ -83,7 +83,7 @@ sub genPage
  <div id="header">
   <h1 class="left"> <a href="/webMarks"> WEBMARKS </a></h1>
   <!-- <h3>angus</h3> -->
-  <a href="/dcoda.net"> <img class="banner_image" alt="dcoda logo" src="/dcoda.net/gen_rsrc/DCBANNER_CROP2_219_31_2.jpg" /> </a>
+  <a href="/"> <img class="banner_image" alt="dcoda logo" src="/images/DCBANNER_CROP2_219_31_2.jpg" /> </a>
  </div>
 <div class="tab_divs" id="$tab">
   <div class="tab_header">
@@ -203,7 +203,7 @@ sub genPage2
 <div id="main">
  <div id="header">
   <h1 class="left"> <a href="/webMarks"> WEBMARKS </a></h1>
-  <a href="/dcoda.net"> <img class="banner_image" alt="dcoda logo" src="/dcoda.net/gen_rsrc/DCBANNER_CROP2_219_31_2.jpg" /> </a>
+  <a href="/"> <img class="banner_image" alt="dcoda logo" src="/images/DCBANNER_CROP2_219_31_2.jpg" /> </a>
  </div>
 OUT_HTML
 
@@ -387,7 +387,7 @@ sub genRegistration
 <title> WebMarks Application </title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
-<link rel="shortcut icon" href="/dcoda.net/gen_rsrc/dc.ico">
+<link rel="shortcut icon" href="/images/dc.ico">
 <link rel="icon" href="/images/dc.ico">
 <link rel="stylesheet" href="/webMarks/web_src/style.css" type="text/css">
 </head>
@@ -395,7 +395,7 @@ sub genRegistration
 <body>
 <div id="main">
  <div id="header">
-  <h1 class="left"> <a href="/dcoda.net/webMarks"> WEBMARKS </a></h1>
+  <h1 class="left"> <a href="/webMarks"> WEBMARKS </a></h1>
   <a href="/"> <img class="banner_image" alt="dcoda logo" src="/images/DCBANNER_CROP2_219_31_2.jpg" /> </a>
  </div>
  <div class="registration">
