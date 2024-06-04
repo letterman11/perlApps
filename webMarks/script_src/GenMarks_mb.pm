@@ -347,7 +347,7 @@ sub genDefaultPage
 <div id="main">
  <div id="header">
   <h1 class="left"> <a href="/webMarks"> WEBMARKS </a></h1>
-  <a href="/"> <img class="banner_image" alt="dcoda logo" src="/dcoda.net/gen_rsrc/DCBANNER_CROP2_219_31_2.jpg" /> </a>
+  <a href="/"> <img class="banner_image" alt="dcoda logo" src="/images/DCBANNER_CROP2_219_31_2.jpg" /> </a>
  </div>
  <div class="landing">
      <form name="credentials" class="credentials" method="POST" action="/cgi-bin/webMarks/cgi-bin/wm_app_mb.cgi?req=auth">
