@@ -168,8 +168,10 @@ h1 a {
 	position:relative;
 	width:545px;
 	//width:300px;
-	height:65px;
+	height:95px;
 	//height:27px;
+	background-color:lightgrey;
+	border:inset;
 /*	height:10px; */
 }
 
