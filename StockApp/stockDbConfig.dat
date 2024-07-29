@@ -1,0 +1,13 @@
+#---------------------------------------------------
+# Configuration parameters for accessing database 
+#
+#
+#---------------------------------------------------
+
+
+hostname=
+user=
+password=
+database=
+
+
