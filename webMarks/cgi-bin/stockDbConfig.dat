@@ -1,0 +1,16 @@
+#---------------------------------------------------
+# Configuration parameters for accessing database 
+#
+#
+#---------------------------------------------------
+
+
+hostname=
+user=
+password=
+database=
+dbdriver=dbi:mysql
+port=3306
+
+
+
