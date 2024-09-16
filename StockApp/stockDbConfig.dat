@@ -9,8 +9,5 @@ hostname=
 user=
 password=
 database=
-dbdriver=dbi:mysql
-port=3306
-
 
 
