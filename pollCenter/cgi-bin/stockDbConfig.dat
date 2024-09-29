@@ -5,19 +5,12 @@
 #---------------------------------------------------
 
 
-hostname=192.168.1.33
-user=dococt
-password=dococt
-database=dcoda_acme
+hostname=
+user=
+password=
+database=
 dbdriver=dbi:mysql
+port=3306
 
-#hostname=192.168.0.194
-#user=abrooks
-#password=abrooks
-#database=Widgets
 
-#hostname=sqlc40c.carrierzone.com
-#user=octagonyellow
-#password=Corliss8
-#database=octagonyellow
 
