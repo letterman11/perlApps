@@ -5,6 +5,7 @@ use DBI;
 #use lib "/home/ubuntu/tools/perl5/site_perl";
 use lib "/home/ubuntu/dcoda_net/private/pollCenter/script_src";
 require '/home/ubuntu/dcoda_net/cgi-bin/pollCenter/cgi-bin/config.pl';
+use lib "/home/ubuntu/dcoda_net/lib";
 #use lib "/services/webpages/d/c/dcoda.net/private/pollCenter/script_src";
 #use DbConfig;
 use DbGlob;
