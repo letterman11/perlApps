@@ -87,7 +87,7 @@ a:link, a:visited {
 	height:50px;
 	padding:0 0 0 0;
 	border:solid #330077 1px;
-	z-index:20;
+	z-index:-20;
 }
 
 #menu .li_menu h3 {
