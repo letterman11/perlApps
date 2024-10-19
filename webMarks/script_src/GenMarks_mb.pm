@@ -86,7 +86,7 @@ sub genPage
  <div id="header">
   <h1 class="left"> <a href="/webMarks"> WEBMARKS </a></h1>
   <!-- <h3>angus</h3> -->
-  <a href="/"> <img class="banner_image" alt="dcoda logo" src="/dcoda.net/gen_rsrc/DCBANNER_CROP2_219_31_2.jpg" /> </a>
+  <a href="/"> <img class="banner_image" alt="dcoda logo" src="/images/DCBANNER_CROP2_219_31_2.jpg" /> </a>
  </div>
 <div class="tab_divs" id="$tab">
   <div class="tab_header">
@@ -211,7 +211,7 @@ sub genPage2
 <div id="main">
  <div id="header">
   <h1 class="left"> <a href="/webMarks"> WEBMARKS </a></h1>
-  <a href="/"> <img class="banner_image" alt="dcoda logo" src="/dcoda.net/gen_rsrc/DCBANNER_CROP2_219_31_2.jpg" /> </a>
+  <a href="/"> <img class="banner_image" alt="dcoda logo" src="/images/DCBANNER_CROP2_219_31_2.jpg" /> </a>
  </div>
 OUT_HTML
 
