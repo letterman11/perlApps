@@ -19,7 +19,6 @@ my $query = new CGI;
 my $dbc = DbConfig->new();
 
 my $select_sql_str = "SELECT DISTINCT stock_symbol FROM orders"; 
-#carp ("$select_sql_str");
 
 my $dbh = $dbc->connect()
 		  or GenError->new(Error->new(102))->display() and die;
