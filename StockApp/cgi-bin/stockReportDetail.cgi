@@ -4,14 +4,12 @@ use strict;
 use lib "/home/ubuntu/dcoda_net/lib";
 use lib "/home/ubuntu/dcoda_net/private/stockApp/script_src";
 require '/home/ubuntu/dcoda_net/cgi-bin/stockApp/cgi-bin/config.pl';
-use lib "/home/abrooks/www/stockApp/script_src";
 use StockUtil;
 use GenModel;
 use GenReport;
 use GenError;
 use CGI qw (:standard);
 #use CGI::Carp qw(fatalsToBrowser);
-require '/home/abrooks/www/stockApp/cgi-bin/config.pl';
 
 
 my $callObj = ();
