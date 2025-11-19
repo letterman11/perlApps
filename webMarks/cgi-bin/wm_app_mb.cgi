@@ -334,7 +334,12 @@ sub insert_mark
 
 	my $unix_epochs = time;	
 	#use antique mozilla time format (1000 * 1000) unix epoch seconds => microseconds 
-	my $dateAdded = $unix_epochs * (1000 * 1000);
+
+    #delete of mozilla unix epoch append
+	#my $dateAdded = $unix_epochs * (1000 * 1000);
+    #----------------------------------------------
+
+	my $dateAdded = $unix_epochs;
 
 	my $dbconf = DbConfig->new();
 	my $local_dbh = $dbconf->connect()

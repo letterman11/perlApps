@@ -3,54 +3,28 @@
 use strict;
 use lib "/home/ubuntu/dcoda_net/private/webMarks/script_src";
 require '/home/ubuntu/dcoda_net/cgi-bin/webMarks/cgi-bin/gen_histo_gram_multi.pl';
+require '/home/ubuntu/dcoda_net/cgi-bin/webMarks/cgi-bin/ExecPageSQL.pl';
+require '/home/ubuntu/dcoda_net/cgi-bin/webMarks/cgi-bin/SQLStrings.pl';
 use globals;
-use DbConfig;
-use DBD::SQLite;
+use DbConfig; #improved inherited DbConfig -> subclass of DBI
 use CGI qw (:standard);
 use Util;
 use Error;
 use GenMarks;
+use POSIX 'strftime';
 
-my $query = new CGI;
-
-my $exec_sql_str;
-my $executed_sql_str;
+our $query = new CGI;
+our $exec_sql_str;
+our $executed_sql_str;
 our $NO_HEADER = 0;
 
 #alias app globals
-my $DEBUG = $globals::true;
-my %tabMap = %globals::tabMap;
+our $DEBUG = $globals::true;
+our %tabMap = %globals::tabMap;
 
-########################  SQL STRINGS ####################################
-my $main_sql_str = "select b.url, a.title, a.dateAdded from WM_BOOKMARK a, WM_PLACE b where a.PLACE_ID = b.PLACE_ID and a.USER_ID = ? and  (";
-my $hist_sql_str = "select b.url, a.title, a.dateAdded from WM_BOOKMARK a, WM_PLACE b where a.PLACE_ID = b.PLACE_ID and a.USER_ID = ?  "; 
-#my $date_sql_str = "select b.url, a.title, a.dateAdded from WM_BOOKMARK a, WM_PLACE b where a.PLACE_ID = b.PLACE_ID and a.USER_ID = ?  order by a.dateAdded desc limit 100";
-my $date_sql_str = "select b.url, a.title, a.dateAdded from WM_BOOKMARK a, WM_PLACE b where a.PLACE_ID = b.PLACE_ID and a.USER_ID = ?  order by a.dateAdded ";
-
-
-my $AE_str = " a.title like 'A%' or  a.title like 'a%' or  a.title like 'B%' or  a.title like 'b%' or  a.title like 'C%' or  a.title like 'c%' or  a.title like 'D%' or  a.title like 'd%'  or  a.title like 'E%' or  a.title like 'e%'";
-my $FJ_str = " a.title like 'F%' or  a.title like 'f%'  or  a.title like 'G%' or  a.title like 'g%'  or  a.title like 'H%' or  a.title like 'h%'  or  a.title like 'I%' or  a.title like 'i%'  or  a.title like 'J%' or  a.title like 'j%'";
-my $KP_str = " a.title like 'K%' or  a.title like 'k%'  or  a.title like 'L%' or  a.title like 'l%'  or  a.title like 'M%' or  a.title like 'm%'  or  a.title like 'N%' or  a.title like 'n%'  or  a.title like 'O%' or  a.title like 'o%'or  a.title like 'P%' or  a.title like 'p%'";
-my $QU_str = " a.title like 'Q%' or  a.title like 'q%'  or  a.title like 'R%' or  a.title like 'r%'  or  a.title like 'S%' or  a.title like 's%'  or  a.title like 'T%' or  a.title like 't%'  or  a.title like 'U%' or  a.title like 'u%'";
-my $VZ_str = " a.title like 'V%' or  a.title like 'v%'  or  a.title like 'W%' or  a.title like 'w%'  or  a.title like 'X%' or  a.title like 'x%'  or  a.title like 'Y%' or  a.title like 'y%'  or  a.title like 'Z%' or  a.title like 'z%'";
-
-my $ORDER_BY_TITLE =  " ) order by a.title ";
-my $ORDER_BY_DATE =  " ) order by a.dateAdded ";
-########################  SQL STRINGS ####################################
-
-
-my $dbconf = DbConfig->new();
-#my $dbh = DBI->connect( "dbi:mysql:"
-#my $dbh = DBI->connect( "dbi:SQLite:dbname="
-#our $dbh = DBI->connect( "dbi:SQLite:dbname="
-our $dbh = DBI->connect( "dbi:SQLite:dbname="
-                . $dbconf->dbName() . ""
-#                . $dbconf->dbName() . ":"
-                . $dbconf->dbHost(),
-                $dbconf->dbUser(),
-                $dbconf->dbPass(), $::attr )
-                or die "Cannot Connect to Database $DBI::errstr\n";
-
+our $dbc = DbConfig->new();
+our $dbh = $dbc->connect()
+		or GenError->new(Error->new(102))->display() and die "Cannot Connect to Database $DbConfig::errstr\n";
 
 sub main_func
 {
@@ -136,7 +110,8 @@ sub main_func
 		{
 			if(not mod_passwd())
 			{
-				GenMarks->new()->genDefaultPage();
+				exec_page($wm_user_id,$wm_user_name,Error->new(112));
+				#GenMarks->new()->genDefaultPage();
 			}
 			else
 			{
@@ -156,179 +131,6 @@ sub main_func
 
 }
 
-sub exec_page
-{
-
-	my $user_id = shift;
-	my $user_name = shift;
-	my $errObj = shift;
-	#my $NO_HEADER = 0;
-	my $tabtype = $query->param('tab') || $tabMap{tab_DATE};
-	my $qtext = $query->param('searchbox');
-	my $qBool = $query->param('searchtype');
-#	my $sort_crit = $query->param('sortCrit')||1;
-	my $sort_crit = isset($query->param('sortCrit')) ? $query->param('sortCrit') : 1 ;
-#	my $sort_crit = $query->param('sortCrit');
-	my $qqtext = $query->param('searchbox2');
-	my $ORDER_BY_CRIT;	
-	my $sort_asc = 0;
-	my $sort_desc = 1;
-	my $sort_date_asc = 2;
-	my $sort_date_desc = 3;
-	my $storedSQLStr;
-	my $sort_ord;	
-	
-	## Correct later
-	if(ref $errObj ne 'Error') 
-	{
-		$NO_HEADER = $errObj;	
-		$errObj = undef;
-	}
-
-	if($sort_crit == 0)
-	{
-		$ORDER_BY_CRIT = $ORDER_BY_TITLE;
-		$sort_ord = ' asc ';	
-	}
-	elsif($sort_crit == 1)
-	{
-		$ORDER_BY_CRIT = $ORDER_BY_TITLE;
-		$sort_ord = ' desc ';
-	}
-	elsif($sort_crit == 2)
-	{
-		$ORDER_BY_CRIT = $ORDER_BY_DATE;
-		$sort_ord = ' asc ';
-	}
-	else
-	{
-		$ORDER_BY_CRIT = $ORDER_BY_DATE;
-		$sort_ord = ' desc ';
-	}
-#=cut
-    if(($qBool eq "COMBO") && (isset($qtext)) && (isset($qqtext)))
-    {
-	     my $qstr;
-            $qstr = " a.title like '%$qtext%'  and b.url like '%$qqtext%' ";# $sort_ord;
-
-
-        $exec_sql_str = $main_sql_str . $qstr  . $ORDER_BY_DATE .  ' desc ' ;#$sort_ord;
-        $storedSQLStr = $main_sql_str . $qstr ;
-        storeSQL($storedSQLStr);
-        $tabtype = $tabMap{tab_SRCH_TITLE};
-
-    }
-#=cut
-    #if(defined($qtext) && ($qtext !~ /^\s*$/g))
-    elsif(isset($qtext))
-    #if(isset($qtext))
-    {
-           #$ORDER_BY_CRIT ;
-        my @queri = split /\s+/, $qtext, -1;
-        my $qstr;
-        if (@queri < 2) 
-        {
-            $qstr = " a.title like '%$qtext%' ";# $sort_ord;
-            $exec_sql_str = $main_sql_str . $qstr . $ORDER_BY_DATE  .' desc '  ;# $sort_ord;
-               #$exec_sql_str = $main_sql_str . " a.title like '%$qtext%' " . $ORDER_BY_CRIT . $sort_ord;
-        } 
-        else 
-        {
-            $qstr = " a.title like '%$queri[0]%' ";
-            for (my $i = 1; $i <= $#queri; $i++) 
-            {
-                if($qBool eq "AND") 
-                {  
-                    $qstr .= " and a.title like '%$queri[$i]%' " ;
-                }
-                else   
-                { 
-                 $qstr .= " or a.title like '%$queri[$i]%' " ;
-                }
-            }
-            $exec_sql_str = $main_sql_str . $qstr  . $ORDER_BY_DATE .  ' desc ' ;#$sort_ord;
-        }
-
-        $storedSQLStr = $main_sql_str . $qstr ;
-        storeSQL($storedSQLStr);
-        $tabtype = $tabMap{tab_SRCH_TITLE};
-
-        }
-      #elsif(defined($qqtext) && ($qqtext !~ /^\s*$/g))
-      elsif(isset($qqtext))
-      {
-
-	my $qstr;
-        $qstr = " b.url like '%$qqtext%' ";# $sort_ord;
-        $exec_sql_str = $main_sql_str . $qstr . $ORDER_BY_DATE  .' desc '  ;# $sort_ord;
-
-        $storedSQLStr = $main_sql_str . $qstr ;
-        storeSQL($storedSQLStr);
-        $tabtype = $tabMap{tab_SRCH_TITLE};
-      }
-       else
-        {
-        if($tabtype eq $tabMap{tab_AE}) 
-	   {
-	      $exec_sql_str = $main_sql_str . $AE_str . $ORDER_BY_CRIT . $sort_ord;
-	   }
-	   elsif($tabtype eq $tabMap{tab_FJ})
-	   {
-	      $exec_sql_str = $main_sql_str . $FJ_str . $ORDER_BY_CRIT . $sort_ord;
-	   }
-	   elsif($tabtype eq $tabMap{tab_KP})
-	   {
-	      $exec_sql_str = $main_sql_str . $KP_str . $ORDER_BY_CRIT . $sort_ord;
-	   }
-	   elsif($tabtype eq $tabMap{tab_QU})
-        {
-	      $exec_sql_str = $main_sql_str . $QU_str . $ORDER_BY_CRIT . $sort_ord;
-        }
-        elsif($tabtype eq $tabMap{tab_VZ})
-	    {
-	      $exec_sql_str = $main_sql_str . $VZ_str . $ORDER_BY_CRIT . $sort_ord;
-	    }
-	    elsif($tabtype eq $tabMap{tab_DATE})
-	    {
-	      $date_sql_str .= $sort_ord . " limit 200 ";
-	      $exec_sql_str = $date_sql_str;
-	    }
-	    elsif($tabtype eq $tabMap{tab_SRCH_TITLE})
-        {
-           $storedSQLStr = getStoredSQL();
-	       $exec_sql_str = $storedSQLStr . $ORDER_BY_CRIT . $sort_ord;
-        }
-    }
-
-    my $executed_sql_str = ($tabtype ne $tabMap{tab_DATE}) ? $exec_sql_str : $date_sql_str;
-
-	print STDERR $executed_sql_str, "\n" if($DEBUG);
-
-    my ($sth,$row_count,$data_refs,$genMarks);
-
-    eval {
-    $sth = $dbh->prepare($executed_sql_str);
-    $sth->bind_param(1,$user_id);
-    $sth->execute();
-    };
-
-	%tabMap = reverse %tabMap;
-
-    if ($@) 
-    {
-	   $genMarks = GenMarks->new($tabMap{tabtype},undef,undef,Error->new(2000));	
-	   $genMarks->genPage($user_name,$sort_crit,\%tabMap);
-    }
-	else
-	{
-	   $data_refs = $sth->fetchall_arrayref;
-	   $row_count = $sth->rows;
-	
-	   $genMarks = GenMarks->new($tabMap{$tabtype},$data_refs,$row_count,$errObj);
-	   $genMarks->genPage($user_name,$sort_crit,\%tabMap);
-    }
-}
-
 sub insert_mark
 {
 
@@ -340,17 +142,19 @@ sub insert_mark
 
 	my $unix_epochs = time;	
 	#use antique mozilla time format (1000 * 1000) unix epoch seconds => microseconds 
-	my $dateAdded = $unix_epochs * (1000 * 1000);
 
-	my $dbconf = DbConfig->new();
-	#my $local_dbh = DBI->connect( "dbi:mysql:"
-	my $local_dbh = DBI->connect( "dbi:SQLite:dbname="
-                #. $dbconf->dbName() . ":"
-                . $dbconf->dbName() . ""
-                . $dbconf->dbHost(),
-                $dbconf->dbUser(),
-                $dbconf->dbPass(), $::attr2 )
-                or die "Cannot Connect to Database $DBI::errstr\n";
+    #delete of mozilla microsecond unix epoch
+	#my $dateAdded = $unix_epochs * (1000 * 1000);
+    #---------------------------------------------
+	my $dateAdded = $unix_epochs;
+
+	my $date_added = strftime "%Y-%m-%d %H:%M:%S", localtime($unix_epochs);
+
+    print STDERR $date_added, "\n";
+	my $dbc = DbConfig->new();
+
+	my $local_dbh = $dbc->connect()
+		or GenError->new(Error->new(102))->display() and die "Cannot Connect to Database $DbConfig::errstr\n";
 
 	my ($tbl1MaxId) = $dbh->selectrow_array("select max(BOOKMARK_ID) from WM_BOOKMARK");
 	my ($tbl2MaxId) = $dbh->selectrow_array("select max(PLACE_ID) from WM_PLACE");
@@ -373,7 +177,9 @@ sub insert_mark
 		return Error->new(150);
 	}
 
-	my $rc2 = $local_dbh->do("insert into WM_BOOKMARK (BOOKMARK_ID, USER_ID, PLACE_ID, TITLE, DATEADDED) values ($tbl1MaxId, '$user_id', $tbl2MaxId," . $local_dbh->quote($title) . ", '$dateAdded' ) " );
+	#my $rc2 = $local_dbh->do("insert into WM_BOOKMARK (BOOKMARK_ID, USER_ID, PLACE_ID, TITLE, DATEADDED) values ($tbl1MaxId, '$user_id', $tbl2MaxId," . $local_dbh->quote($title) . ", '$dateAdded' ) " );
+
+	my $rc2 = $local_dbh->do("insert into WM_BOOKMARK (BOOKMARK_ID, USER_ID, PLACE_ID, TITLE, DATEADDED, DATE_ADDED) values ($tbl1MaxId, '$user_id', $tbl2MaxId," . $local_dbh->quote($title) . ", '$dateAdded', '$date_added' ) " );
 
 	print STDERR "RCODE2 => $rc2\n" if($DEBUG);
 

@@ -264,7 +264,8 @@ sub genTabTable
    {
        ($url,$title,$added) = @$row;
 
-       $added = convertTime($added);
+       #$added = convertTime($added);
+       $added = convertTime2($added);
 
        $alt =  (++$i % 2 ? 1 : 2);   
        $row_color = "row_color" . $alt;
@@ -302,6 +303,19 @@ sub convertTime
 {
    my $microsecs_epoch = shift;
    my $unixsecs_epoch = $microsecs_epoch / (1000 * 1000);
+   strftime("%m-%d-%Y %H:%M:%S", localtime($unixsecs_epoch));
+}
+
+sub convertTime2
+{
+   my $microsecs_epoch = shift;
+
+   if ($microsecs_epoch =~ /[0-9]{15,16}/) 
+   {
+      return convertTime($microsecs_epoch);
+   }
+  
+   my $unixsecs_epoch = $microsecs_epoch; # db edit to delete microsec add
    strftime("%m-%d-%Y %H:%M:%S", localtime($unixsecs_epoch));
 }
 

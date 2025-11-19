@@ -142,7 +142,12 @@ sub insert_mark
 
 	my $unix_epochs = time;	
 	#use antique mozilla time format (1000 * 1000) unix epoch seconds => microseconds 
-	my $dateAdded = $unix_epochs * (1000 * 1000);
+
+    #delete of mozilla microsecond unix epoch
+	#my $dateAdded = $unix_epochs * (1000 * 1000);
+    #---------------------------------------------
+	my $dateAdded = $unix_epochs;
+
 	my $date_added = strftime "%Y-%m-%d %H:%M:%S", localtime($unix_epochs);
 
     print STDERR $date_added, "\n";
