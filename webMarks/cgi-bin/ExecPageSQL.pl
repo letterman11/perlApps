@@ -189,6 +189,7 @@ sub exec_page
 # Start of Execution of SQL
 #########
 
+
     print STDERR "Exec webMark SQL " . $executed_sql_str, "\n";
     eval {
     $sth = $dbh->prepare($executed_sql_str);
@@ -196,11 +197,22 @@ sub exec_page
     $sth->execute();
     };
 
+
+
 	%tabMap = reverse %tabMap;
+    
+    my $genMarks_ver;
+
+    if (exists $INC{'GenMarks_mb.pm'}) {
+         $genMarks_ver = "GenMarks_mb";
+    } else {
+         $genMarks_ver = "GenMarks";
+    }
 
     if ($@) 
     {
-	   $genMarks = GenMarks->new($tabMap{tabtype},undef,undef,Error->new(2000));	
+	   #$genMarks = GenMarks->new($tabMap{tabtype},undef,undef,Error->new(2000));	
+	   $genMarks = $genMarks_ver->new($tabMap{tabtype},undef,undef,Error->new(2000));	
 	   #$genMarks->genPage($user_name,$sort_crit,\%tabMap);
 	   $genMarks->genPage($user_id,$sort_crit,\%tabMap);
     }
@@ -209,7 +221,8 @@ sub exec_page
 	   $data_refs = $sth->fetchall_arrayref;
 	   $row_count = $sth->rows;
 	
-	   $genMarks = GenMarks->new($tabMap{$tabtype},$data_refs,$row_count,$errObj);
+	   #$genMarks = GenMarks->new($tabMap{$tabtype},$data_refs,$row_count,$errObj);
+	   $genMarks = $genMarks_ver->new($tabMap{$tabtype},$data_refs,$row_count,$errObj);
 	   #$genMarks->genPage($user_name,$sort_crit,\%tabMap);
 	   $genMarks->genPage($user_id,$sort_crit,\%tabMap);
     }
