@@ -3,7 +3,7 @@
 use dcoda_acme;
 
 CREATE TABLE IF NOT EXISTS `WM_PLACE` (
-  `PLACE_ID` mediumint(8) unsigned NOT NULL,
+  `PLACE_ID` INTEGER NOT NULL AUTO_INCREMENT,
   `URL` varchar(255) DEFAULT NULL,
   `TYPE` tinyint(3) unsigned DEFAULT NULL,
   `TITLE` varchar(255) DEFAULT NULL,
@@ -12,5 +12,5 @@ CREATE TABLE IF NOT EXISTS `WM_PLACE` (
   `FREQUENCY` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `LAST_VISIT_DATE` tinyint(3) unsigned DEFAULT NULL,
   PRIMARY KEY (`PLACE_ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+);
 
