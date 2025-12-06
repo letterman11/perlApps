@@ -211,6 +211,20 @@ sub handle_password_change {
     }
 }
 
+sub handle_logout {
+    my $session = validateSession($query);
+    my $wm_user_id = $session->{wmUSERID};
+    my $wm_user_name = $session->{wmUSERNAME};
+
+    if (defined($wm_user_id)) {
+        delete_session();
+    }
+    else
+    {
+        GenMarks->new()->genDefaultPage();
+    }
+}
+
 #==============================================================================
 # AUTHENTICATION FUNCTIONS
 #==============================================================================
@@ -239,30 +253,15 @@ sub pre_auth {
     return ($user_row[0], $user_row[1], $usr_pass);
 }
 
-sub handle_logout {
-    my $session = validateSession($query);
-    my $wm_user_id = $session->{wmUSERID};
-    my $wm_user_name = $session->{wmUSERNAME};
-
-    if (defined($wm_user_id)) {
-        delete_session($session);
-    }
-    else
-    {
-        GenMarks->new()->genDefaultPage();
-    }
-}
 
 sub delete_session {
     my $host = undef;
-    my $session = shift;
-    my ($sessionID,$user_name,$user_id) =
-                ($session->{wmSESSIONID},$session->{wmUSERNAME},$session->{wmUSERID});
 
+    #for the deletion of httponly cookies
     my @cookies = (
         CGI::Cookie->new(
             -name => 'wmSessionID',
-            -value => $sessionID,
+            -value => '',
             -expires => '-1d',
             -domain => $host,
             -path => '/',
@@ -270,7 +269,7 @@ sub delete_session {
         ),
         CGI::Cookie->new(
             -name => 'wmUserID',
-            -value => $user_id,
+            -value => '',
             -expires => '-1d',
             -domain => $host,
             -path => '/',
@@ -278,7 +277,7 @@ sub delete_session {
         ),
         CGI::Cookie->new(
             -name => 'wmUserName',
-            -value => $user_name,
+            -value => '',
             -expires => '-1d',
             -domain => $host,
             -path => '/',
@@ -422,17 +421,6 @@ sub insert_mark {
         # Begin transaction
         $dbh->begin_work() or die "Cannot begin transaction: " . $dbh->errstr;
         
-=cut
-        # Get next IDs using COALESCE for safety
-        my ($bookmark_id) = $dbh->selectrow_array(
-            "SELECT COALESCE(MAX(BOOKMARK_ID), 0) + 1 FROM WM_BOOKMARK"
-        );
-        my ($place_id) = $dbh->selectrow_array(
-            "SELECT COALESCE(MAX(PLACE_ID), 0) + 1 FROM WM_PLACE"
-        );
-        
-        print STDERR "Next IDs - Bookmark: $bookmark_id, Place: $place_id\n" if $DEBUG;
-=cut        
         # Check for duplicate URL using parameterized query
         my $dup_check = "SELECT b.url FROM WM_BOOKMARK a 
                          JOIN WM_PLACE b ON a.PLACE_ID = b.PLACE_ID 

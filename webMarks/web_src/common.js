@@ -107,11 +107,12 @@ function logOut()
 {
 	eraseCookie("wmSessionID");
 	eraseCookie("wmUserID");
+	eraseCookie("wmUserName");
 	eraseCookie("Counter");
 	eraseCookie("dt_cnter");
 	eraseCookie("tab_state");
 	eraseCookie("searchTerms");
 	eraseCookie("search_submission");
 	
-	top.location = "/cgi-bin/webMarks/cgi-bin/wm_app.cgi";
+	top.location = "/cgi-bin/webMarks/cgi-bin/wm_app.cgi?req=logOut";
 }
