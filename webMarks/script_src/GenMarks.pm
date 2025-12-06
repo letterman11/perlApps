@@ -372,7 +372,8 @@ sub genDefaultPage
 </html>
 
 OUT_HTML
-    print ::header;
+   print ::header unless $::NO_HEADER == 1;
+   # print ::header;
     print $pageOut;
 
 }
