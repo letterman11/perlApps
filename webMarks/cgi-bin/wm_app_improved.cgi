@@ -1,16 +1,23 @@
 #!/usr/bin/perl -wT
-#script: wm_app_improved.cgi -- 
-#bookmarking application application
-#author: angus brooks -- refactored cleaned 
 
 use strict;
 use warnings;
-use lib "/home/angus/dcoda_net/private/webMarks/script_src";
+
+use FindBin qw($Bin);
+our $untainted_bin;
+
+BEGIN {
+    # Extract the trusted part of $Bin using a regular expression
+    # This assumes $Bin contains a valid path and removes any potentially malicious characters.
+    ($untainted_bin) = $Bin =~ /^(.+)$/; 
+}
+
+use lib "$untainted_bin/../../../private/webMarks/script_src";
 
 # Explicitly require external files - these provide functions we'll call
-require '/home/angus/dcoda_net/cgi-bin/webMarks/cgi-bin/gen_histo_gram_multi.pl';
-require '/home/angus/dcoda_net/cgi-bin/webMarks/cgi-bin/ExecPageSQL.pl';
-require '/home/angus/dcoda_net/cgi-bin/webMarks/cgi-bin/SQLStrings.pl';
+require "$untainted_bin/gen_histo_gram_multi.pl";
+require "$untainted_bin/ExecPageSQL.pl";
+require "$untainted_bin/SQLStrings.pl";
 
 # Core modules
 use CGI qw(:standard);
@@ -72,6 +79,7 @@ my %DISPATCH_TABLE = (
     'search'    => \&handle_search,
     'newMark'   => \&handle_new_mark,
     'deltaPass' => \&handle_password_change,
+    'logOut'    => \&handle_logout,
 );
 
 #==============================================================================
@@ -229,6 +237,85 @@ sub pre_auth {
         ($user_row[1] // 'unknown'), " #######\n" if $DEBUG;
     
     return ($user_row[0], $user_row[1], $usr_pass);
+}
+
+sub handle_logout {
+    my $session = validateSession($query);
+    my $wm_user_id = $session->{wmUSERID};
+    my $wm_user_name = $session->{wmUSERNAME};
+
+    if (defined($wm_user_id)) {
+        delete_session($session);
+    }
+    else
+    {
+        GenMarks->new()->genDefaultPage();
+    }
+}
+
+sub delete_session {
+    my $host = undef;
+    my $session = shift;
+    my ($sessionID,$user_name,$user_id) =
+                ($session->{wmSESSIONID},$session->{wmUSERNAME},$session->{wmUSERID});
+
+    my @cookies = (
+        CGI::Cookie->new(
+            -name => 'wmSessionID',
+            -value => $sessionID,
+            -expires => '-1d',
+            -domain => $host,
+            -path => '/',
+            -httponly => 1,
+        ),
+        CGI::Cookie->new(
+            -name => 'wmUserID',
+            -value => $user_id,
+            -expires => '-1d',
+            -domain => $host,
+            -path => '/',
+            -httponly => 1,
+        ),
+        CGI::Cookie->new(
+            -name => 'wmUserName',
+            -value => $user_name,
+            -expires => '-1d',
+            -domain => $host,
+            -path => '/',
+            -httponly => 1,
+        ),
+        CGI::Cookie->new(
+            -name => 'Counter',
+            -value => 0,
+            -expires => '-1d',
+            -domain => $host,
+            -path => '/',
+        ),
+        CGI::Cookie->new(
+            -name => 'tab_state',
+            -value => 0,
+            -expires => '-1d',
+            -domain => $host,
+            -path => '/',
+        ),
+        CGI::Cookie->new(
+            -name => 'dt_cnter',
+            -value => 0,
+            -expires => '-1d',
+            -domain => $host,
+            -path => '/',
+        ),
+    );
+
+    # Send HTTP header with cookies
+    print $query->header(
+        -status => 200,
+        -cookie => \@cookies,
+    );
+
+    $NO_HEADER = 1;
+    GenMarks->new()->genDefaultPage();
+
 }
 
 sub authorize {
