@@ -6,12 +6,22 @@
 
 use strict;
 use warnings;
-use lib "/home/ubuntu/dcoda_net/private/webMarks/script_src";
+
+use FindBin qw($Bin);
+our $untainted_bin;
+
+BEGIN {
+    # Extract the trusted part of $Bin using a regular expression
+    # This assumes $Bin contains a valid path and removes any potentially malicious characters.
+    ($untainted_bin) = $Bin =~ /^(.+)$/; 
+}
+
+use lib "$untainted_bin/../../../private/webMarks/script_src";
 
 # Explicitly require external files - these provide functions we'll call
-require '/home/ubuntu/dcoda_net/cgi-bin/webMarks/cgi-bin/gen_histo_gram_multi.pl';
-require '/home/ubuntu/dcoda_net/cgi-bin/webMarks/cgi-bin/ExecPageSQL.pl';
-require '/home/ubuntu/dcoda_net/cgi-bin/webMarks/cgi-bin/SQLStrings.pl';
+require "$untainted_bin/gen_histo_gram_multi.pl";
+require "$untainted_bin/ExecPageSQL.pl";
+require "$untainted_bin/SQLStrings.pl";
 
 # Core modules
 use CGI qw(:standard);
@@ -331,17 +341,6 @@ sub insert_mark {
         # Begin transaction
         $dbh->begin_work() or die "Cannot begin transaction: " . $dbh->errstr;
 
-=cut        
-        # Get next IDs using COALESCE for safety
-        my ($bookmark_id) = $dbh->selectrow_array(
-            "SELECT COALESCE(MAX(BOOKMARK_ID), 0) + 1 FROM WM_BOOKMARK"
-        );
-        my ($place_id) = $dbh->selectrow_array(
-            "SELECT COALESCE(MAX(PLACE_ID), 0) + 1 FROM WM_PLACE"
-        );
-        
-        print STDERR "Next IDs - Bookmark: $bookmark_id, Place: $place_id\n" if $DEBUG;
-=cut        
         # Check for duplicate URL using parameterized query
         my $dup_check = "SELECT b.url FROM WM_BOOKMARK a 
                          JOIN WM_PLACE b ON a.PLACE_ID = b.PLACE_ID 
