@@ -363,3 +363,38 @@ form.newMark {
         background-color:black;
         //background-color:red;
 }
+
+.updateLayer {
+  display:none;
+ // background-color:transparent;
+  background-color:lightblue;
+  width:600px;
+  height:auto;
+  top:200px; 
+  left:200px;
+  z-index:100;
+  border:outset;
+  position:absolute;
+}
+
+.updateLayer h1 a:hover {
+  color:green;
+
+}
+
+.delLayer {
+  display:none;
+  background-color:orange;
+  width:300px;
+  height:auto;
+  top:100px; 
+  left:200px;
+  z-index:100;
+  border:outset;
+  position:absolute;
+}
+
+.delLayer h1 a:hover {
+  color:green;
+}
+
