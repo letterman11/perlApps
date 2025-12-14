@@ -27,6 +27,7 @@ require "$untainted_bin/SQLStrings.pl";
 use CGI qw(:standard);
 use CGI::Carp qw(fatalsToBrowser);
 use DBI;
+use POSIX 'strftime';
 
 # Local modules
 use globals;
@@ -79,6 +80,7 @@ my %DISPATCH_TABLE = (
     'search'    => \&handle_search,
     'newMark'   => \&handle_new_mark,
     'deltaPass' => \&handle_password_change,
+    'logOut'    => \&handle_logout,
 );
 
 #==============================================================================
@@ -210,6 +212,20 @@ sub handle_password_change {
     }
 }
 
+sub handle_logout {
+    my $session = validateSession($query);
+    my $wm_user_id = $session->{wmUSERID};
+    my $wm_user_name = $session->{wmUSERNAME};
+
+    if (defined($wm_user_id)) {
+        delete_session();
+    }
+    else
+    {
+        GenMarks->new()->genDefaultPage();
+    }
+}
+
 #==============================================================================
 # AUTHENTICATION FUNCTIONS
 #==============================================================================
@@ -237,6 +253,70 @@ sub pre_auth {
     
     return ($user_row[0], $user_row[1], $usr_pass);
 }
+
+sub delete_session {
+    my $host = undef;
+
+    #for the deletion of httponly cookies
+    my @cookies = (
+        CGI::Cookie->new(
+            -name => 'wmSessionID',
+            -value => '',
+            -expires => '-1d',
+            -domain => $host,
+            -path => '/',
+            -httponly => 1,
+        ),
+        CGI::Cookie->new(
+            -name => 'wmUserID',
+            -value => '',
+            -expires => '-1d',
+            -domain => $host,
+            -path => '/',
+            -httponly => 1,
+        ),
+        CGI::Cookie->new(
+            -name => 'wmUserName',
+            -value => '',
+            -expires => '-1d',
+            -domain => $host,
+            -path => '/',
+            -httponly => 1,
+        ),
+        CGI::Cookie->new(
+            -name => 'Counter',
+            -value => 0,
+            -expires => '-1d',
+            -domain => $host,
+            -path => '/',
+        ),
+        CGI::Cookie->new(
+            -name => 'tab_state',
+            -value => 0,
+            -expires => '-1d',
+            -domain => $host,
+            -path => '/',
+        ),
+        CGI::Cookie->new(
+            -name => 'dt_cnter',
+            -value => 0,
+            -expires => '-1d',
+            -domain => $host,
+            -path => '/',
+        ),
+    );
+
+    # Send HTTP header with cookies
+    print $query->header(
+        -status => 200,
+        -cookie => \@cookies,
+    );
+
+    $NO_HEADER = 1;
+    GenMarks->new()->genDefaultPage();
+
+}
+
 
 sub authorize {
     my ($user_id, $user_name) = @_;
@@ -332,6 +412,7 @@ sub insert_mark {
     
     my $unix_epochs = time;
     my $dateAdded = $unix_epochs;
+    my $date_added = strftime "%Y-%m-%d %H:%M:%S", localtime($unix_epochs);
     
     print STDERR "Inserting bookmark - Timestamp: $dateAdded\n" if $DEBUG;
     
@@ -359,9 +440,9 @@ sub insert_mark {
         my $place_id = $dbh->last_insert_id; 
         
         # Insert into WM_BOOKMARK
-        my $bookmark_sql = "INSERT INTO WM_BOOKMARK (USER_ID, PLACE_ID, TITLE, DATEADDED) 
+        my $bookmark_sql = "INSERT INTO WM_BOOKMARK (USER_ID, PLACE_ID, TITLE, DATEADDED, DATE_ADDED) 
                             VALUES (?, ?, ?, ?)";
-        $dbh->do($bookmark_sql, undef, $user_id, $place_id, $title, $dateAdded);
+        $dbh->do($bookmark_sql, undef, $user_id, $place_id, $title, $dateAdded, $date_added);
         
         
         # Commit transaction
