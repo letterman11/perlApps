@@ -441,7 +441,7 @@ sub insert_mark {
         
         # Insert into WM_BOOKMARK
         my $bookmark_sql = "INSERT INTO WM_BOOKMARK (USER_ID, PLACE_ID, TITLE, DATEADDED, DATE_ADDED) 
-                            VALUES (?, ?, ?, ?)";
+                            VALUES (?, ?, ?, ?, ?)";
         $dbh->do($bookmark_sql, undef, $user_id, $place_id, $title, $dateAdded, $date_added);
         
         
