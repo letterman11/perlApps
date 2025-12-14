@@ -113,5 +113,6 @@ function logOut()
 	eraseCookie("searchTerms");
 	eraseCookie("search_submission");
 	
-	top.location = "/cgi-bin/webMarks/cgi-bin/wm_app_mb.cgi";
+	//top.location = "/cgi-bin/webMarks/cgi-bin/wm_app_mb.cgi";
+	top.location = "/cgi-bin/webMarks/cgi-bin/wm_app_mb.cgi?req=logOut";
 }
