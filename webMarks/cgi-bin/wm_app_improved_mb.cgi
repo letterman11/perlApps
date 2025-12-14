@@ -222,7 +222,7 @@ sub handle_logout {
     }
     else
     {
-        GenMarks->new()->genDefaultPage();
+        GenMarks_mb->new()->genDefaultPage();
     }
 }
 
@@ -313,7 +313,7 @@ sub delete_session {
     );
 
     $NO_HEADER = 1;
-    GenMarks->new()->genDefaultPage();
+    GenMarks_mb->new()->genDefaultPage();
 
 }
 
