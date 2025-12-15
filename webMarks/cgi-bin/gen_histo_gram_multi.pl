@@ -106,7 +106,8 @@ sub gen_optionListDiv
    										} @H[45..59];
 
    my $out_hist_opts = <<"OPTION_TABLE";
-       <div style="display:inline-block" id="optionDiv">
+     <!--  <div style="display:inline-block" id="optionDiv"> -->
+       <div style="display:block" id="optionDiv">
        <form>
       <select  onchange="topOpToSearch(this.options[this.options.selectedIndex].text);" id="topOptionID" name="topOption">
   <!--       <select  onblur="topOpToSearch(this.options[this.options.selectedIndex].text);" id="topOptionID" name="topOption"> -->
