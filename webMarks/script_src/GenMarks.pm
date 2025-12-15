@@ -78,7 +78,7 @@ sub genPage
 <script type="text/javascript" src="/webMarks/web_src/common.js"> </script>
 </head>
 
-<body onLoad="getSearchTerms()">
+<body onLoad="getSearchTerms();init()">
 <div id="main">
  <div id="header">
   <h1 class="left"> <a href="/webMarks"> WEBMARKS </a></h1>
@@ -104,6 +104,26 @@ OUT_HTML
    $pageOut .= <<"OUT_HTML2";
    </div>
 
+   <div class="updateLayer" id="updateL">
+     <!--  <h1> <a href="javascript:closeLayer('updateL')" > update </a> <a href="javascript:void 0" onclick= "document.getElementById('updateL').style.display='none'"> close </a></h1>  -->
+       <h1> <a href="javascript:closeLayerUpdate('updateL', 'YES')" > update </a> <a href="javascript:closeLayerUpdate('updateL')"> close </a></h1>
+       <form name="formUpdate" id="formUpdate" method="POST" action="/cgi-bin/webMarks/cgi-bin/wm_app.cgi?req=updateMark">
+        <input type="text" name="title_update" id="title_update" size="70">
+        <!--<input type="text" rows="3" name="url_update" id="url_update" size="150"> -->
+        <textarea rows="3" name="url_update" id="url_update" cols="70">
+        </textarea>
+        <input type="hidden" name="bk_id" id="bk_id_update" size="15">
+       </form>
+   </div>
+
+   <div class="delLayer" id="delL" name="delL">
+       <h1> delete ? <a href="javascript:closeLayerDel('delL')" > NO </a>  <a href="javascript:closeLayerDel('delL','YES')"> YES </a> </h1>
+       <form name="formDelete" id="formDelete" method="POST" action="/cgi-bin/webMarks/cgi-bin/wm_app.cgi?req=deleteMark">
+        <input type="hidden" name="bk_id" id="bk_id_del" size="15">
+       </form>
+       <h2><p id="spDel" name="spDel"> LLC  </p> </h2>
+   </div>
+
    <script language="Javascript" type="text/javascript">
     if (window.screen.width <= 640) {
        document.write( ' <div>  <span width="125px" style="font-size:13pt; font-weight:bold" id="searchTerms">  </span>  </div> ');
@@ -114,14 +134,24 @@ OUT_HTML
    <div class="search_div">
      <form  name="search_form" class="search_form" method="POST" action="/cgi-bin/webMarks/cgi-bin/wm_app.cgi?req=search">
        <ul>
-<li> Enter Search Term(s)  </li>
-	<!-- <li style="padding-left:3px;"> OR <input name="searchtype" checked="true" type="radio"  value="OR">  AND <input name="searchtype" type="radio"  value="AND"> <input id="searchBx" name="searchbox" type="text" size="25"> title  <input id="searchBx2" name="searchbox2" type="text" size="25"> url  </li> -->
-<!--	<li style="padding-left:3px;"> OR <input name="searchtype" checked="true" type="radio"  value="OR">  AND <input name="searchtype" type="radio"  value="AND"> </li> -->
- 	 <li style="padding-left:3px;">  OR <input name="searchtype" type="radio"  value="OR"> AND <input name="searchtype" checked="true" type="radio"  value="AND"> COMBO <input name="searchtype" type="radio" value="COMBO"> </li>
-    	<li style="position:absolute; top:20px; right:5px;"> <input onclick="setSearchTerms();" name="submit" type="submit" value="Search"> </li> 
-       $optionTops
-<li style="padding-left:3px; width:100%"> title <input id="searchBx" name="searchbox" type="text" size="25"> url <input id="searchBx2" name="searchbox2" type="text" size="25">  </li> 
+
+            <li> Enter Search Term(s)  </li>
+
+            <li style="display:inline; padding-left:3px;">  OR <input name="searchtype" type="radio"  value="OR"> AND 
+                <input name="searchtype" checked="true" type="radio"  value="AND"> COMBO <input name="searchtype" type="radio" value="COMBO"> 
+            </li>
+
+            <li id="selUpdates" style="display:inline-block; padding:1px; border: thin grey dashed; background-color:azure;">
+              <p onClick="modCheck(this);" style="display:inline"> <input name="modlink" type="radio" value="UPD"> UPDATE</p>
+              <p  onClick="modCheck(this);" style="display:inline"> <input  name="modlink" type="radio" value="DEL">DEL </p>
+            </li>
+
+            <li style="position:absolute; top:20px; right:5px;"> <input onclick="setSearchTerms();" name="submit" type="submit" value="Search"> </li> 
+            $optionTops
+            <li style="padding-left:3px; width:100%"> title <input id="searchBx" name="searchbox" type="text" size="25"> url <input id="searchBx2" name="searchbox2" type="text" size="25">  </li> 
+
        </ul>
+
      </form>
    </div>
   <div class="new_mark">
@@ -214,9 +244,10 @@ sub genTabTable
 {
    my $self = shift;
    my $sort_crit = shift;
-   my ($url,$title,$added) = (0,1,2);
+   my ($url,$title,$added,$bk_id) = (0,1,2,3);
    my $tbl;
    my $tbl_row;
+   my $tbl_row_header;
    my $row_color;
    my $i;
    my $alt;
@@ -239,7 +270,7 @@ sub genTabTable
    }
 
 
-   $tbl .= "<table class=\"tab_table\">\n"
+   $tbl .= "<table id=\"tab_table\" class=\"tab_table\">\n"
    	. "<col width=\"50%\">\n"
    	. "<col width=\"35%\">\n"
    	. "<col width=\"auto\">\n"
@@ -254,18 +285,24 @@ sub genTabTable
   ## POTENTIAL ERROR SECTION ##
    for my $row (@{$self->{DATAREFS}}) 
    {
-       ($url,$title,$added) = @$row;
+       ($url,$title,$added,$bk_id) = @$row;
 
        #$added = convertTime($added);
        $added = convertTime2($added);
 
        $alt =  (++$i % 2 ? 1 : 2);   
+
        $row_color = "row_color" . $alt;
-       $tbl_row .= "<tr class=\"$row_color\">" 
-		     .	" <td class=\"title_cell\"> <a href=\"$url\" target=\"_blank\">  $title </a> </td>"
-		     .	" <td class=\"url_cell\">  $url </td>"
-		     .	" <td class=\"date_cell\">  $added </td>"
-		     .  " </tr> \n";
+
+       $tbl_row_header = " <th hidden>  $bk_id  </th> "; 
+
+       $tbl_row .=  qq#<tr class="$row_color"> 
+                  $tbl_row_header 
+		     	 <td class="title_cell"> <a href="$url" target="_blank">  $title </a> </td>
+		     	 <td class="url_cell">  $url </td>
+		     	 <td class="date_cell">  $added </td>
+		        </tr> \n
+                #;
    } 
 
    $tbl .= $tbl_row if(defined($tbl_row));
