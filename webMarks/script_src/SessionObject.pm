@@ -12,7 +12,7 @@ sub new
 	$self->{wmSESSIONID} = shift;
 	$self->{wmUSERID} = shift;
 	$self->{wmUSERNAME} = shift;
-	$self->{DATA} = shift if @_;
+	$self->{DATA} = $self->{SESSIONDATA} = shift if @_;
 	$self->{ROWCOUNT} = shift if @_;
 	$self->{SORT} = shift if @_;
 	bless $self, $class;	
