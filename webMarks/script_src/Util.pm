@@ -318,7 +318,9 @@ sub storeSessionObjectDB
 {
        my $sessionObject = shift;
        my $storedSQL  = $sessionObject->{'SESSIONDATA'};
-       #print $storedSQL, "\n";
+       print STDERR  "############# UTIL  storeObjectsb #####\n";
+       print STDERR $storedSQL, "\n";
+       print STDERR  "############# UTIL  storeObjectsb #####\n";
 
        my $sessID  = $sessionObject->{wmSESSIONID};
 	my $dbconf = DbConfig->new($sessionDbConf);
@@ -362,7 +364,18 @@ sub validateSessionDB {
         die "$DBI::errstr Error DB \n" unless defined ($sessionID);
         return Error->new(2000) unless defined $sessionID;
 
-        return SessionObject->new($sessInst,$sessionID,$cookUserID,$cookUserID,$storedSQL);
+#        return SessionObject->new($sessInst,$sessionID,$cookUserID,$cookUserID,$storedSQL);
+
+        my $sessObj =  SessionObject->new();
+
+        $sessObj->{INSTANCE} = ();
+        $sessObj->{wmSESSIONID} = $sessionID;
+        $sessObj->{wmUSERID} = $cookUserID;
+        $sessObj->{wmUSERNAME} = $cookUserID;
+        $sessObj->{SESSIONDATA} = $storedSQL;
+
+        return $sessObj;
+
         
 }
 
