@@ -466,7 +466,8 @@ sub insert_mark {
 
         my $place_sql = "INSERT INTO WM_PLACE (URL, TITLE) VALUES (?, ?)";
 
-        $dbh->do($place_sql, undef, $url, $title);
+        #$dbh->do($place_sql, undef, $url, $title);
+        $dbh->do($place_sql, undef, $url, $dbh->quote($title));
 
         my $place_id = $dbh->last_insert_id;
         
@@ -474,7 +475,8 @@ sub insert_mark {
         # Insert into WM_BOOKMARK with both date formats
         my $bookmark_sql = "INSERT INTO WM_BOOKMARK (USER_ID, PLACE_ID, TITLE, DATEADDED, DATE_ADDED) 
                             VALUES (?, ?, ?, ?, ?)";
-        $dbh->do($bookmark_sql, undef, $user_id, $place_id, $title, $dateAdded, $date_added);
+        #$dbh->do($bookmark_sql, undef, $user_id, $place_id, $title, $dateAdded, $date_added);
+        $dbh->do($bookmark_sql, undef, $user_id, $place_id, $dbh->quote($title), $dateAdded, $date_added);
         
         
         
@@ -486,7 +488,7 @@ sub insert_mark {
     
     if ($@) {
         my $err_msg = $@;
-        print STDERR "Transaction failed: $err_msg\n" if $DEBUG;
+        print STDERR "Transaction failed: $DBI::erri --  $err_msg\n" if $DEBUG;
         
         # Rollback on error
         eval { $dbh->rollback() };
@@ -502,7 +504,7 @@ sub insert_mark {
             $error = Error->new(ERR_DUPLICATE_URL);
         }
         else {
-            $error = Error->new(ERR_INSERT_FAILED);
+            $error = Error->new(ERR_MISSING_PARAMS);
         }
     }
     
