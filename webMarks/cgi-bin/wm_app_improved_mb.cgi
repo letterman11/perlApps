@@ -1,13 +1,12 @@
 #!/usr/bin/perl -wT
 
-#-- webm mobile app script
-#-- author: angus brooks refactored cleaned-
-
-
 use strict;
 use warnings;
 
 use FindBin qw($Bin);
+use Encode 'encode';
+use Encode 'decode';
+
 our $untainted_bin;
 
 BEGIN {
@@ -52,13 +51,17 @@ our $query = CGI->new();
 our $exec_sql_str;
 our $executed_sql_str;
 our $NO_HEADER = 0;
-our $DEBUG = $globals::true;
+#our $DEBUG = $globals::true;
+our $DEBUG = 1;
 our %tabMap = %globals::tabMap;
 
 # Global database connection
-our $dbconf = DbConfig->new();
-our $dbh = $dbconf->connect()
-    or die "Cannot Connect to Database $DBI::errstr\n";
+our $dbc = DbConfig->new();
+our $dbh = $dbc->connect()
+    or do {
+        GenError->new(Error->new(102))->display();
+        die "Cannot Connect to Database $DbConfig::errstr\n";
+    };
 
 # Error code constants
 use constant {
@@ -79,6 +82,8 @@ my %DISPATCH_TABLE = (
     'regAuth'   => \&handle_registration_auth,
     'search'    => \&handle_search,
     'newMark'   => \&handle_new_mark,
+    'updateMark'   => \&handle_update_mark,
+    'deleteMark'   => \&handle_delete_mark,
     'deltaPass' => \&handle_password_change,
     'logOut'    => \&handle_logout,
 );
@@ -194,6 +199,34 @@ sub handle_new_mark {
     }
 }
 
+sub handle_update_mark {
+    my $session = validateSession($query);
+    my $wm_user_id = $session->{wmUSERID};
+    my $wm_user_name = $session->{wmUSERNAME};
+    
+    if (defined($wm_user_id)) {
+        my $callObj = update_mark($wm_user_id);
+        exec_page($wm_user_id, $wm_user_name, $callObj);
+    }
+    else {
+        GenMarks_mb->new()->genDefaultPage();
+    }
+}
+
+sub handle_delete_mark {
+    my $session = validateSession($query);
+    my $wm_user_id = $session->{wmUSERID};
+    my $wm_user_name = $session->{wmUSERNAME};
+    
+    if (defined($wm_user_id)) {
+        my $callObj = delete_mark($wm_user_id);
+        exec_page($wm_user_id, $wm_user_name, $callObj);
+    }
+    else {
+        GenMarks_mb->new()->genDefaultPage();
+    }
+}
+
 sub handle_password_change {
     my $session = validateSession($query);
     my $wm_user_id = $session->{wmUSERID};
@@ -201,7 +234,7 @@ sub handle_password_change {
     
     if (defined($wm_user_id)) {
         if (not mod_passwd()) {
-            GenMarks_mb->new()->genDefaultPage();
+            exec_page($wm_user_id, $wm_user_name, Error->new(ERR_AUTH_FAILED));
         }
         else {
             exec_page($wm_user_id, $wm_user_name);
@@ -253,6 +286,7 @@ sub pre_auth {
     
     return ($user_row[0], $user_row[1], $usr_pass);
 }
+
 
 sub delete_session {
     my $host = undef;
@@ -316,7 +350,6 @@ sub delete_session {
     GenMarks_mb->new()->genDefaultPage();
 
 }
-
 
 sub authorize {
     my ($user_id, $user_name) = @_;
@@ -401,7 +434,6 @@ sub mod_passwd {
 #==============================================================================
 # BOOKMARK INSERTION WITH TRANSACTION
 #==============================================================================
-
 sub insert_mark {
     my $user_id = shift;
     my $title = $query->param('mark_title');
@@ -414,14 +446,14 @@ sub insert_mark {
     my $dateAdded = $unix_epochs;
     my $date_added = strftime "%Y-%m-%d %H:%M:%S", localtime($unix_epochs);
     
-    print STDERR "Inserting bookmark - Timestamp: $dateAdded\n" if $DEBUG;
+    print STDERR "Inserting bookmark - Date: $date_added\n" if $DEBUG;
     
     my $error;
     
     eval {
         # Begin transaction
         $dbh->begin_work() or die "Cannot begin transaction: " . $dbh->errstr;
-
+        
         # Check for duplicate URL using parameterized query
         my $dup_check = "SELECT b.url FROM WM_BOOKMARK a 
                          JOIN WM_PLACE b ON a.PLACE_ID = b.PLACE_ID 
@@ -433,22 +465,100 @@ sub insert_mark {
             die "Duplicate URL found: $url";
         }
         
-        # Insert into WM_PLACE
-        my $place_sql = "INSERT INTO WM_PLACE (URL, TITLE) VALUES (?, ?)";
-        $dbh->do($place_sql, undef, $url, $title);
+        #------- UNICODE / LATIN charset block --------------#
+        # workaround to not being able to change mysql server
+        # character set - do not own mysql server
+        #----------------------------------------------------#
+        # Convert bytes to text
+        my $title_decode = decode( "iso-8859-1", $title );
 
-        my $place_id = $dbh->last_insert_id; 
+        # Convert text to SQL string literal
+        my $title_lit = $dbh->quote( $title_decode );
+
+        #my $sql = "... $fullText_lit ...";
+
+        # Convert text to bytes
+        my $title_sql_utf8 = encode( "UTF-8", $title_lit );
+        #----------------------------------------------------#
+        #------- UNICODE / LATIN charset block --------------#
+
+        # Insert into WM_PLACE
+
+        my $place_sql = "INSERT INTO WM_PLACE (URL, TITLE) VALUES (?, ?)";
+
+        #$dbh->do($place_sql, undef, $url, $title);
+        $dbh->do($place_sql, undef, $url, $title_sql_utf8);
+
+        my $place_id = $dbh->last_insert_id;
         
-        # Insert into WM_BOOKMARK
+        
+        # Insert into WM_BOOKMARK with both date formats
         my $bookmark_sql = "INSERT INTO WM_BOOKMARK (USER_ID, PLACE_ID, TITLE, DATEADDED, DATE_ADDED) 
                             VALUES (?, ?, ?, ?, ?)";
-        $dbh->do($bookmark_sql, undef, $user_id, $place_id, $title, $dateAdded, $date_added);
+        #$dbh->do($bookmark_sql, undef, $user_id, $place_id, $title, $dateAdded, $date_added);
+        #$dbh->do($bookmark_sql, undef, $user_id, $place_id, $dbh->quote($title), $dateAdded, $date_added);
+
+        $dbh->do($bookmark_sql, undef, $user_id, $place_id, $title_sql_utf8, $dateAdded, $date_added);
+        
         
         
         # Commit transaction
         $dbh->commit() or die "Cannot commit: " . $dbh->errstr;
         
-        print STDERR "Transaction committed successfully\n" if $DEBUG;
+        print STDERR "Transaction *insert* committed successfully\n" if $DEBUG;
+    };
+    
+    if ($@) {
+        my $err_msg = $@;
+        print STDERR "Transaction failed: $DBI::err --  $err_msg\n" if $DEBUG;
+        
+        # Rollback on error
+        eval { $dbh->rollback() };
+        if ($@) {
+            print STDERR "Rollback failed: $@\n";
+        }
+        else {
+            print STDERR "Transaction rolled back\n" if $DEBUG;
+        }
+        
+        # Determine error type
+        if ($err_msg =~ /Duplicate URL/) {
+            $error = Error->new(ERR_DUPLICATE_URL);
+        }
+        else {
+            $error = Error->new(ERR_MISSING_PARAMS);
+        }
+    }
+    
+    return $error;  # Returns undef on success, Error object on failure
+}
+
+sub update_mark {
+    my $user_id = shift;
+    my $title = $query->param('title_update');
+    my $url = $query->param('url_update');
+    my $bookmark_id = $query->param('bk_id');
+    my $place_id;
+
+    print STDERR "Updating bookmark - { $title } :$bookmark_id \n" if $DEBUG;
+    
+    my $error;
+    
+    eval {
+        # Begin transaction
+        $dbh->begin_work() or die "Cannot begin transaction: " . $dbh->errstr;
+        
+        ($place_id)  = $dbh->selectrow_array("select PLACE_ID from WM_BOOKMARK where BOOKMARK_ID = ? ", {}, $bookmark_id);
+
+        $dbh->do(" update WM_BOOKMARK set TITLE = ? where BOOKMARK_ID = ? ", {}, $title, $bookmark_id);
+
+        $dbh->do(" update WM_PLACE set URL = ? where PLACE_ID = ? ", {}, $url, $place_id);
+        
+        
+        # Commit transaction
+        $dbh->commit() or die "Cannot commit: " . $dbh->errstr;
+        
+        print STDERR "Transaction *update* committed successfully\n" if $DEBUG;
     };
     
     if ($@) {
@@ -465,16 +575,61 @@ sub insert_mark {
         }
         
         # Determine error type
-        if ($err_msg =~ /Duplicate URL/) {
-            $error = Error->new(ERR_DUPLICATE_URL);
-        }
-        else {
             $error = Error->new(ERR_INSERT_FAILED);
-        }
     }
     
     return $error;  # Returns undef on success, Error object on failure
 }
+
+
+sub delete_mark {
+    my $user_id = shift;
+    my $title = $query->param('mark_title');
+    my $url = $query->param('mark_url');
+    my $bookmark_id = $query->param('bk_id');
+    my $place_id;
+    
+
+    print STDERR "deleting bookmark - :$bookmark_id \n" if $DEBUG;
+    
+    my $error;
+    
+    eval {
+        # Begin transaction
+        $dbh->begin_work() or die "Cannot begin transaction: " . $dbh->errstr;
+        
+        ($place_id)  = $dbh->selectrow_array("select PLACE_ID from WM_BOOKMARK where BOOKMARK_ID = ? ", {}, $bookmark_id);
+        $dbh->do(" delete from WM_BOOKMARK  where BOOKMARK_ID = ? ", {},  $bookmark_id);
+
+        $dbh->do(" delete from WM_PLACE  where PLACE_ID = ? ", {},  $place_id);
+        
+        
+        # Commit transaction
+        $dbh->commit() or die "Cannot commit: " . $dbh->errstr;
+        
+        print STDERR "Transaction *delete* committed successfully\n" if $DEBUG;
+    };
+    
+    if ($@) {
+        my $err_msg = $@;
+        print STDERR "Transaction failed: $err_msg\n" if $DEBUG;
+        
+        # Rollback on error
+        eval { $dbh->rollback() };
+        if ($@) {
+            print STDERR "Rollback failed: $@\n";
+        }
+        else {
+            print STDERR "Transaction rolled back\n" if $DEBUG;
+        }
+        
+        # Determine error type
+            $error = Error->new(ERR_INSERT_FAILED);
+    }
+    
+    return $error;  # Returns undef on success, Error object on failure
+}
+
 
 #==============================================================================
 # UTILITY FUNCTIONS
