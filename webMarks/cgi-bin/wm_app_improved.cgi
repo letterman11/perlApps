@@ -4,6 +4,9 @@ use strict;
 use warnings;
 
 use FindBin qw($Bin);
+use Encode 'encode';
+use Encode 'decode';
+
 our $untainted_bin;
 
 BEGIN {
@@ -462,12 +465,29 @@ sub insert_mark {
             die "Duplicate URL found: $url";
         }
         
+        #------- UNICODE / LATIN charset block --------------#
+        # workaround to not being able to change mysql server
+        # character set - do not own mysql server
+        #----------------------------------------------------#
+        # Convert bytes to text
+        my $title_decode = decode( "iso-8859-1", $title );
+
+        # Convert text to SQL string literal
+        my $title_lit = $dbh->quote( $title_decode );
+
+        #my $sql = "... $fullText_lit ...";
+
+        # Convert text to bytes
+        my $title_sql_utf8 = encode( "UTF-8", $title_lit );
+        #----------------------------------------------------#
+        #------- UNICODE / LATIN charset block --------------#
+
         # Insert into WM_PLACE
 
         my $place_sql = "INSERT INTO WM_PLACE (URL, TITLE) VALUES (?, ?)";
 
         #$dbh->do($place_sql, undef, $url, $title);
-        $dbh->do($place_sql, undef, $url, $dbh->quote($title));
+        $dbh->do($place_sql, undef, $url, $title_sql_utf8);
 
         my $place_id = $dbh->last_insert_id;
         
@@ -476,7 +496,9 @@ sub insert_mark {
         my $bookmark_sql = "INSERT INTO WM_BOOKMARK (USER_ID, PLACE_ID, TITLE, DATEADDED, DATE_ADDED) 
                             VALUES (?, ?, ?, ?, ?)";
         #$dbh->do($bookmark_sql, undef, $user_id, $place_id, $title, $dateAdded, $date_added);
-        $dbh->do($bookmark_sql, undef, $user_id, $place_id, $dbh->quote($title), $dateAdded, $date_added);
+        #$dbh->do($bookmark_sql, undef, $user_id, $place_id, $dbh->quote($title), $dateAdded, $date_added);
+
+        $dbh->do($bookmark_sql, undef, $user_id, $place_id, $title_sql_utf8, $dateAdded, $date_added);
         
         
         
@@ -488,7 +510,7 @@ sub insert_mark {
     
     if ($@) {
         my $err_msg = $@;
-        print STDERR "Transaction failed: $DBI::erri --  $err_msg\n" if $DEBUG;
+        print STDERR "Transaction failed: $DBI::err --  $err_msg\n" if $DEBUG;
         
         # Rollback on error
         eval { $dbh->rollback() };
