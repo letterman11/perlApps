@@ -77,15 +77,15 @@ use constant {
 # DISPATCH TABLE - Maps request types to handler functions
 #==============================================================================
 my %DISPATCH_TABLE = (
-    'auth'      => \&handle_auth,
-    'reg'       => \&handle_registration,
-    'regAuth'   => \&handle_registration_auth,
-    'search'    => \&handle_search,
-    'newMark'   => \&handle_new_mark,
-    'updateMark'   => \&handle_update_mark,
-    'deleteMark'   => \&handle_delete_mark,
-    'deltaPass' => \&handle_password_change,
-    'logOut'    => \&handle_logout,
+    'auth'          => \&handle_auth,
+    'reg'           => \&handle_registration,
+    'regAuth'       => \&handle_registration_auth,
+    'search'        => \&handle_search,
+    'newMark'       => \&handle_new_mark,
+    'updateMark'    => \&handle_update_mark,
+    'deleteMark'    => \&handle_delete_mark,
+    'deltaPass'     => \&handle_password_change,
+    'logOut'        => \&handle_logout,
 );
 
 #==============================================================================
@@ -472,10 +472,9 @@ sub insert_mark {
         # Convert bytes to text
         my $title_decode = decode( "iso-8859-1", $title );
 
-        # Convert text to SQL string literal
-        my $title_lit = $dbh->quote( $title_decode );
-
-        #my $sql = "... $fullText_lit ...";
+        # Convert text to SQL string literal -- nix this no needed aab
+        #my $title_lit = $dbh->quote( $title_decode );
+        my $title_lit =  $title_decode;
 
         # Convert text to bytes
         my $title_sql_utf8 = encode( "UTF-8", $title_lit );
@@ -483,23 +482,17 @@ sub insert_mark {
         #------- UNICODE / LATIN charset block --------------#
 
         # Insert into WM_PLACE
-
         my $place_sql = "INSERT INTO WM_PLACE (URL, TITLE) VALUES (?, ?)";
 
-        #$dbh->do($place_sql, undef, $url, $title);
         $dbh->do($place_sql, undef, $url, $title_sql_utf8);
 
         my $place_id = $dbh->last_insert_id;
         
-        
         # Insert into WM_BOOKMARK with both date formats
         my $bookmark_sql = "INSERT INTO WM_BOOKMARK (USER_ID, PLACE_ID, TITLE, DATEADDED, DATE_ADDED) 
                             VALUES (?, ?, ?, ?, ?)";
-        #$dbh->do($bookmark_sql, undef, $user_id, $place_id, $title, $dateAdded, $date_added);
-        #$dbh->do($bookmark_sql, undef, $user_id, $place_id, $dbh->quote($title), $dateAdded, $date_added);
 
         $dbh->do($bookmark_sql, undef, $user_id, $place_id, $title_sql_utf8, $dateAdded, $date_added);
-        
         
         
         # Commit transaction

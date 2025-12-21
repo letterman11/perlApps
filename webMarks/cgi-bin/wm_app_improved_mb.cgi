@@ -472,8 +472,9 @@ sub insert_mark {
         # Convert bytes to text
         my $title_decode = decode( "iso-8859-1", $title );
 
-        # Convert text to SQL string literal
-        my $title_lit = $dbh->quote( $title_decode );
+        # Convert text to SQL string literal -- nix this not needed aab
+        #my $title_lit = $dbh->quote( $title_decode );
+        my $title_lit = $title_decode;
 
         #my $sql = "... $fullText_lit ...";
 
