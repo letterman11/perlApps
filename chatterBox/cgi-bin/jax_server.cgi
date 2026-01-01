@@ -1,15 +1,25 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -wT
 use strict;
 use warnings;
 use utf8;
+
+
+use FindBin qw($Bin);
+our $untainted_bin;
+
+BEGIN {
+    # Extract the trusted part of $Bin using a regular expression
+    # This assumes $Bin contains a valid path and removes any potentially malicious characters.
+    ($untainted_bin) = $Bin =~ /^(.+)$/;
+}
+
+use lib "$untainted_bin/../../../private/chatterBox/script_src";
 
 # Enable taint mode for security
 use English qw(-no_match_vars);
 $ENV{PATH} = '/bin:/usr/bin';
 delete @ENV{qw(IFS CDPATH ENV BASH_ENV)};
 
-use lib "/home/angus/dcoda_net/private/chatterBox/script_src";
-require '/home/angus/dcoda_net/cgi-bin/chatterBox/cgi-bin/config.pl';
 use Util;
 use DbConfig;
 use CGI qw(:standard);
