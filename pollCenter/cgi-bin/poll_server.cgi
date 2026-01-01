@@ -1,23 +1,28 @@
 #!/usr/bin/perl -wT
 
 use strict;
-use DBI;
-#use lib "/home/ubuntu/tools/perl5/site_perl";
-use lib "/home/ubuntu/dcoda_net/private/pollCenter/script_src";
-require '/home/ubuntu/dcoda_net/cgi-bin/pollCenter/cgi-bin/config.pl';
-use lib "/home/ubuntu/dcoda_net/lib";
-#use lib "/services/webpages/d/c/dcoda.net/private/pollCenter/script_src";
-#use DbConfig;
+
+use FindBin qw($Bin);
+our $untainted_bin;
+
+BEGIN {
+    # Extract the trusted part of $Bin using a regular expression
+    # This assumes $Bin contains a valid path and removes any potentially malicious characters.
+    ($untainted_bin) = $Bin =~ /^(.+)$/;
+}
+
+use lib "$untainted_bin/../../../private/pollCenter/script_src";
+
+require "$untainted_bin/config.pl";
+#use lib "/home/ubuntu/dcoda_net/lib";
+
 use DbGlob;
 use CGI qw /:standard/;
 use CGI::Carp;
-use CGI::Carp qw(fatalsToBrowser);
+#use CGI::Carp qw(fatalsToBrowser);
 use CGI::Cookie;
 use Util;
-#use Captcha;
-
 use Data::Dumper;
-#require '/services/webpages/d/c/dcoda.net/cgi-bin/pollCenter/cgi-bin/config.pl';
 
 my $pollCenterID;
 my ($c1,$c2,$c3) = ();
@@ -27,8 +32,6 @@ my $captcha_text = "none";
 my $captcha_parm;
 my $q = new CGI;
 my @parms = $q->param;
-#my $fh_client = $::PATHS->{CAPTCHA_DIR};
-#my $fh_serv = $::PATHS->{CAPTCHA_DIR_SERV};
 
 my $initSessionObject = Util::validateSession('pollCenterID','qID');
 

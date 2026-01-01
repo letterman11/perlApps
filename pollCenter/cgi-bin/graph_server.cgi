@@ -1,9 +1,19 @@
 #!/usr/bin/perl -wT
 
 use strict;
-use DBI;
-use lib "/home/ubuntu/dcoda_net/private/pollCenter/script_src";
-require '/home/ubuntu/dcoda_net/cgi-bin/pollCenter/cgi-bin/config.pl';
+
+use FindBin qw($Bin);
+our $untainted_bin;
+
+BEGIN {
+    # Extract the trusted part of $Bin using a regular expression
+    # This assumes $Bin contains a valid path and removes any potentially malicious characters.
+    ($untainted_bin) = $Bin =~ /^(.+)$/;
+}
+
+use lib "$untainted_bin/../../../private/pollCenter/script_src";
+
+require "$untainted_bin/config.pl";
 use DbGlob;
 use CGI qw /:standard/;
 use CGI::Carp;
@@ -23,7 +33,6 @@ if (ref $initSessionObject eq 'SessionObject')
     if (defined($pollIDparm))
     {
      
-       #my $dbconf = DbConfig->new();
        my $dbg = DbGlob->new("stockDbConfig.dat");
 
        my $dbh = $dbg->connect()
