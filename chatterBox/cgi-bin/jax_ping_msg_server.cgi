@@ -1,233 +1,314 @@
-#!/usr/bin/perl -wT
-
+#!/usr/bin/perl
 use strict;
-use lib "/home/ubuntu/dcoda_net/private/chatterBox/script_src";
-#use DbConfig;
+use warnings;
+use utf8;
+
+# Enable taint mode for security
+use English qw(-no_match_vars);
+$ENV{PATH} = '/bin:/usr/bin';
+delete @ENV{qw(IFS CDPATH ENV BASH_ENV)};
+
+use lib "/home/angus/dcoda_net/private/chatterBox/script_src";
 use DbGlob;
 use Util;
-use CGI qw (:standard -debug);
+use CGI qw(:standard);
 use CGI::Cookie;
-use CGI::Carp;
-#use CGI::Carp qw(fatalsToBrowser);
+use CGI::Carp qw(fatalsToBrowser);
+use JSON::PP;
+use Try::Tiny;
 
-$CGI::POST_MAX=1024 * 10;  # max 10K posts
-$CGI::DISABLE_UPLOADS = 1;  # no uploads
+# Configuration constants
+use constant {
+    POST_MAX => 1024 * 10,  # 10KB max
+    DB_ERROR_PREFIX => 'ping server - DB ERROR',
+};
 
-my $query = new CGI;
-my $initSessionObject = Util::validateSession();
+# Security settings
+$CGI::POST_MAX = POST_MAX;
+$CGI::DISABLE_UPLOADS = 1;
 
+# Initialize
+my $query = CGI->new();
+my $session = Util::validateSession();
 
-if (ref $initSessionObject eq 'SessionObject')
-{
-        #TO DO: Restructure handling of db login failure
+# Main execution
+main();
+exit 0;
 
-       # my $dbc = DbConfig->new()
-        my $dbg = DbGlob->new()
-                        or die "Cannot Create DB Handle \n";
+#==============================================================================
+# Main Subroutine
+#==============================================================================
+sub main {
+    # Validate session
+    unless (ref $session eq 'SessionObject') {
+        send_error_response(401, 'Unauthorized: Invalid session');
+        return;
+    }
 
-       # my $dbh = $dbc->connect()
-        my $dbh = $dbg->connect()
-                        or die "Cannot Connect to Database $DBI::errstr\n";
+    # Connect to database
+    my $dbh = connect_to_database();
+    return unless $dbh;
 
-	#	$dbh->trace(1, 'chat_dbi_ping.log');
+    # Route request
+    my $request_type = $query->param('req') || '';
+    
+    if ($request_type eq 'ajaxPing') {
+        handle_ajax_ping($dbh);
+    } else {
+        send_error_response(400, 'Bad Request: Unknown request type');
+    }
 
-        my $sqlstr = ();
-        my $sqlstr2 = ();
-	my $sqlstr3 = ();
-        my $sth = ();
-        my $room_array = ();
-        my $row_count = ();
-        my $msg_user_array = ();
-	my $msg_queue_array = ();
-
-	my $userID = $query->param('userID');
-	my $roomID = $query->param('roomID');
-	
-	if($query->param('req') eq 'ajaxPing')
-	{
-		my @user_cr_row = ();
-
-		$sqlstr = "select * from user_cr where user_id = '$userID'";
-		$sqlstr2 = "select user_id from user_cr where room_id = '$roomID'";		
-
-		eval {		
-			#one exec sequence
-			@user_cr_row = $dbh->selectrow_array($sqlstr);
-			#second exec sequence
-			$sth = $dbh->prepare($sqlstr2);
-						
-			$sth->execute();
-		
-			$msg_user_array = $sth->fetchall_arrayref;	
-
-			$sth->finish();
-		
-		};	
-		
-		carp("ping server - DB ERROR " . $@) if ($@);
-
-		if($@) 
-		{
-			print $query->header(-status=>'1001 Application Error: Failed on combo select user_cr'
-						);	
-		}
-		else
-		{
-			$sqlstr2 = "select * from chat_room_queue "
-				 . " where msg_user_id = '$userID' "
-				 . " and insert_ts >= '$user_cr_row[2]' "
-				 . " order by cr_queue_id desc limit 2 ";
-
-			eval {		
-	
-				my $sth = $dbh->prepare($sqlstr2);
-	
-				$sth->execute();
-	
-				$msg_queue_array = $sth->fetchall_arrayref;	
-	
-				$sth->finish();
-	
-			};	
-
-			carp("ping server - DB ERROR " . $@) if ($@);
-				
-			if($@) 
-			{
-				print $query->header(-status=>'1002 Application Error: Failed ChatRoom Select'
-							);	
-			}	
-			elsif(scalar(@{$msg_queue_array}) > 0)
-			{
-				$sqlstr3 = "delete from chat_room_queue "
-					 . "where cr_queue_id = " . @{$msg_queue_array}[0]->[0]; 
-				
-				for(my $i=1; $i < scalar(@{$msg_queue_array}); $i++)
-				{
-					$sqlstr3 .= " or cr_queue_id = " . @{$msg_queue_array}[$i]->[0]; 
-
-				}				
-
-				carp("DELETE CHAT TBL " . $sqlstr3);	
-
-				eval {		
-					my $sth = $dbh->prepare($sqlstr3);
-		
-					$sth->execute();
-		
-					$sth->finish();
-		
-				};	
-				
-				carp("ping server - DB ERROR " . $@) if ($@);
-				if($@)
-				{
-					print $query->header(-status=>'1003 Application Error: Failed ChatRoom Delete'
-							);	
-				}
-				else
-				{
-					#all done return JSON_CO to client
-					my $json_co = ();
-					my ($user_id,$msg_user_id,$room_id,$msg_text,$time_stamp,$msg_q_id) = (1,5,2,4,3,0);
-					my $i = 0;
-					$json_co =  qq/  { \n "messages" : [ \n
-						   { 
-						 		"user_id" :  "@{$msg_queue_array}[$i]->[$user_id]", \n
-						 		"room_id" :  "@{$msg_queue_array}[$i]->[$room_id]", \n
-						 		"msg_text" : "@{$msg_queue_array}[$i]->[$msg_text]", \n
-						 		"msg_q_id" : "@{$msg_queue_array}[$i]->[$msg_q_id]", \n
-						 		"time_stamp" : "@{$msg_queue_array}[$i]->[$time_stamp]" \n
-						  } / ;
-						
-					for(++$i; $i < scalar(@{$msg_queue_array}); $i++) 
-					{
-
-					$json_co .=  qq/ 
-						    , \n { 
-						 		"user_id" :  "@{$msg_queue_array}[$i]->[$user_id]", \n
-						 		"room_id" :  "@{$msg_queue_array}[$i]->[$room_id]", \n
-						 		"msg_text" : "@{$msg_queue_array}[$i]->[$msg_text]", \n
-						 		"msg_q_id" : "@{$msg_queue_array}[$i]->[$msg_q_id]", \n
-						 		"time_stamp" : "@{$msg_queue_array}[$i]->[$time_stamp]" \n
-						  }  \n / ;
-						
-					}
-					
-					$json_co .= " ] ";
-
-					my $js_msg_user_array = ();
-					
-						if (scalar(@{$msg_user_array}) > 1) 
-						{
-
-							$js_msg_user_array .= "\"" . @{$msg_user_array}[$i]->[0] . "\""; 
-
-                                                        my $i = 0;
-                                                        $js_msg_user_array =  qq/  "msg_user_ids" : [ "@{$msg_user_array}[$i]->[0]"  /;
-
-				
-							for(++$i; $i < scalar(@{$msg_user_array}); $i++) 
-							{
-								$js_msg_user_array .=  ", \"" . @{$msg_user_array}[$i]->[0] ."\"";
-							}
-		
-							 $js_msg_user_array .= " ] ";
-						}
-					
-					$json_co .= ", \n $js_msg_user_array " if ($js_msg_user_array);
-					$json_co .= " \n} ";
-
-					carp("JSON_CO object: " . $json_co);
-
-					print $query->header(-status=>'200 OK',
-								-Content_Type=>'text/javascript'
-								);
-					print $json_co;
-				}
-			}
-			elsif(scalar(@{$msg_user_array}) > 1)
-			{
-
-				my $json_co = ();
-
-				my $js_msg_user_array = ();
-				
-				$json_co = "  { ";
-									
-				$js_msg_user_array = " \"msg_user_ids\" : [ ";
-				my $i = 0;
-
-				$js_msg_user_array .= "\"" . @{$msg_user_array}[$i]->[0] . "\""; 
-	
-				for(++$i; $i < scalar(@{$msg_user_array}); $i++) 
-				{
-					$js_msg_user_array .=  ", \"" . @{$msg_user_array}[$i]->[0] ."\"";
-				}
-	
-				$js_msg_user_array .= " ] ";
-				
-				$json_co .= "\n $js_msg_user_array " if ($js_msg_user_array);
-				$json_co .= " \n} ";
-
-				carp("JSON_CO object: " . $json_co);
-				carp("process ID: " . $$);
-
-				print $query->header(-status=>'200 OK',
-							-Content_Type=>'text/javascript'
-							);
-				print $json_co;
-
-			}
-			else
-			{
-				print $query->header(-status=>'200 OK'
-						);
-			}
-
-		}
-	}
-
+    $dbh->disconnect() if $dbh;
 }
 
-exit;
+#==============================================================================
+# Database Connection
+#==============================================================================
+sub connect_to_database {
+    my $dbg = DbGlob->new();
+    unless ($dbg) {
+        send_error_response(500, 'Cannot create database handle');
+        return;
+    }
+
+    my $dbh = $dbg->connect();
+    unless ($dbh) {
+        send_error_response(500, "Cannot connect to database: $DBI::errstr");
+        return;
+    }
+
+    return $dbh;
+}
+
+#==============================================================================
+# Ajax Ping Handler
+#==============================================================================
+sub handle_ajax_ping {
+    my ($dbh) = @_;
+
+    # Get and validate parameters
+    my $user_id = validate_user_id($query->param('userID'));
+    my $room_id = validate_room_id($query->param('roomID'));
+
+    unless ($user_id && $room_id) {
+        send_error_response(400, 'Bad Request: Invalid userID or roomID');
+        return;
+    }
+
+    # Fetch user and room data
+    my ($user_cr_row, $msg_user_array) = fetch_user_room_data($dbh, $user_id, $room_id);
+    return unless defined $user_cr_row;
+
+    # Fetch message queue
+    my $msg_queue_array = fetch_message_queue($dbh, $user_id, $user_cr_row->{date_ts});
+    return unless defined $msg_queue_array;
+
+    # Process messages if any exist
+    if (@$msg_queue_array > 0) {
+        process_messages($dbh, $msg_queue_array, $msg_user_array);
+    } elsif (@$msg_user_array > 1) {
+        send_user_list_response($msg_user_array);
+    } else {
+        send_empty_response();
+    }
+}
+
+#==============================================================================
+# Data Fetching Functions
+#==============================================================================
+sub fetch_user_room_data {
+    my ($dbh, $user_id, $room_id) = @_;
+
+    my ($user_cr_row, $msg_user_array);
+
+    try {
+        # Fetch user's chat room record using prepared statement
+        my $sth1 = $dbh->prepare(
+            'SELECT user_id, room_id, date_ts FROM user_cr WHERE user_id = ?'
+        );
+        $sth1->execute($user_id);
+        my @row = $sth1->fetchrow_array();
+        $sth1->finish();
+
+        if (@row) {
+            $user_cr_row = {
+                user_id => $row[0],
+                room_id => $row[1],
+                date_ts => $row[2],
+            };
+        }
+
+        # Fetch users in the same room
+        my $sth2 = $dbh->prepare(
+            'SELECT user_id FROM user_cr WHERE room_id = ?'
+        );
+        $sth2->execute($room_id);
+        $msg_user_array = $sth2->fetchall_arrayref([0]);
+        $sth2->finish();
+
+    } catch {
+        CGI::Carp::carp(DB_ERROR_PREFIX . " $_");
+        send_error_response(500, 'Application Error: Failed on user_cr select');
+        return;
+    };
+
+    return ($user_cr_row, $msg_user_array);
+}
+
+sub fetch_message_queue {
+    my ($dbh, $user_id, $date_ts) = @_;
+
+    my $msg_queue_array;
+
+    try {
+        my $sth = $dbh->prepare(q{
+            SELECT cr_queue_id, user_id, room_id, insert_ts, chat_text, msg_user_id
+            FROM chat_room_queue
+            WHERE msg_user_id = ?
+              AND insert_ts >= ?
+            ORDER BY cr_queue_id DESC
+            LIMIT 2
+        });
+        
+        $sth->execute($user_id, $date_ts);
+        $msg_queue_array = $sth->fetchall_arrayref({});
+        $sth->finish();
+
+    } catch {
+        CGI::Carp::carp(DB_ERROR_PREFIX . " $_");
+        send_error_response(500, 'Application Error: Failed ChatRoom Select');
+        return;
+    };
+
+    return $msg_queue_array;
+}
+
+#==============================================================================
+# Message Processing
+#==============================================================================
+sub process_messages {
+    my ($dbh, $msg_queue_array, $msg_user_array) = @_;
+
+    # Delete processed messages
+    my $deleted = delete_message_queue($dbh, $msg_queue_array);
+    return unless $deleted;
+
+    # Build and send JSON response
+    send_message_response($msg_queue_array, $msg_user_array);
+}
+
+sub delete_message_queue {
+    my ($dbh, $msg_queue_array) = @_;
+
+    my @queue_ids = map { $_->{cr_queue_id} } @$msg_queue_array;
+    my $placeholders = join(',', ('?') x @queue_ids);
+
+    try {
+        my $sth = $dbh->prepare(
+            "DELETE FROM chat_room_queue WHERE cr_queue_id IN ($placeholders)"
+        );
+        $sth->execute(@queue_ids);
+        $sth->finish();
+
+        CGI::Carp::carp("Deleted queue IDs: " . join(', ', @queue_ids));
+
+    } catch {
+        CGI::Carp::carp(DB_ERROR_PREFIX . " $_");
+        send_error_response(500, 'Application Error: Failed ChatRoom Delete');
+        return 0;
+    };
+
+    return 1;
+}
+
+#==============================================================================
+# Response Functions
+#==============================================================================
+sub send_message_response {
+    my ($msg_queue_array, $msg_user_array) = @_;
+
+    # Build messages array
+    my @messages = map {
+        {
+            user_id    => $_->{user_id},
+            room_id    => $_->{room_id},
+            msg_text   => $_->{chat_text},
+            msg_q_id   => $_->{cr_queue_id},
+            time_stamp => $_->{insert_ts},
+        }
+    } @$msg_queue_array;
+
+    # Build response hash
+    my $response = { messages => \@messages };
+
+    # Add user list if multiple users
+    if (@$msg_user_array > 1) {
+        my @user_ids = map { $_->[0] } @$msg_user_array;
+        $response->{msg_user_ids} = \@user_ids;
+    }
+
+    send_json_response($response);
+}
+
+sub send_user_list_response {
+    my ($msg_user_array) = @_;
+
+    my @user_ids = map { $_->[0] } @$msg_user_array;
+    my $response = { msg_user_ids => \@user_ids };
+
+    send_json_response($response);
+}
+
+sub send_json_response {
+    my ($data) = @_;
+
+    my $json = JSON::PP->new->utf8->pretty->encode($data);
+    
+    CGI::Carp::carp("JSON response: $json");
+    CGI::Carp::carp("Process ID: $$");
+
+    print $query->header(
+        -status       => '200 OK',
+        -type         => 'application/json',
+        -charset      => 'UTF-8',
+    );
+    print $json;
+}
+
+sub send_empty_response {
+    print $query->header(-status => '200 OK');
+}
+
+sub send_error_response {
+    my ($code, $message) = @_;
+    
+    print $query->header(
+        -status => "$code $message",
+        -type   => 'text/plain',
+    );
+}
+
+#==============================================================================
+# Input Validation
+#==============================================================================
+sub validate_user_id {
+    my ($user_id) = @_;
+    return unless defined $user_id;
+    
+    # Remove taint and validate (adjust pattern as needed)
+    if ($user_id =~ /^(\w+)$/) {
+        return $1;
+    }
+    return;
+}
+
+sub validate_room_id {
+    my ($room_id) = @_;
+    return unless defined $room_id;
+    
+    # Remove taint and validate (adjust pattern as needed)
+    if ($room_id =~ /^(\w+)$/) {
+        return $1;
+    }
+    return;
+}
