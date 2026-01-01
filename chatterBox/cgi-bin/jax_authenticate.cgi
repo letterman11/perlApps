@@ -1,10 +1,19 @@
 #!/usr/bin/perl -wT
-
 use strict;
-#use lib "/services/webpages/d/c/dcoda.net/private/chatterBox/script_src";
-#use lib "/home/ubuntu/dcoda_net/lib";
-use lib "/home/ubuntu/dcoda_net/private/chatterBox/script_src";
-require "/home/ubuntu/dcoda_net/cgi-bin/chatterBox/cgi-bin/config.pl";
+use warnings;
+use utf8;
+
+use FindBin qw($Bin);
+our $untainted_bin;
+
+BEGIN {
+    # Extract the trusted part of $Bin using a regular expression
+    # This assumes $Bin contains a valid path and removes any potentially malicious characters.
+    ($untainted_bin) = $Bin =~ /^(.+)$/;
+}
+
+use lib "$untainted_bin/../../../private/chatterBox/script_src";
+
 use Util;
 use DbConfig;
 use CGI qw /:standard/;
@@ -18,7 +27,6 @@ $CGI::DISABLE_UPLOADS = 1;  # no uploads
 my $userID = 0;
 my $userName = 1;
 my $userPass = 2;
-my $startpage="/home/abrooks/www/chatterBox/web_src/chatterapp.html";
 my $query = new CGI;
 
 #my $host = $::GLOBALS->{HOST}; # !!! change for production server to dcoda.net

@@ -1,12 +1,21 @@
 #!/usr/bin/perl -wT
-
-
 use strict;
-#use lib "/services/webpages/d/c/dcoda.net/private/chatterBox/script_src";
-#use lib "/home/ubuntu/tools/perl5/site_perl";
-#use lib "/home/ubuntu/dcoda_net/lib";
-use lib "/home/ubuntu/dcoda_net/private/chatterBox/script_src";
-require '/home/ubuntu/dcoda_net/cgi-bin/chatterBox/cgi-bin/config.pl';
+use warnings;
+use utf8;
+
+use FindBin qw($Bin);
+our $untainted_bin;
+
+BEGIN {
+    # Extract the trusted part of $Bin using a regular expression
+    # This assumes $Bin contains a valid path and removes any potentially malicious characters.
+    ($untainted_bin) = $Bin =~ /^(.+)$/;
+}
+
+
+use lib "$untainted_bin/../../../private/chatterBox/script_src";
+
+
 use GenStatus;
 use Error;
 use GenError;
@@ -14,9 +23,6 @@ use Util;
 use DbConfig;
 use CGI qw /:standard/;
 use CGI::Carp;
-#use CGI::Carp qw(fatalsToBrowser);
-#use DBI;
-#require '/services/webpages/d/c/dcoda.net/cgi-bin/chatterBox/cgi-bin/config.pl';
 
 $CGI::POST_MAX=1024 * 10;  # max 10K posts
 $CGI::DISABLE_UPLOADS = 1;  # no uploads
