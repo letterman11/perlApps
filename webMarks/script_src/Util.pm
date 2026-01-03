@@ -6,12 +6,15 @@ use SessionObject;
 use CGI::Cookie;
 use CGI::Carp qw(fatalsToBrowser);
 use Storable;
+use Digest;
 use Data::Dumper;
 use POSIX qw(strftime);
 
-#my $tmp_dir = "/services/webpages/d/c/dcoda.net/tmp";
+our $HOME = $ENV{'HOME'};
 my $tmp_dir = "/tmp";
-our $sessionDbConf = "/home/ubuntu/dcoda_net/lib/sessionFile.dat"; 
+
+#our $sessionDbConf = "/home/angus/dcoda_net/lib/sessionFile.dat"; 
+our $sessionDbConf = "$HOME/dcoda_net/lib/sessionFile.dat"; 
 
 BEGIN
 {
@@ -176,6 +179,17 @@ sub validateSession
         return $sessionObject;
 
 }
+
+sub digest_pass
+{
+    my $passwd = shift;
+    my $sha512 = Digest->new("SHA-512");
+    
+    $sha512->add($passwd);
+    return $sha512->hexdigest;
+
+}
+
 
 sub storeSQL
 {
