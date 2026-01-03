@@ -9,12 +9,10 @@ use Storable;
 use Digest;
 use Data::Dumper;
 use POSIX qw(strftime);
-
-our $HOME = $ENV{'HOME'};
+use FindBin '$Bin';
 my $tmp_dir = "/tmp";
 
-#our $sessionDbConf = "/home/angus/dcoda_net/lib/sessionFile.dat"; 
-our $sessionDbConf = "$HOME/dcoda_net/lib/sessionFile.dat"; 
+our $sessionDbConf = "$Bin/../../../lib/sessionFile.dat"; 
 
 BEGIN
 {
