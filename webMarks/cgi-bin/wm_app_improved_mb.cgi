@@ -264,6 +264,7 @@ sub handle_logout {
 #==============================================================================
 
 sub pre_auth {
+    return pre_auth2(@_);
     my $usr_name = $query->param('user_name');
     my $usr_pass = $query->param('user_pass');
     my $old_usr_pass = $query->param('old_pass');  # only for password update
@@ -287,6 +288,44 @@ sub pre_auth {
     return ($user_row[0], $user_row[1], $usr_pass);
 }
 
+
+sub pre_auth2
+{
+    my $c = shift;
+    my $usr_name = $query->param('user_name');
+    my $usr_pass = $query->param('user_pass'); 
+    my $old_usr_pass = $query->param('old_pass'); #only for update
+    my $exec_sql_str;
+
+    my $password_digest = Util::digest_pass($usr_pass);
+    my $password_old_digest = Util::digest_pass($old_usr_pass);
+
+    ##################################
+    #password digest function to add##
+    # do not want to touch db  #######
+    ##################################
+
+    my $sql = "SELECT user_id, user_name, user_passwd FROM WM_USER WHERE user_name = ?";
+
+    my ($db_usr_id, $db_usr_name, $db_usr_pass)  = $dbh->selectrow_array($sql, {}, $usr_name);
+
+    print STDERR " data base  pre_auth2 " , " " , $db_usr_id  , " " , $db_usr_name , " " , $db_usr_pass;
+
+
+    if(isset($old_usr_pass) && ($db_usr_pass eq $old_usr_pass) || $db_usr_pass eq $password_old_digest) 
+    {     
+        return ($db_usr_id, $db_usr_name, $usr_pass); 
+    }
+    elsif (($db_usr_pass eq $usr_pass) || ($db_usr_pass eq $password_digest))
+    {
+        return ($db_usr_id, $db_usr_name,$db_usr_pass); 
+    }
+    else
+    {
+        return (); 
+    }
+
+}
 
 sub delete_session {
     my $host = undef;
