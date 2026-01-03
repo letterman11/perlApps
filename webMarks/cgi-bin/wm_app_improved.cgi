@@ -154,13 +154,17 @@ sub handle_registration_auth {
     my $partUserName = substr($sqlHash->{userName}, 0, 5);
     my $partID = substr(genSessionID(), 0, 5);
     my $userID = $partUserName . "_" . $partID;
+
+
+    my $passwd_digest = Util::digest_pass($sqlHash->{password});
     
     # Use parameterized query for security
     my $insert_sql_str = "INSERT INTO WM_USER (USER_ID, USER_NAME, USER_PASSWD, EMAIL_ADDRESS) VALUES (?, ?, ?, ?)";
-    
+
     eval {
         my $sth = $dbh->prepare($insert_sql_str);
-        $sth->execute($userID, $sqlHash->{userName}, $sqlHash->{password}, $sqlHash->{email});
+        #$sth->execute($userID, $sqlHash->{userName}, $sqlHash->{password}, $sqlHash->{email});
+        $sth->execute($userID, $sqlHash->{userName}, $passwd_digest, $sqlHash->{email});
     };
     
     if ($@) {
