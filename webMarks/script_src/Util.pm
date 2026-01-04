@@ -243,7 +243,6 @@ sub formValidation
     return Error->new(119) if($sqlInsert{email} !~ /\w+[\w.]+?\w+@\w+[\w.]+?\.\w+\s*$/);
 
 
-
     return \%sqlInsert;
 }
 
@@ -392,6 +391,7 @@ sub validateSessionDB {
     if ($@) {
 
         print STDERR "$DBI::errstr Error DB \n" unless defined ($sessionID);
+        $local_dbh->disconnect;
         return Error->new(2000) unless defined $sessionID;
     }
 
@@ -402,6 +402,8 @@ sub validateSessionDB {
     $sessObj->{wmUSERID} = $cookUserID;
     $sessObj->{wmUSERNAME} = $cookUserID;
     $sessObj->{SESSIONDATA} = $storedSQL;
+
+    $local_dbh->disconnect;
 
     return $sessObj;
 
