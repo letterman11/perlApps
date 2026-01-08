@@ -383,9 +383,16 @@ sub genDefaultPage
 <link rel="shortcut icon" href="/images/dc.ico">
 <link rel="icon" href="/images/dc.ico">
 <link rel="stylesheet" href="/webMarks/web_src/style.css" type="text/css">
+<script language="javascript">
+function d_init()
+{
+    document.getElementsByName("user_name")[0].value = 'boxtop';
+    document.getElementsByName("user_pass")[0].value = 'boxtop';
+}
+</script>
 </head>
 
-<body>
+<body onload="d_init()">
 <div id="main">
  <div id="header">
   <h1 class="left"> <a href="/webMarks"> WEBMARKS </a></h1>
