@@ -585,7 +585,24 @@ sub update_mark {
         
         ($place_id)  = $dbh->selectrow_array("select PLACE_ID from WM_BOOKMARK where BOOKMARK_ID = ? ", {}, $bookmark_id);
 
-        $dbh->do(" update WM_BOOKMARK set TITLE = ? where BOOKMARK_ID = ? ", {}, $title, $bookmark_id);
+        #------- UNICODE / LATIN charset block --------------#
+        # workaround to not being able to change mysql server
+        # character set - do not own mysql server
+        #----------------------------------------------------#
+        # Convert bytes to text
+        my $title_decode = decode( "iso-8859-1", $title );
+
+        # Convert text to SQL string literal -- nix this no needed aab
+        #my $title_lit = $dbh->quote( $title_decode );
+        my $title_lit =  $title_decode;
+
+        # Convert text to bytes
+        my $title_sql_utf8 = encode( "UTF-8", $title_lit );
+        #----------------------------------------------------#
+        #------- UNICODE / LATIN charset block --------------#
+
+        #$dbh->do(" update WM_BOOKMARK set TITLE = ? where BOOKMARK_ID = ? ", {}, $title, $bookmark_id);
+        $dbh->do(" update WM_BOOKMARK set TITLE = ? where BOOKMARK_ID = ? ", {}, $title_sql_utf8, $bookmark_id);
 
         $dbh->do(" update WM_PLACE set URL = ? where PLACE_ID = ? ", {}, $url, $place_id);
         
