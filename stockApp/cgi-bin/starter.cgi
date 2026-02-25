@@ -1,16 +1,29 @@
 #!/usr/bin/perl -wT
 
 use strict;
-use lib "/home/ubuntu/dcoda_net/lib";
-###############
-use lib "/home/ubuntu/dcoda_net/private/stockApp/script_src";
-require '/home/ubuntu/dcoda_net/cgi-bin/stockApp/cgi-bin/config.pl';
+
+use FindBin qw($Bin);
+our $untainted_bin;
+
+BEGIN {
+    # Extract the trusted part of $Bin using a regular expression
+    # This assumes $Bin contains a valid path and removes any potentially malicious characters.
+    ($untainted_bin) = $Bin =~ /^(.+)$/;
+}
+
+
+#use lib "/home/ubuntu/dcoda_net/lib";
+use lib "$untainted_bin/../../../private/stockApp/script_src";
+require "$untainted_bin/config.pl";
+
+#use lib "/home/ubuntu/dcoda_net/lib";
+
 use GenView;
 use GenHome;
 use StockUtil;
 use CGI qw /:standard/;
 use CGI::Cookie;
-require '/home/ubuntu/dcoda_net/cgi-bin/stockApp/cgi-bin/config.pl';
+
 use CGI::Carp qw(fatalsToBrowser);
 use DbConfig;
 
